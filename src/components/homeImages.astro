@@ -5,25 +5,108 @@ import { Image } from "astro:assets";
 import image1 from "../assets/image1.jpg";
 import image2 from "../assets/image2.jpg";
 import image3 from "../assets/image3.jpg";
+import image4 from "../assets/image4.jpg";
+import image5 from "../assets/image5.png";
+import image6 from "../assets/image6.png";
+import image7 from "../assets/image7.png";
+import image9 from "../assets/image9.png";
+import image10 from "../assets/image10.png";
+import image11 from "../assets/image11.png";
 
 const images = [
-	{ src: image1, alt: "Immagine 1", id: "img1" },
-	{ src: image2, alt: "Immagine 2", id: "img2" },
-	{ src: image3, alt: "Immagine 3", id: "img3" },
+	{
+		src: image1,
+		alt: "Immagine 1",
+		id: "img1",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image2,
+		alt: "Immagine 2",
+		id: "img2",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image3,
+		alt: "Immagine 3",
+		id: "img3",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image4,
+		alt: "Immagine 3",
+		id: "img4",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image5,
+		alt: "Immagine 3",
+		id: "img5",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image6,
+		alt: "Immagine 3",
+		id: "img6",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image7,
+		alt: "Immagine 3",
+		id: "img7",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image9,
+		alt: "Immagine 3",
+		id: "img8",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image9,
+		alt: "Immagine 3",
+		id: "img9",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image10,
+		alt: "Immagine 3",
+		id: "img10",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
+	{
+		src: image11,
+		alt: "Immagine 3",
+		id: "img11",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+	},
 ];
 ---
 
 <div class="gallery-container" id="gallery-container">
 	{
 		images.map(img => (
-			<div class="image-wrapper draggable" data-image-id={img.id}>
+			<div
+				class="image-wrapper draggable"
+				data-image-id={img.id}
+				data-info-text={img.info}
+			>
 				<Image
 					src={img.src}
 					alt={img.alt}
 					width={200}
 					height={150}
 					class="gallery-image"
+					draggable="false"
 				/>
+				<button class="info-button" data-info-id={img.id}>
+					?
+				</button>
+				<div class="info-text hidden" data-text-for={img.id}>
+					<div class="info-text-content">
+						<span class="highlight">{img.info}</span>
+					</div>
+				</div>
 			</div>
 		))
 	}
@@ -52,10 +135,77 @@ const images = [
 		height: 100%;
 		object-fit: cover;
 	}
+
+	.info-button {
+		position: absolute;
+		bottom: 10px;
+		right: 5px;
+		width: 15px;
+		height: 15px;
+		border-radius: 10%;
+		background-color: rgb(242, 255, 0);
+		color: rgb(255, 0, 0);
+		border: none;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 3;
+	}
+	.info-text {
+		position: absolute;
+		top: 0;
+		left: 0;
+		/* width: 100%;
+		height: 100%; */
+		padding: 10px;
+		color: rgb(255, 0, 0);
+		font-size: 12px;
+		z-index: 4;
+		transition: opacity 0.3s ease;
+	}
+
+	.info-text.hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.info-text.visible {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	.info-text-content {
+	}
+
+	.highlight {
+		background-color: yellow;
+	}
 </style>
 
 <script>
 	import { animate, createDraggable, stagger } from "animejs";
+
+	// Funzione per gestire il click sul bottone info
+	function handleInfoClick(event) {
+		event.stopPropagation(); // Previene il trigger del click sull'immagine
+		const button = event.currentTarget;
+		const imageId = button.getAttribute("data-info-id");
+		const wrapper = button.closest(".image-wrapper");
+		const infoText = wrapper.querySelector(".info-text");
+
+		if (infoText) {
+			if (infoText.classList.contains("hidden")) {
+				infoText.classList.remove("hidden");
+				infoText.classList.add("visible");
+			} else {
+				infoText.classList.remove("visible");
+				infoText.classList.add("hidden");
+			}
+		}
+	}
 
 	// Funzione per posizionare le immagini casualmente al centro
 	function randomizePositions(centerFactor = 0.6) {
@@ -93,16 +243,52 @@ const images = [
 		});
 	}
 
-	// Funzione per rendere le immagini draggable
-	function makeDraggable() {
+	// Funzione per gestire il click sulle immagini
+	function handleImageClick(event) {
+		const wrapper = event.currentTarget;
+		const imageId = wrapper.getAttribute("data-image-id");
+
+		// Aggiungi qui la logica per il click
+		console.log(`forzaNapoli: ${imageId}`);
+
+		// Esempio: animazione al click
+		animate(wrapper, {
+			scale: [1, 1.1, 1],
+			duration: 300,
+			easing: "easeOutElastic(1, .6)",
+		});
+	}
+
+	// Funzione per rendere le immagini draggable e cliccabili
+	function makeDraggableAndClickable() {
 		const container = document.getElementById("gallery-container");
 		if (!container) return;
 		const draggableElements = container.querySelectorAll(".draggable");
 
 		draggableElements.forEach(element => {
+			// Rendi draggable
 			createDraggable(element, {
 				container: ".gallery-container",
 			});
+
+			// Aggiungi event listener per il click sull'immagine
+			element.addEventListener("click", handleImageClick);
+
+			// Aggiungi event listener per il click sul bottone info
+			const infoButton = element.querySelector(".info-button");
+			if (infoButton) {
+				infoButton.addEventListener("click", handleInfoClick);
+			}
+
+			// Nascondi il testo info quando si clicca sull'area del testo
+			const infoText = element.querySelector(".info-text");
+			if (infoText) {
+				infoText.addEventListener("click", e => {
+					e.stopPropagation();
+					infoText.classList.remove("visible");
+					infoText.classList.add("hidden");
+				});
+			}
 		});
 	}
 
@@ -126,7 +312,7 @@ const images = [
 
 		// Aspetta che l'animazione di entrata finisca prima di abilitare il drag
 		setTimeout(() => {
-			makeDraggable();
+			makeDraggableAndClickable();
 		}, 800);
 
 		// Riposiziona al resize
