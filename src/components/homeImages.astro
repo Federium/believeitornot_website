@@ -55,46 +55,39 @@ const images = [
 </style>
 
 <script>
-	import { gsap } from "gsap";
-	import { Draggable } from "gsap/Draggable";
+	import { animate, createDraggable, createSpring, stagger } from "animejs";
 
-	// Registra il plugin Draggable
-	gsap.registerPlugin(Draggable);
-
-	function randomizePositions() {
+	// Funzione per posizionare le immagini casualmente al centro
+	function randomizePositions(centerFactor = 0.6) {
 		const container = document.getElementById("gallery-container");
-		if (!container) return;
 		const imageWrappers = container.querySelectorAll(".image-wrapper");
 
 		imageWrappers.forEach(wrapper => {
 			const containerWidth = container.offsetWidth;
 			const containerHeight = container.offsetHeight;
-			const wrapperWidth = (wrapper as HTMLElement).offsetWidth;
-			const wrapperHeight = (wrapper as HTMLElement).offsetHeight;
+			const wrapperWidth = wrapper.offsetWidth;
+			const wrapperHeight = wrapper.offsetHeight;
 
-			// Definisci l'area centrale (puoi modificare questi valori per regolare la zona)
-			const centerAreaWidth = containerWidth * 0.5; // 60% della larghezza del container
-			const centerAreaHeight = containerHeight * 0.5; // 60% dell'altezza del container
+			// Area centrale
+			const centerAreaWidth = containerWidth * centerFactor;
+			const centerAreaHeight = containerHeight * centerFactor;
 
-			// Calcola l'offset per centrare l'area
 			const offsetX = (containerWidth - centerAreaWidth) / 2;
 			const offsetY = (containerHeight - centerAreaHeight) / 2;
 
-			// Genera posizioni casuali nell'area centrale
-			const randomX = gsap.utils.random(
-				offsetX,
-				offsetX + centerAreaWidth - wrapperWidth
-			);
-			const randomY = gsap.utils.random(
-				offsetY,
-				offsetY + centerAreaHeight - wrapperHeight
-			);
+			const randomX =
+				Math.random() * (centerAreaWidth - wrapperWidth) + offsetX;
+			const randomY =
+				Math.random() * (centerAreaHeight - wrapperHeight) + offsetY;
+			const randomRotation = (Math.random() - 0.5) * 30; // -15 a +15 gradi
 
-			// Posiziona l'elemento
-			gsap.set(wrapper, {
-				x: randomX,
-				y: randomY,
-				rotation: gsap.utils.random(-15, 15),
+			// Posiziona con Anime.js
+			animate(wrapper, {
+				translateX: randomX,
+				translateY: randomY,
+				rotate: randomRotation,
+				duration: 0,
+				easing: "linear",
 			});
 		});
 	}
@@ -105,45 +98,64 @@ const images = [
 		if (!container) return;
 		const draggableElements = container.querySelectorAll(".draggable");
 
-		Draggable.create(draggableElements, {
-			bounds: container, // Limita il drag all'interno del container
-			inertia: true, // Aggiunge inerzia al movimento
-			type: "x,y", // Permette movimento su entrambi gli assi
-			edgeResistance: 1, // Resistenza ai bordi
-			dragClickables: false, // Previene il drag quando si clicca per altri scopi
+		draggableElements.forEach(element => {
+			createDraggable(element, {
+				// Aggiunge effetto spring quando rilasci
+				releaseEase: createSpring({
+					stiffness: 120,
+					damping: 8,
+				}),
+			});
+		});
+	}
 
-			// Callback functions
-			onDragStart: function () {
-				gsap.to(this.target, {
-					scale: 1.1,
-					duration: 0.2,
-					ease: "power2.out",
+	// Animazione di entrata delle immagini
+	function animateImagesIn() {
+		const imageWrappers = document.querySelectorAll(".image-wrapper");
+
+		animate(imageWrappers, {
+			scale: [0, 1],
+			opacity: [0, 1],
+			rotate: () => (Math.random() - 0.5) * 30,
+			duration: 800,
+			delay: stagger(100),
+			easing: "easeOutElastic(1, 0.3)",
+		});
+	}
+
+	// Effetto floating continuo
+	function addFloatingEffect() {
+		const imageWrappers = document.querySelectorAll(".image-wrapper");
+
+		imageWrappers.forEach(wrapper => {
+			const floatAnimation = () => {
+				animate(wrapper, {
+					translateY: `+=${(Math.random() - 0.5) * 40}`,
+					translateX: `+=${(Math.random() - 0.5) * 20}`,
+					rotate: `+=${(Math.random() - 0.5) * 10}`,
+					duration: Math.random() * 3000 + 3000, // 3-6 secondi
+					easing: "easeInOutSine",
+					complete: floatAnimation, // Ripete l'animazione
 				});
-			},
+			};
 
-			onDragEnd: function () {
-				gsap.to(this.target, {
-					scale: 1,
-					duration: 0.3,
-					ease: "elastic.out(1, 0.3)",
-				});
-			},
-
-			onClick: function (e) {
-				// Gestisci il click sull'immagine
-				const imageId = this.target.dataset.imageId;
-				console.log(`Immagine cliccata: ${imageId}`);
-				// Qui puoi aggiungere la logica per aprire un lightbox o navigare
-			},
+			// Inizia con un ritardo casuale
+			setTimeout(floatAnimation, Math.random() * 2000);
 		});
 	}
 
 	// Inizializza quando il DOM è caricato
 	document.addEventListener("DOMContentLoaded", () => {
 		randomizePositions();
-		makeDraggable();
+		animateImagesIn();
 
-		// Riposiziona casualmente al resize della finestra
+		// Aspetta che l'animazione di entrata finisca prima di abilitare il drag
+		setTimeout(() => {
+			makeDraggable();
+			addFloatingEffect();
+		}, 1000);
+
+		// Riposiziona al resize
 		window.addEventListener("resize", () => {
 			randomizePositions();
 		});
