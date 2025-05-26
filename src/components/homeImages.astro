@@ -55,18 +55,19 @@ const images = [
 </style>
 
 <script>
-	import { animate, createDraggable, createSpring, stagger } from "animejs";
+	import { animate, createDraggable, stagger } from "animejs";
 
 	// Funzione per posizionare le immagini casualmente al centro
 	function randomizePositions(centerFactor = 0.6) {
 		const container = document.getElementById("gallery-container");
+		if (!container) return;
 		const imageWrappers = container.querySelectorAll(".image-wrapper");
 
 		imageWrappers.forEach(wrapper => {
 			const containerWidth = container.offsetWidth;
 			const containerHeight = container.offsetHeight;
-			const wrapperWidth = wrapper.offsetWidth;
-			const wrapperHeight = wrapper.offsetHeight;
+			const wrapperWidth = (wrapper as HTMLElement).offsetWidth;
+			const wrapperHeight = (wrapper as HTMLElement).offsetHeight;
 
 			// Area centrale
 			const centerAreaWidth = containerWidth * centerFactor;
@@ -100,11 +101,7 @@ const images = [
 
 		draggableElements.forEach(element => {
 			createDraggable(element, {
-				// Aggiunge effetto spring quando rilasci
-				releaseEase: createSpring({
-					stiffness: 120,
-					damping: 8,
-				}),
+				container: ".gallery-container",
 			});
 		});
 	}
@@ -117,30 +114,8 @@ const images = [
 			scale: [0, 1],
 			opacity: [0, 1],
 			rotate: () => (Math.random() - 0.5) * 30,
-			duration: 800,
+			duration: 200,
 			delay: stagger(100),
-			easing: "easeOutElastic(1, 0.3)",
-		});
-	}
-
-	// Effetto floating continuo
-	function addFloatingEffect() {
-		const imageWrappers = document.querySelectorAll(".image-wrapper");
-
-		imageWrappers.forEach(wrapper => {
-			const floatAnimation = () => {
-				animate(wrapper, {
-					translateY: `+=${(Math.random() - 0.5) * 40}`,
-					translateX: `+=${(Math.random() - 0.5) * 20}`,
-					rotate: `+=${(Math.random() - 0.5) * 10}`,
-					duration: Math.random() * 3000 + 3000, // 3-6 secondi
-					easing: "easeInOutSine",
-					complete: floatAnimation, // Ripete l'animazione
-				});
-			};
-
-			// Inizia con un ritardo casuale
-			setTimeout(floatAnimation, Math.random() * 2000);
 		});
 	}
 
@@ -152,8 +127,7 @@ const images = [
 		// Aspetta che l'animazione di entrata finisca prima di abilitare il drag
 		setTimeout(() => {
 			makeDraggable();
-			addFloatingEffect();
-		}, 1000);
+		}, 800);
 
 		// Riposiziona al resize
 		window.addEventListener("resize", () => {
