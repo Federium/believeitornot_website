@@ -1,0 +1,151 @@
+---
+// ImageGallery.astro
+import { Image } from "astro:assets";
+// Importa le tue immagini
+import image1 from "../assets/image1.jpg";
+import image2 from "../assets/image2.jpg";
+import image3 from "../assets/image3.jpg";
+
+const images = [
+	{ src: image1, alt: "Immagine 1", id: "img1" },
+	{ src: image2, alt: "Immagine 2", id: "img2" },
+	{ src: image3, alt: "Immagine 3", id: "img3" },
+];
+---
+
+<div class="gallery-container" id="gallery-container">
+	{
+		images.map(img => (
+			<div class="image-wrapper draggable" data-image-id={img.id}>
+				<Image
+					src={img.src}
+					alt={img.alt}
+					width={200}
+					height={150}
+					class="gallery-image"
+				/>
+			</div>
+		))
+	}
+</div>
+
+<style>
+	.gallery-container {
+		position: absolute;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		z-index: 2;
+	}
+
+	.image-wrapper {
+		position: absolute;
+		cursor: grab;
+	}
+
+	.image-wrapper:active {
+		cursor: grabbing;
+	}
+
+	.gallery-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { Draggable } from "gsap/Draggable";
+
+	// Registra il plugin Draggable
+	gsap.registerPlugin(Draggable);
+
+	function randomizePositions() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = container.querySelectorAll(".image-wrapper");
+
+		imageWrappers.forEach(wrapper => {
+			const containerWidth = container.offsetWidth;
+			const containerHeight = container.offsetHeight;
+			const wrapperWidth = (wrapper as HTMLElement).offsetWidth;
+			const wrapperHeight = (wrapper as HTMLElement).offsetHeight;
+
+			// Definisci l'area centrale (puoi modificare questi valori per regolare la zona)
+			const centerAreaWidth = containerWidth * 0.5; // 60% della larghezza del container
+			const centerAreaHeight = containerHeight * 0.5; // 60% dell'altezza del container
+
+			// Calcola l'offset per centrare l'area
+			const offsetX = (containerWidth - centerAreaWidth) / 2;
+			const offsetY = (containerHeight - centerAreaHeight) / 2;
+
+			// Genera posizioni casuali nell'area centrale
+			const randomX = gsap.utils.random(
+				offsetX,
+				offsetX + centerAreaWidth - wrapperWidth
+			);
+			const randomY = gsap.utils.random(
+				offsetY,
+				offsetY + centerAreaHeight - wrapperHeight
+			);
+
+			// Posiziona l'elemento
+			gsap.set(wrapper, {
+				x: randomX,
+				y: randomY,
+				rotation: gsap.utils.random(-15, 15),
+			});
+		});
+	}
+
+	// Funzione per rendere le immagini draggable
+	function makeDraggable() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const draggableElements = container.querySelectorAll(".draggable");
+
+		Draggable.create(draggableElements, {
+			bounds: container, // Limita il drag all'interno del container
+			inertia: true, // Aggiunge inerzia al movimento
+			type: "x,y", // Permette movimento su entrambi gli assi
+			edgeResistance: 1, // Resistenza ai bordi
+			dragClickables: false, // Previene il drag quando si clicca per altri scopi
+
+			// Callback functions
+			onDragStart: function () {
+				gsap.to(this.target, {
+					scale: 1.1,
+					duration: 0.2,
+					ease: "power2.out",
+				});
+			},
+
+			onDragEnd: function () {
+				gsap.to(this.target, {
+					scale: 1,
+					duration: 0.3,
+					ease: "elastic.out(1, 0.3)",
+				});
+			},
+
+			onClick: function (e) {
+				// Gestisci il click sull'immagine
+				const imageId = this.target.dataset.imageId;
+				console.log(`Immagine cliccata: ${imageId}`);
+				// Qui puoi aggiungere la logica per aprire un lightbox o navigare
+			},
+		});
+	}
+
+	// Inizializza quando il DOM è caricato
+	document.addEventListener("DOMContentLoaded", () => {
+		randomizePositions();
+		makeDraggable();
+
+		// Riposiziona casualmente al resize della finestra
+		window.addEventListener("resize", () => {
+			randomizePositions();
+		});
+	});
+</script>

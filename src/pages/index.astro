@@ -1,19 +1,38 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+import HomeImages from "../components/homeImages.astro";
+
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<h1>BELIEVE IT OR NOT</h1>
-	<h4>Speculating on (un)real conspiracies</h4>
+	<HomeImages />
 
-	<p>Dotdotdot - Via Tertulliano 68, Milano</p>
-	<p>14 Giugno 2025</p>
+	<div class="text-container">
+		<h1>BELIEVE IT OR NOT</h1>
+		<h4>Speculating on (un)real conspiracies</h4>
 
-	<p>Ingresso gratuito <br />
-	<a href="https://www.instagram.com/antidisciplinarylab">@antidisciplinarylab</a></p>
+		<p>Dotdotdot - Via Tertulliano 68, Milano</p>
+		<p>14 Giugno 2025</p>
 
-	<a href="https://noncielodicono.freeforums.net">Forum</a>
+		<p>
+			Ingresso gratuito <br />
+			<a href="https://www.instagram.com/antidisciplinarylab"
+				>@antidisciplinarylab</a
+			>
+		</p>
+
+		<a href="https://noncielodicono.freeforums.net">Forum</a>
+	</div>
 </Layout>
+
+<style>
+	.text-container {
+		width: 100vw;
+		height: 100vh;
+		position: absolute;
+		top: 0;
+	}
+</style>
