@@ -1,38 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
 import HomeImages from "../components/homeImages.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import "../style/global.css";
+import titleSvg from "../assets/title/title.svg";
 ---
 
 <Layout>
 	<HomeImages />
-
-	<div class="text-container">
-		<h1>BELIEVE IT OR NOT</h1>
-		<h4>Speculating on (un)real conspiracies</h4>
-
-		<p>Dotdotdot - Via Tertulliano 68, Milano</p>
-		<p>14 Giugno 2025</p>
-
-		<p>
-			Ingresso gratuito <br />
-			<a href="https://www.instagram.com/antidisciplinarylab"
-				>@antidisciplinarylab</a
-			>
-		</p>
-
-		<a href="https://noncielodicono.freeforums.net">Forum</a>
+	<div class="title-container">
+		<img src={titleSvg.src} alt="Title" class="title-svg" />
 	</div>
 </Layout>
 
 <style>
-	.text-container {
-		width: 100vw;
+	.title-container {
 		height: 100vh;
-		position: absolute;
-		top: 0;
+		width: 100vw;
+		overflow: hidden;
+		position: relative;
+		padding-left: 1rem;
+	}
+
+	.title-svg {
+		width: 50vw;
+		height: 100vh;
 	}
 </style>
