@@ -9,8 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/svelte": "^7.1.0",
     "animejs": "^4.0.2",
     "astro": "^5.8.0",
     "gsap": "^3.13.0"
+  },
+  "devDependencies": {
+    "vite-imagetools": "^7.1.0"
   }
 }
