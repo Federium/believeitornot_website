@@ -2,13 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import HomeImages from "../components/homeImages.astro";
 import "../style/global.css";
-import titleSvg from "../assets/title/title.svg";
+import Logo from "../assets/title/title.svg";
 ---
 
 <Layout>
 	<HomeImages />
 	<div class="title-container">
-		<img src={titleSvg.src} alt="Title" class="title-svg" />
+		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
+		 <Logo alt="Title" class="title-svg" preserveAspectRatio="none"
+ />
 	</div>
 </Layout>
 
@@ -17,12 +19,14 @@ import titleSvg from "../assets/title/title.svg";
 		height: 100vh;
 		width: 100vw;
 		overflow: hidden;
-		position: relative;
+		position: absolute;
+		top: 0;
 		padding-left: 1rem;
 	}
 
 	.title-svg {
 		width: 50vw;
-		height: 100vh;
+		height: 100%;
+		
 	}
 </style>
