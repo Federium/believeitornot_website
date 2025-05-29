@@ -6,15 +6,44 @@ import Logo from "../assets/title/title.svg";
 ---
 
 <Layout>
+	<div class="crt-overlay"></div>
 	<HomeImages />
 	<div class="title-container">
 		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
-		 <Logo alt="Title" class="title-svg" preserveAspectRatio="none"
- />
+		<Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
 	</div>
 </Layout>
 
 <style>
+	.crt-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 9999;
+		background: repeating-linear-gradient(
+			to bottom,
+			rgba(0, 0, 0, 0.05),
+			rgba(0, 0, 0, 0.05) 2px,
+			transparent 3px,
+			transparent 4px
+		);
+		mix-blend-mode: multiply;
+		animation: flicker 0.1s infinite;
+	}
+
+	@keyframes flicker {
+		0%,
+		100% {
+			opacity: 0.95;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
 	.title-container {
 		height: 100vh;
 		width: 100vw;
@@ -27,6 +56,5 @@ import Logo from "../assets/title/title.svg";
 	.title-svg {
 		width: 50vw;
 		height: 100%;
-		
 	}
 </style>
