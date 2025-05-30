@@ -105,7 +105,7 @@
                             color.rgb += noise * 0.05;
                             
                             // Aggiusta la luminosità generale
-                            color.rgb *= 10.0;
+                            color.rgb *= 8.0;
                             
                             // Saturazione per effetto vintage
                             float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
@@ -175,6 +175,6 @@
 		height: 100%;
 		z-index: 10;
 		pointer-events: none;
-		mix-blend-mode: plus-darker;
+		mix-blend-mode: multiply;
 	}
 </style>
