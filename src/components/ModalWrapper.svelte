@@ -11,17 +11,16 @@
   let openModals = [];
  
 
-  function openModal(image) {
+  function openModal(entry) {
     console.log(`Opening modal for image: ${image.src}`);
-    modalContent = image;
-    modalOpen = true;
+    let openModals = [];
+
   }
 
-  function closeModal() {
-    modalOpen = false;
-    modalContent = null;
+  function closeModal(slug) {
+    openModals = openModals.filter(m => m.slug !== slug);
   }
-
+  
   function handleInfoClick(event, image) {
     event.stopPropagation();
     openModal(image);
