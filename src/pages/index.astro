@@ -1,18 +1,44 @@
 ---
+
 import Layout from "../layouts/Layout.astro";
 import HomeImages from "../components/homeImages.astro";
 import Effect from "../components/effect.astro";
 import "../style/global.css";
 import Logo from "../assets/title/title.svg";
+
+import { getCollection } from "astro:content";
+const projects = await getCollection("projects");
+
+import ProjectModal from "../components/ProjectModal.svelte";
+let modalComponent;
+import ProjectCard from "../components/Card.astro";
+
 ---
 
 <Layout>
 	<Effect />
+
+ <div class="crt-overlay"></div>
 	<HomeImages />
 	<div class="title-container">
 		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
 		<Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
 	</div>
+	<!-- <HomeImages /> -->
+{projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+
+
+  <ProjectModal client:load />
+  <script>
+    import '../scripts/projectCards.js';
+  </script>
+
+	<!-- <div class="title-container"> -->
+		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
+		 <!-- <Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
+	</div> -->
 </Layout>
 
 <style>
@@ -30,3 +56,16 @@ import Logo from "../assets/title/title.svg";
 		height: 100%;
 	}
 </style>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        const i = Number(card.getAttribute('data-index'));
+        if (modalComponent && modalComponent.openModal) {
+          modalComponent.openModal(i);
+        }
+      });
+    });
+  });
+</script>
