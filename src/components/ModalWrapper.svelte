@@ -2,32 +2,56 @@
 
   import { onMount } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
+  import Modal from './Modal.svelte'; // o il path corretto
 
   export let images = [];
   // Stato per il modale
-  let modalOpen = false;
-  let modalContent = null;
+  // let modalOpen = false;
+  // let modalContent = null;
   export let data;
   let openModals = [];
  
 
-  function openModal(entry) {
-    console.log(`Opening modal for image: ${image.src}`);
-    let openModals = [];
+  // function openModal(entry) {
+  //   openModals = [...openModals, entry];
+  // }
 
+ function openModal(entry) {
+  console.log("Opening modal for entry:", entry);
+  console.log(data);
+
+  // Se è una stringa, assumiamo che sia uno slug
+  if (typeof entry === 'string') {
+    const item = data.find(d => d.data.slug === entry);
+    if (item) {
+      console.log("Found item for slug:", entry, item);
+      if (!openModals.find(m => m.data.slug === entry)) {
+        openModals = [...openModals, item];
+      }
+    }
+  } else {
+    if (!openModals.find(m => m.data.slug === entry.data.slug)) {
+      openModals = [...openModals, entry];
+    }
   }
 
+  console.log("Current open modals:", openModals);
+}
+
   function closeModal(slug) {
-    openModals = openModals.filter(m => m.slug !== slug);
+    console.log("Closing modal with slug:", slug);
+    openModals = openModals.filter(m => m.data.slug !== slug);
   }
   
   function handleInfoClick(event, image) {
+    console.log("Info button clicked for image:", image);
     event.stopPropagation();
     openModal(image);
   }
 
-  function handleImageClick(image) {
-    openModal(image);
+  function handleImageClick(slug) {
+    console.log("Image clicked with slug:", slug);
+    openModal(slug);
   }
 
   // Posizionamento casuale immagini
@@ -107,9 +131,9 @@
   }
 
   onMount(() => {
+
     randomizePositions();
     animateImagesIn();
-
     setTimeout(() => {
       makeDraggableAndClickable();
     }, 800);
@@ -126,11 +150,11 @@
     <div
       class="image-wrapper draggable"
 
-      on:click={() => handleImageClick(img)}
+      on:click={() => handleImageClick(img.slug)}
     >
       <enhanced:img
         src={img.src}
-        alt={img.alt}
+        alt={img.slug}
         width="300"
         class="gallery-image"
         draggable="false"
@@ -141,17 +165,12 @@
     </div>
   {/each}
 </div>
+{#each openModals as modal (modal.data.slug)}
+  <Modal data={modal} onClose={() => closeModal(modal.data.slug)} />
+{/each}
 
-{#if modalOpen}
-  <div class="modal-backdrop" on:click={closeModal}>
-    <div class="modal-content" on:click|stopPropagation>
-      <h3>{modalContent.alt}</h3>
-      <img src={modalContent.src} alt={modalContent.alt} width="400" />
-      <p>{modalContent.info}</p>
-      <button on:click={closeModal}>Chiudi</button>
-    </div>
-  </div>
-{/if}
+
+
 
 <style>
   .gallery-container {

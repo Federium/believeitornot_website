@@ -1,41 +1,68 @@
 <script>
-  export let entry;
-  export let onClose;
+  import {  onMount } from 'svelte';
+import MarkdownContent from '../content/01_nwo/01_nwo.mdx'
 
-  // Astro fornisce `entry.Body`, che è un componente Svelte pronto
-  const Body = entry.Body;
+
+  // export let data;
+  const { data, onClose } = $props(); 
+
+  function handleClose() {
+    onClose?.(); // chiama la funzione se esiste
+  }
+
+
+console.log("dato passato al modale",data.body);
+  const Body = data.body;
+  console.log(data.title);
+
+
+
+  onMount(() => {
+    // Per ricevere eventi da tastiera (Escape)
+    const modal = document.getElementById(`modal-${data.slug}`);
+    modal?.focus();
+  });
 </script>
 
-<div class="backdrop" on:click={onClose}>
-  <div class="modal" 
-      role="dialog" 
-      on:click|stopPropagation 
-      on:keydown={(e) => e.key === 'Escape' && onClose()}
-      tabindex="0">
-      <button class="close" on:click={onClose}>×</button>
-      <h2>{entry.data.title}</h2>
-      <Body />
-    </div>
+<div class="backdrop">
+  <div
+    id={"modal-" + data.slug}
+    class="modal draggable"
+    role="dialog"
+    tabindex="0"
+    on:click|stopPropagation
+    on:keydown={(e) => e.key === 'Escape' && handleClose()}
+  >
+    <button class="close" on:click={handleClose}>×</button>
+    <h2>{data.data.title}</h2>
+      <MarkdownContent />
+
+  </div>
 </div>
 
 <style>
   .backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 10;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
   }
 
   .modal {
     background: white;
     padding: 1.5rem;
-    margin: 5% auto;
     width: 80%;
     max-width: 700px;
     border-radius: 10px;
     position: relative;
     overflow-y: auto;
     max-height: 90vh;
+    outline: none;
+        pointer-events: visible;
+
   }
 
   .close {

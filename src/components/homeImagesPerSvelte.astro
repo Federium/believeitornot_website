@@ -2,6 +2,10 @@
 // ImageGallery.astro
 import { Image } from "astro:assets";
 import ModalWrapper from "./ModalWrapper.svelte";
+import { getCollection } from 'astro:content';
+
+const progetti = await getCollection('projects'); 
+
 
 // Importa le tue immagini
 import image1 from "../assets/image1.jpg?enhanced";
@@ -16,16 +20,13 @@ import image9 from "../assets/image9.png?enhanced";
 import image10 from "../assets/image10.png?enhanced";
 import image11 from "../assets/image11.png?enhanced";
 
-import { getCollection } from 'astro:content';
 
-const progetti = await getCollection('projects'); // prende tutti gli MDX
-
-const images = [
+const imagesWithoutSlug = [
 	{
 		src: image1,
 		alt: "Immagine 1",
 		id: "img1",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
+		info: "Informazioni su Immagine 1 per la mostra Believe it or not"
 	},
 	{
 		src: image2,
@@ -88,6 +89,12 @@ const images = [
 		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 ];
+
+// Supponendo che `progetti` sia definito e abbia lo stesso ordine
+const images = imagesWithoutSlug.map((img, index) => ({
+	...img,
+	slug: progetti[index]?.data?.slug || ""
+}));
 ---
 
 <ModalWrapper  client:load {images} data={progetti}/>
