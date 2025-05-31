@@ -16,6 +16,10 @@ import image9 from "../assets/image9.png?enhanced";
 import image10 from "../assets/image10.png?enhanced";
 import image11 from "../assets/image11.png?enhanced";
 
+import { getCollection } from 'astro:content';
+
+const progetti = await getCollection('projects'); // prende tutti gli MDX
+
 const images = [
 	{
 		src: image1,
@@ -86,4 +90,4 @@ const images = [
 ];
 ---
 
-<ModalWrapper  client:load {images} />
+<ModalWrapper  client:load {images} data={progetti}/>

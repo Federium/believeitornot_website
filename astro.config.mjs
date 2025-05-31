@@ -10,6 +10,6 @@ import { enhancedImages } from '@sveltejs/enhanced-img';
 export default defineConfig({
     integrations: [svelte(), mdx()],
       vite: {
-        plugins: [imagetools(),enhancedImages()]
+        plugins: [enhancedImages()]
     }
 });

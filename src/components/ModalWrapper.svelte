@@ -1,16 +1,18 @@
 <script>
-import image2 from "../assets/image2.jpg?enhanced";
 
   import { onMount } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
 
   export let images = [];
-    console.log(`Images received: ${images.length} items`);
   // Stato per il modale
   let modalOpen = false;
   let modalContent = null;
+  export let data;
+  let openModals = [];
+ 
 
   function openModal(image) {
+    console.log(`Opening modal for image: ${image.src}`);
     modalContent = image;
     modalOpen = true;
   }
@@ -30,7 +32,7 @@ import image2 from "../assets/image2.jpg?enhanced";
   }
 
   // Posizionamento casuale immagini
-  export function randomizePositions() {
+  function randomizePositions() {
     console.log("Randomizing positions");
     const container = document.getElementById("gallery-container");
     if (!container) return;
@@ -122,15 +124,15 @@ import image2 from "../assets/image2.jpg?enhanced";
 
 <div class="gallery-container" id="gallery-container">
   {#each images as img}
-  console.log(`Rendering image: ${img.id}`);
     <div
       class="image-wrapper draggable"
 
       on:click={() => handleImageClick(img)}
     >
-      <img
+      <enhanced:img
         src={img.src}
         alt={img.alt}
+        width="300"
         class="gallery-image"
         draggable="false"
       />
@@ -168,8 +170,8 @@ import image2 from "../assets/image2.jpg?enhanced";
     cursor: grabbing;
   }
   .gallery-image {
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     object-fit: cover;
   }
   .info-button {
