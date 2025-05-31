@@ -6,11 +6,13 @@ team:
   - Anna Rossi
   - Luca Bianchi
 images:
-  - "/img/cover.png"
-  - "/img/img1.png"
-  - "/img/img2.png"
+  - "./img/cover.png"
+  - "./img/img1.png"
+  - "./img/img2.png"
 ---
 
+import EnhancedImage from 'src/components/EnhancedImage.svelte';
+import image from "./img/cover.png?enhanced";
 
 ## Scenario
 
@@ -19,11 +21,11 @@ Secondo i suoi sostenitori, esisterebbe una razza di rettili umanoidi, provenien
 La teoria è stata resa popolare da David Icke, ex conduttore televisivo britannico, che ha individuato presunti rettiliani tra celebri leader mondiali e membri di famiglie reali. Pur priva di prove concrete, l’ipotesi affascina per il suo mix di fantascienza, mitologia e diffidenza verso le élite. Per molti, però, è solo un’allegoria del potere disumano e alienante che domina il mondo moderno.
 
 
-
 ## Progetto
 Il complotto dei rettiliani è una delle teorie cospirazioniste più affascinanti e discusse dell’epoca contemporanea.
 Secondo i suoi sostenitori, esisterebbe una razza di rettili umanoidi, provenienti da un altro pianeta o da dimensioni parallele, che da millenni controllerebbe la Terra infiltrandosi ai vertici del potere politico, economico e culturale. Questi esseri, capaci di mutare forma, sarebbero responsabili di manipolare eventi globali, guerre, crisi economiche e l'informazione, con l’obiettivo di mantenere l’umanità in uno stato di sottomissione e ignoranza.
 La teoria è stata resa popolare da David Icke, ex conduttore televisivo britannico, che ha individuato presunti rettiliani tra celebri leader mondiali e membri di famiglie reali. Pur priva di prove concrete, l’ipotesi affascina per il suo mix di fantascienza, mitologia e diffidenza verso le élite. Per molti, però, è solo un’allegoria del potere disumano e alienante che domina il mondo moderno.
 
+<img src={image} alt="Cover" />
 
 

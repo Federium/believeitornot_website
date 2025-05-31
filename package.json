@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@sveltejs/enhanced-img": "^0.6.0",
+    "mdsvex": "^0.12.6",
     "vite-imagetools": "^7.1.0"
   }
 }

@@ -9,6 +9,8 @@ const projects = defineCollection({
     whatif: z.string(),
     slug: z.string(), 
     team: z.array(z.string()),
+    images: z.array(z.string()),    // <-- aggiungi questa riga
+
   }),
 });
 

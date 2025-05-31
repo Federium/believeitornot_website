@@ -1,17 +1,23 @@
 <script>
   import {  onMount } from 'svelte';
-import MarkdownContent from '../content/01_nwo/01_nwo.mdx'
+  // import immagine from '../assets/image2.jpg?enhanced'
+  // import {images} from '../content/01_nwo/01_nwo.mdx'
 
 
   // export let data;
   const { data, onClose } = $props(); 
 
+  import { mapImages } from '../stores/mapImages.js';
+console.log("mapImages", mapImages);
+  let images = mapImages[data.data.slug];
+  console.log("immagini mappate", images);
+  
   function handleClose() {
     onClose?.(); // chiama la funzione se esiste
   }
 
 
-console.log("dato passato al modale",data.body);
+console.log("dato passato al modale",data.data);
   const Body = data.body;
   console.log(data.title);
 
@@ -35,8 +41,15 @@ console.log("dato passato al modale",data.body);
   >
     <button class="close" on:click={handleClose}>×</button>
     <h2>{data.data.title}</h2>
-      <MarkdownContent />
-
+{data.body}
+<!-- {#if data.data.data.images}
+  <div class="modal-images">
+    {#each data.images as img} -->
+{#each images as image, index}
+  <enhanced:img src={image} alt="Immagine del progetto {index + 1}" />
+{/each}    <!-- {/each}
+  </div>
+{/if} -->
   </div>
 </div>
 
