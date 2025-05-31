@@ -130,8 +130,8 @@ const images = [
 		cursor: grabbing;
 	}
 	.image-wrapper:hover {
-	z-index: 999;
-}
+		z-index: 999;
+	}
 
 	.gallery-image {
 		width: 100%;
@@ -192,7 +192,10 @@ const images = [
 	import { animate, createDraggable, stagger } from "animejs";
 
 	// Funzione per gestire il click sul bottone info
-	function handleInfoClick(event) {
+	function handleInfoClick(event: {
+		stopPropagation: () => void;
+		currentTarget: any;
+	}) {
 		event.stopPropagation(); // Previene il trigger del click sull'immagine
 		const button = event.currentTarget;
 		const imageId = button.getAttribute("data-info-id");
@@ -211,68 +214,69 @@ const images = [
 	}
 
 	// Funzione per posizionare le immagini casualmente al centro
-function randomizePositions() {
-	const container = document.getElementById("gallery-container");
-	if (!container) return;
-	const imageWrappers = Array.from(container.querySelectorAll(".image-wrapper"));
+	function randomizePositions() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = Array.from(
+			container.querySelectorAll(".image-wrapper")
+		);
 
-	if (imageWrappers.length === 0) return;
+		if (imageWrappers.length === 0) return;
 
-	const containerWidth = container.offsetWidth;
-	const containerHeight = container.offsetHeight;
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
 
-	const wrapperWidth = imageWrappers[0].offsetWidth;
-	const wrapperHeight = imageWrappers[0].offsetHeight;
-	const verticalSpacing = wrapperHeight * 1.2;
+		const wrapperWidth = (imageWrappers[0] as HTMLElement).offsetWidth;
+		const wrapperHeight = (imageWrappers[0] as HTMLElement).offsetHeight;
+		const verticalSpacing = wrapperHeight * 1.2;
 
-	// Struttura della griglia: numero di elementi per riga
-	const gridStructure = [4, 3, 4];
-	const totalRows = gridStructure.length;
-	const totalGridHeight = totalRows * verticalSpacing;
-	const baseOffsetY = (containerHeight - totalGridHeight) / 2;
+		// Struttura della griglia: numero di elementi per riga
+		const gridStructure = [4, 3, 4];
+		const totalRows = gridStructure.length;
+		const totalGridHeight = totalRows * verticalSpacing;
+		const baseOffsetY = (containerHeight - totalGridHeight) / 2;
 
-	let index = 0;
-	for (let row = 0; row < gridStructure.length; row++) {
-		const itemsInRow = gridStructure[row];
-		const rowY = baseOffsetY + row * verticalSpacing;
+		let index = 0;
+		for (let row = 0; row < gridStructure.length; row++) {
+			const itemsInRow = gridStructure[row];
+			const rowY = baseOffsetY + row * verticalSpacing;
 
-		// Calcola larghezza totale della riga
-		const totalRowWidth = itemsInRow * wrapperWidth;
-		const baseOffsetX = (containerWidth - totalRowWidth) / 2;
+			// Calcola larghezza totale della riga
+			const totalRowWidth = itemsInRow * wrapperWidth;
+			const baseOffsetX = (containerWidth - totalRowWidth) / 2;
 
-		for (let col = 0; col < itemsInRow; col++) {
-			if (index >= imageWrappers.length) break;
+			for (let col = 0; col < itemsInRow; col++) {
+				if (index >= imageWrappers.length) break;
 
-			const wrapper = imageWrappers[index];
-			const baseX = baseOffsetX + col * wrapperWidth;
-			const baseY = rowY;
+				const wrapper = imageWrappers[index];
+				const baseX = baseOffsetX + col * wrapperWidth;
+				const baseY = rowY;
 
-			// Randomizzazione locale ±50% (cioè jitter = 1.0)
-			const jitterX = (Math.random() - 0.3) * wrapperWidth;
-			const jitterY = (Math.random() - 0.3) * wrapperHeight;
-			const randomRotation = (Math.random() - 0.5) * 30;
+				// Randomizzazione locale ±50% (cioè jitter = 1.0)
+				const jitterX = (Math.random() - 0.3) * wrapperWidth;
+				const jitterY = (Math.random() - 0.3) * wrapperHeight;
+				const randomRotation = (Math.random() - 0.5) * 30;
 
-			const finalX = baseX + jitterX;
-			const finalY = baseY + jitterY;
+				const finalX = baseX + jitterX;
+				const finalY = baseY + jitterY;
 
-			animate(wrapper, {
-				translateX: finalX,
-				translateY: finalY,
-				// rotate: randomRotation,
-				duration: 0,
-				easing: "linear",
-			});
+				animate(wrapper, {
+					translateX: finalX,
+					translateY: finalY,
+					// rotate: randomRotation,
+					duration: 0,
+					easing: "linear",
+				});
 
-			index++;
+				index++;
+			}
 		}
 	}
-}
-
-
 
 	// Funzione per gestire il click sulle immagini
-	function handleImageClick(event) {
-		const wrapper = event.currentTarget;
+	function handleImageClick(event: Event) {
+		const wrapper = event.currentTarget as HTMLElement | null;
+		if (!wrapper) return;
 		const imageId = wrapper.getAttribute("data-image-id");
 
 		// Aggiungi qui la logica per il click
@@ -297,11 +301,11 @@ function randomizePositions() {
 			createDraggable(element, {
 				container: ".gallery-container",
 				onDrag: () => {
-					element.style.zIndex = "999"
+					(element as HTMLElement).style.zIndex = "999";
 				},
 				onRelease: () => {
-					element.style.zIndex = ""; // oppure "auto" o un valore basso
-	}
+					(element as HTMLElement).style.zIndex = ""; // oppure "auto" o un valore basso
+				},
 			});
 
 			// Aggiungi event listener per il click sull'immagine

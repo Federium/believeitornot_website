@@ -2,31 +2,23 @@
 import Layout from "../layouts/Layout.astro";
 import HomeImages from "../components/homeImages.astro";
 import Effect from "../components/effect.astro";
-import "../style/global.css";
-import Logo from "../assets/title/title.svg";
+import Contents from "../components/homeText.astro";
 ---
 
 <Layout>
 	<Effect />
-	<HomeImages />
-	<div class="title-container">
-		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
-		<Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
+	<div id="delayed-content" style="opacity: 0;">
+		<HomeImages />
+		<Contents />
 	</div>
 </Layout>
 
-<style>
-	.title-container {
-		height: 100vh;
-		width: 100vw;
-		overflow: hidden;
-		position: absolute;
-		top: 0;
-		padding-left: 1rem;
-	}
-
-	.title-svg {
-		width: 50vw;
-		height: 100%;
-	}
-</style>
+<script>
+	// Mostra i componenti dopo 2 secondi con fade-in
+	setTimeout(() => {
+		const delayedContent = document.getElementById("delayed-content");
+		if (delayedContent) {
+			delayedContent.style.opacity = "1";
+		}
+	}, 100); // 2000ms = 2 secondi
+</script>
