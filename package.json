@@ -9,10 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@types/p5": "^1.7.6",
+    "animejs": "^4.0.2",
+    "astro": "^5.8.0",
+    "p5": "^2.0.2"
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/svelte": "^7.1.0",
     "animejs": "^4.0.2",
-    "astro": "^5.8.0",
     "gsap": "^3.13.0"
   },
   "devDependencies": {
