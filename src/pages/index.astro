@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HomeImages from "../components/homeImages.astro";
+import Effect from "../components/effect.astro";
 import "../style/global.css";
 import Logo from "../assets/title/title.svg";
 ---
 
 <Layout>
-	<div class="crt-overlay"></div>
+	<Effect />
 	<HomeImages />
 	<div class="title-container">
 		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
@@ -15,35 +16,6 @@ import Logo from "../assets/title/title.svg";
 </Layout>
 
 <style>
-	.crt-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 9999;
-		background: repeating-linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0.05),
-			rgba(0, 0, 0, 0.05) 2px,
-			transparent 3px,
-			transparent 4px
-		);
-		mix-blend-mode: multiply;
-		animation: flicker 0.1s infinite;
-	}
-
-	@keyframes flicker {
-		0%,
-		100% {
-			opacity: 0.95;
-		}
-		50% {
-			opacity: 1;
-		}
-	}
-
 	.title-container {
 		height: 100vh;
 		width: 100vw;

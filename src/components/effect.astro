@@ -1,0 +1,180 @@
+---
+
+---
+
+<div id="tv-container"></div>
+
+<script client:load>
+	let p5Instance;
+
+	async function initP5() {
+		try {
+			// Import dinamico di p5 con URL completo per Astro
+			const p5Module = await import("https://cdn.skypack.dev/p5@1.7.0");
+			const p5 = p5Module.default;
+
+			const sketch = p => {
+				let tvShader;
+				let pg; // Graphics buffer per la texture
+
+				p.setup = () => {
+					p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
+
+					// Crea un buffer grafico per il contenuto di base
+					pg = p.createGraphics(window.innerWidth, window.innerHeight);
+
+					// Shader per effetto TV vintage
+					tvShader = p.createShader(
+						// Vertex shader
+						`
+                        attribute vec3 aPosition;
+                        attribute vec2 aTexCoord;
+                        varying vec2 vTexCoord;
+                        
+                        void main() {
+                            vTexCoord = aTexCoord;
+                            vec4 positionVec4 = vec4(aPosition, 1.0);
+                            positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
+                            gl_Position = positionVec4;
+                        }
+                        `,
+						// Fragment shader
+						`
+                        #ifdef GL_ES
+                        precision mediump float;
+                        #endif
+                        
+                        varying vec2 vTexCoord;
+                        uniform sampler2D uTexture;
+                        uniform float uTime;
+                        uniform vec2 uResolution;
+                        
+                        void main() {
+                            vec2 uv = vTexCoord;
+                            
+                            // Riduzione risoluzione (pixelation)
+                            float pixelSize = 4.0;
+                            vec2 pixelatedUV = floor(uv * uResolution / pixelSize) * pixelSize / uResolution;
+                            
+                            // Ottieni il colore base
+                            vec4 color = texture2D(uTexture, pixelatedUV);
+                            
+                            // Se non c'è texture, usa il contenuto della pagina
+                            if (color.a < 0.1) {
+                                color = vec4(0.1, 0.1, 0.15, 1.0);
+                            }
+                            
+                            // Effetto RGB split
+                            float offset = 0.003;
+                            color.r = texture2D(uTexture, pixelatedUV + vec2(offset, 0.0)).r;
+                            color.g = texture2D(uTexture, pixelatedUV).g;
+                            color.b = texture2D(uTexture, pixelatedUV - vec2(offset, 0.0)).b;
+                            
+                            // Pixel RGB pattern (simula subpixel RGB)
+                            vec2 pixelPos = mod(uv * uResolution, pixelSize);
+                            float subPixel = pixelPos.x / pixelSize;
+                            
+                            vec3 rgbMask = vec3(0.0);
+                            if (subPixel < 0.33) {
+                                rgbMask.r = 1.0; // Rosso
+                            } else if (subPixel < 0.66) {
+                                rgbMask.g = 1.0; // Verde
+                            } else {
+                                rgbMask.b = 1.0; // Blu
+                            }
+                            
+                            // Applica il pattern RGB
+                            color.rgb *= rgbMask + 0.3; // +0.3 per non perdere completamente gli altri colori
+                            
+                            // Scanlines sottili
+                            float scanline = sin(uv.y * uResolution.y * 1.5) * 0.02;
+                            color.rgb -= scanline;
+                            
+                            // Flickering
+                            float flicker = 0.98 + 0.02 * sin(uTime * 20.0 + sin(uTime * 13.0));
+                            color.rgb *= flicker;
+                            
+                            // Vignette
+                            vec2 center = vec2(0.5, 0.5);
+                            float dist = distance(uv, center);
+                            float vignette = 1.0 - smoothstep(0.3, 1.2, dist);
+                            color.rgb *= vignette;
+                            
+                            // Noise
+                            float noise = fract(sin(dot(uv + uTime * 0.002, vec2(12.9898, 78.233))) * 43758.5453);
+                            color.rgb += noise * 0.05;
+                            
+                            // Aggiusta la luminosità generale
+                            color.rgb *= 8.0;
+                            
+                            // Saturazione per effetto vintage
+                            float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+                            color.rgb = mix(vec3(gray), color.rgb, 0.8);
+                            
+                            gl_FragColor = color;
+                        }
+                        `
+					);
+				};
+
+				p.draw = () => {
+					// Disegna il contenuto di base nel buffer
+					pg.background(20, 25, 35);
+
+					// Applica lo shader
+					if (tvShader) {
+						p.shader(tvShader);
+						tvShader.setUniform("uTexture", pg);
+						tvShader.setUniform("uTime", p.millis() * 0.001);
+						tvShader.setUniform("uResolution", [p.width, p.height]);
+
+						// Disegna un rettangolo che copre tutto lo schermo
+						p.noStroke();
+						p.rect(-p.width / 2, -p.height / 2, p.width, p.height);
+					}
+				};
+
+				p.windowResized = () => {
+					p.resizeCanvas(window.innerWidth, window.innerHeight);
+					if (pg) {
+						pg = p.createGraphics(window.innerWidth, window.innerHeight);
+					}
+				};
+			};
+
+			// Inizializza p5
+			const container = document.getElementById("tv-container");
+			if (container && !p5Instance) {
+				p5Instance = new p5(sketch, container);
+			}
+		} catch (error) {
+			console.error("Errore nel caricamento di p5.js:", error);
+		}
+	}
+
+	// Avvia quando il DOM è pronto
+	if (typeof window !== "undefined") {
+		// Usa un timeout per assicurarsi che il DOM sia completamente caricato
+		setTimeout(initP5, 100);
+	}
+
+	// Cleanup quando il componente viene smontato
+	window.addEventListener("beforeunload", () => {
+		if (p5Instance) {
+			p5Instance.remove();
+		}
+	});
+</script>
+
+<style>
+	#tv-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
+		pointer-events: none;
+		mix-blend-mode: multiply;
+	}
+</style>

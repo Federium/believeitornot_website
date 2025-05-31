@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/impact');
+
 html, body {
   margin: 0;
   padding: 0;
@@ -7,8 +9,6 @@ html, body {
   background-color: rgb(22, 22, 22);
   overflow: hidden;
 }
-
-@import url('https://fonts.cdnfonts.com/css/impact');
 
 h1 {
   margin: 0;
