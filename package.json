@@ -9,16 +9,18 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/svelte": "^7.1.0",
     "@types/p5": "^1.7.6",
     "animejs": "^4.0.2",
     "astro": "^5.8.0",
-    "p5": "^2.0.2"
-    "@astrojs/mdx": "^4.3.0",
-    "@astrojs/svelte": "^7.1.0",
-    "animejs": "^4.0.2",
-    "gsap": "^3.13.0"
+    "gsap": "^3.13.0",
+    "p5": "^2.0.2",
+    "svelte": "^5.33.10",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@sveltejs/enhanced-img": "^0.6.0",
     "vite-imagetools": "^7.1.0"
   }
 }
