@@ -96,6 +96,7 @@ const images = imagesWithoutSlug.map((img, index) => ({
 	...img,
 	slug: progetti[index]?.data?.slug || ""
 }));
+
 ---
 
 <ModalWrapper  client:load {images} data={progetti}/>

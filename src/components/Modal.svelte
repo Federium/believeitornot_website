@@ -1,31 +1,45 @@
 <script>
   import {  onMount } from 'svelte';
-  // import immagine from '../assets/image2.jpg?enhanced'
-  // import {images} from '../content/01_nwo/01_nwo.mdx'
+  import { createDraggable } from 'animejs';
 
 
+  import EnhancedImage from './EnhancedImage.svelte';
+  
   // export let data;
   const { data, onClose } = $props(); 
 
   import { mapImages } from '../stores/mapImages.js';
-console.log("mapImages", mapImages);
+  import { mapTesti } from '../stores/testi.js';
+  console.log(mapTesti)
+
   let images = mapImages[data.data.slug];
-  console.log("immagini mappate", images);
-  
+  let testi = mapTesti[data.data.slug];
+  console.log(testi);
+
   function handleClose() {
     onClose?.(); // chiama la funzione se esiste
   }
 
 
 console.log("dato passato al modale",data.data);
-  const Body = data.body;
+  const body = data.body;
 
 
+  function makeDraggable() {
+    const draggableElements = document.querySelectorAll(".modal");
 
+    draggableElements.forEach(element => {
+      createDraggable(element, {
+        container: ".gallery-container",
+        onDrag: () => element.style.zIndex = "999",
+        onRelease: () => element.style.zIndex = "",
+      });
+    });
+  }
 
   onMount(() => {
-    // Per ricevere eventi da tastiera (Escape)
     const modal = document.getElementById(`modal-${data.slug}`);
+  makeDraggable();
     modal?.focus();
   });
 </script>
@@ -33,7 +47,7 @@ console.log("dato passato al modale",data.data);
 <div class="backdrop">
   <div
     id={"modal-" + data.slug}
-    class="modal draggable"
+    class="modal"
     role="dialog"
     tabindex="0"
     on:click|stopPropagation
@@ -41,15 +55,29 @@ console.log("dato passato al modale",data.data);
   >
     <button class="close" on:click={handleClose}>×</button>
     <h2>{data.data.title}</h2>
-{data.body}
-<!-- {#if data.data.data.images}
-  <div class="modal-images">
-    {#each data.images as img} -->
-{#each images as image, index}
-  <enhanced:img src={image} alt="Immagine del progetto {index + 1}" />
-{/each}    <!-- {/each}
-  </div>
-{/if} -->
+
+<h3>Complotto</h3>
+
+<p>{testi['scenario']}</p>
+{#if images[0]}
+  {#each images[0] as image, index}
+    <EnhancedImage src={image} alt="Immagine scenario {index + 1}" />
+  {/each}
+{/if}
+
+<p>{testi['progetto']}</p>
+{#if images[1]}
+  {#each images[1] as image, index}
+    <EnhancedImage src={image} alt="Immagine progetto {index + 1}" />
+  {/each}
+{/if}
+
+<p>{testi['altro']}</p>
+{#if images[2]}
+  {#each images[2] as image, index}
+    <EnhancedImage src={image} alt="Immagine altro {index + 1}" />
+  {/each}
+{/if}
   </div>
 </div>
 
