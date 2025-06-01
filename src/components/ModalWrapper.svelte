@@ -114,7 +114,6 @@
       createDraggable(element, {
         container: ".gallery-container",
         onDrag: () => element.style.zIndex = "999",
-        onRelease: () => element.style.zIndex = "",
       });
     });
   }

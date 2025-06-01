@@ -30,9 +30,9 @@ console.log("dato passato al modale",data.data);
 
     draggableElements.forEach(element => {
       createDraggable(element, {
-        container: ".gallery-container",
+        trigger: element.querySelector('.top-bar'),
         onDrag: () => element.style.zIndex = "999",
-        onRelease: () => element.style.zIndex = "",
+        onRelease: () => element.style.zIndex = "100",
       });
     });
   }
@@ -44,7 +44,7 @@ console.log("dato passato al modale",data.data);
   });
 </script>
 
-<div class="backdrop">
+<!-- <div class="backdrop"> -->
   <div
     id={"modal-" + data.slug}
     class="modal"
@@ -53,7 +53,10 @@ console.log("dato passato al modale",data.data);
     on:click|stopPropagation
     on:keydown={(e) => e.key === 'Escape' && handleClose()}
   >
-    <button class="close" on:click={handleClose}>×</button>
+    <div class="top-bar">
+          <button class="close" on:click={handleClose}>×</button>
+
+    </div>
     <h2>{data.data.title}</h2>
 
 <h3>Complotto</h3>
@@ -61,25 +64,25 @@ console.log("dato passato al modale",data.data);
 <p>{testi['scenario']}</p>
 {#if images[0]}
   {#each images[0] as image, index}
-    <EnhancedImage src={image} alt="Immagine scenario {index + 1}" />
+    <EnhancedImage src={image} alt="Immagine scenario {index + 1}" draggable="false" />
   {/each}
 {/if}
 
 <p>{testi['progetto']}</p>
 {#if images[1]}
   {#each images[1] as image, index}
-    <EnhancedImage src={image} alt="Immagine progetto {index + 1}" />
+    <EnhancedImage src={image} alt="Immagine progetto {index + 1}" draggable="false"  />
   {/each}
 {/if}
 
 <p>{testi['altro']}</p>
 {#if images[2]}
   {#each images[2] as image, index}
-    <EnhancedImage src={image} alt="Immagine altro {index + 1}" />
+    <EnhancedImage src={image} alt="Immagine altro {index + 1}" draggable="false"  />
   {/each}
 {/if}
   </div>
-</div>
+<!-- </div> -->
 
 <style>
   .backdrop {
@@ -94,7 +97,8 @@ console.log("dato passato al modale",data.data);
 
   .modal {
     background: white;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
     width: 80%;
     max-width: 700px;
     border-radius: 10px;
@@ -103,13 +107,24 @@ console.log("dato passato al modale",data.data);
     max-height: 90vh;
     outline: none;
         pointer-events: visible;
+    z-index: 100;
+      resize:both;
+  overflow:auto; /* something other than visible */
 
+    img {    width: 100%;
+    }
+  
+  }
+  .top-bar {
+    margin-bottom: 1rem;
+    background-color: red;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .close {
-    position: absolute;
-    top: 8px;
-    right: 12px;
     font-size: 1.5rem;
     background: none;
     border: none;
