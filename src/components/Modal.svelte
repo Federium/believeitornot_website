@@ -19,7 +19,7 @@ console.log("mapImages", mapImages);
 
 console.log("dato passato al modale",data.data);
   const Body = data.body;
-  console.log(data.title);
+
 
 
 
