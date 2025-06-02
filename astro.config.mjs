@@ -7,10 +7,14 @@ import { imagetools } from 'vite-imagetools';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 
 
-// https://astro.build/config
 export default defineConfig({
-    integrations: [svelte(), mdx()],
-      vite: {
-        plugins: [enhancedImages()]
-    }
+  // output: 'static', // per fare fallback su index.html
+  // trailingSlash: 'never',
+  integrations: [svelte(), mdx()],
+  redirects: {
+    "/vtv": "/",
+  },
+  vite: {
+    plugins: [enhancedImages()]
+  }
 });

@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
   import Modal from './Modal.svelte'; // o il path corretto
+  import { fullscreen } from 'p5';
 
   export let images = [];
   // Stato per il modale
@@ -16,7 +17,7 @@
   //   openModals = [...openModals, entry];
   // }
 
- function openModal(entry) {
+ function openModal(entry, isFullscreen) {
   console.log("Opening modal for entry:", entry);
   console.log(data);
 
@@ -41,6 +42,8 @@
   function closeModal(slug) {
     console.log("Closing modal with slug:", slug);
     openModals = openModals.filter(m => m.data.slug !== slug);
+    window.history.pushState({}, '', '/'); // <-- torna alla root
+  
   }
   
   function handleInfoClick(event, image) {
@@ -51,6 +54,8 @@
 
   function handleImageClick(slug) {
     console.log("Image clicked with slug:", slug);
+   window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
+
     openModal(slug);
   }
 
@@ -129,7 +134,17 @@
     });
   }
 
+  function openFromSlug() {
+  
+    const slug = window.location.pathname.slice(1); // rimuove lo slash iniziale
+
+    openModal(slug, true);
+  
+  }
+
   onMount(() => {
+
+    openFromSlug();
 
     randomizePositions();
     animateImagesIn();
@@ -160,6 +175,7 @@
             draggable="false"
           
             />
+            
              <button class="info-button" on:click|stopPropagation={(e) => handleInfoClick(e, img)}>
         ?
       </button>

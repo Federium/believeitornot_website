@@ -13,12 +13,16 @@
   
 </script>
 
-<enhanced:img class="no-drag" src={src} alt={alt} />
+<enhanced:img class="no-drag full-width" src={src} alt={alt} />
 
 <style>
 .no-drag {
           user-drag: none;
     -webkit-user-drag: none;
 
+  }
+
+  .full-width {
+    max-width: 100%;
   }
 </style>

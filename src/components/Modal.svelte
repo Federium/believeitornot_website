@@ -84,8 +84,15 @@ function refreshAllDraggables() {
     on:keydown={(e) => e.key === 'Escape' && handleClose()}
   >
     <div class="top-bar">
-      <div class="drag-area"></div>
-<button class="close" on:click={handleClose}>×</button>
+      <div class="drag-area">
+        <label>
+            Believe it or not
+        </label>
+      </div>
+      <div class="modal-buttons">
+        <button class="close" on:click={handleClose}>×</button>
+
+      </div>
     </div>
     <div class="modal-content-wrapper">
         <div class="modal-content">
@@ -134,7 +141,7 @@ function refreshAllDraggables() {
     background: white;
     display: flex;
     flex-direction: column;
-    max-width: 1000px;
+    max-width: 600px;
     border-radius: 2px;
     position: absolute;
     top: 20px;
@@ -144,7 +151,7 @@ function refreshAllDraggables() {
         pointer-events: visible;
     z-index: 0;
       resize:both;
-  overflow:auto; /* something other than visible */
+  overflow: hidden;
   min-width: 50px;
   min-height: 2em;
   
@@ -205,7 +212,9 @@ function refreshAllDraggables() {
   }
 
   .modal-content-wrapper {
-    overflow-y: visible;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
     width: 100%;
   }
 
@@ -238,5 +247,15 @@ function refreshAllDraggables() {
     margin-top: 0;
     margin-bottom: 4px;
 
+  }
+
+  .modal.fullsize {
+    width: calc(100vw - 40px);
+  height: calc(100vh - 40px);
+
+    max-width: 100vw;
+        max-height: 100vw;
+        z-index: 2000 !important;
+    resize: none;
   }
 </style>
