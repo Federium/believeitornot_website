@@ -4,7 +4,7 @@
 
 <div id="tv-container"></div>
 
-<script client:load>
+<script type="module">
 	let p5Instance;
 
 	async function initP5() {
@@ -15,105 +15,112 @@
 
 			const sketch = p => {
 				let tvShader;
-				let pg; // Graphics buffer per la texture
+				let pg;
+				let isMobile = false;
 
 				p.setup = () => {
 					p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
 
-					// Crea un buffer grafico per il contenuto di base
+					// Detect mobile
+					isMobile = window.innerWidth <= 768;
+
 					pg = p.createGraphics(window.innerWidth, window.innerHeight);
 
 					// Shader per effetto TV vintage
 					tvShader = p.createShader(
-						// Vertex shader
+						// Vertex shader (unchanged)
 						`
-                        attribute vec3 aPosition;
-                        attribute vec2 aTexCoord;
-                        varying vec2 vTexCoord;
-                        
-                        void main() {
-                            vTexCoord = aTexCoord;
-                            vec4 positionVec4 = vec4(aPosition, 1.0);
-                            positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
-                            gl_Position = positionVec4;
-                        }
-                        `,
+						attribute vec3 aPosition;
+						attribute vec2 aTexCoord;
+						varying vec2 vTexCoord;
+						
+						void main() {
+							vTexCoord = aTexCoord;
+							vec4 positionVec4 = vec4(aPosition, 1.0);
+							positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
+							gl_Position = positionVec4;
+						}
+						`,
 						// Fragment shader
 						`
-                        #ifdef GL_ES
-                        precision mediump float;
-                        #endif
-                        
-                        varying vec2 vTexCoord;
-                        uniform sampler2D uTexture;
-                        uniform float uTime;
-                        uniform vec2 uResolution;
-                        
-                        void main() {
-                            vec2 uv = vTexCoord;
-                            
-                            // Riduzione risoluzione (pixelation)
-                            float pixelSize = 4.0;
-                            vec2 pixelatedUV = floor(uv * uResolution / pixelSize) * pixelSize / uResolution;
-                            
-                            // Ottieni il colore base
-                            vec4 color = texture2D(uTexture, pixelatedUV);
-                            
-                            // Se non c'è texture, usa il contenuto della pagina
-                            if (color.a < 0.1) {
-                                color = vec4(0.1, 0.1, 0.15, 1.0);
-                            }
-                            
-                            // Effetto RGB split
-                            float offset = 0.003;
-                            color.r = texture2D(uTexture, pixelatedUV + vec2(offset, 0.0)).r;
-                            color.g = texture2D(uTexture, pixelatedUV).g;
-                            color.b = texture2D(uTexture, pixelatedUV - vec2(offset, 0.0)).b;
-                            
-                            // Pixel RGB pattern (simula subpixel RGB)
-                            vec2 pixelPos = mod(uv * uResolution, pixelSize);
-                            float subPixel = pixelPos.x / pixelSize;
-                            
-                            vec3 rgbMask = vec3(0.0);
-                            if (subPixel < 0.33) {
-                                rgbMask.r = 1.0; // Rosso
-                            } else if (subPixel < 0.66) {
-                                rgbMask.g = 1.0; // Verde
-                            } else {
-                                rgbMask.b = 1.0; // Blu
-                            }
-                            
-                            // Applica il pattern RGB
-                            color.rgb *= rgbMask + 0.3; // +0.3 per non perdere completamente gli altri colori
-                            
-                            // Scanlines sottili
-                            float scanline = sin(uv.y * uResolution.y * 1.5) * 0.02;
-                            color.rgb -= scanline;
-                            
-                            // Flickering
-                            float flicker = 0.98 + 0.02 * sin(uTime * 20.0 + sin(uTime * 13.0));
-                            color.rgb *= flicker;
-                            
-                            // Vignette
-                            vec2 center = vec2(0.5, 0.5);
-                            float dist = distance(uv, center);
-                            float vignette = 1.0 - smoothstep(0.3, 1.2, dist);
-                            color.rgb *= vignette;
-                            
-                            // Noise
-                            float noise = fract(sin(dot(uv + uTime * 0.002, vec2(12.9898, 78.233))) * 43758.5453);
-                            color.rgb += noise * 0.05;
-                            
-                            // Aggiusta la luminosità generale
-                            color.rgb *= 8.0;
-                            
-                            // Saturazione per effetto vintage
-                            float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-                            color.rgb = mix(vec3(gray), color.rgb, 0.8);
-                            
-                            gl_FragColor = color;
-                        }
-                        `
+						#ifdef GL_ES
+						precision mediump float;
+						#endif
+						
+						varying vec2 vTexCoord;
+						uniform sampler2D uTexture;
+						uniform float uTime;
+						uniform vec2 uResolution;
+						uniform bool uIsMobile;
+						
+						void main() {
+							vec2 uv = vTexCoord;
+							
+							// Pixelation ridotta per mobile
+							float pixelSize = uIsMobile ? 2.0 : 4.0;
+							vec2 pixelatedUV = floor(uv * uResolution / pixelSize) * pixelSize / uResolution;
+							
+							vec4 color = texture2D(uTexture, pixelatedUV);
+							
+							if (color.a < 0.1) {
+								color = vec4(0.1, 0.1, 0.15, 1.0);
+							}
+							
+							// RGB split ridotto per mobile
+							float offset = uIsMobile ? 0.002 : 0.003;
+							color.r = texture2D(uTexture, pixelatedUV + vec2(offset, 0.0)).r;
+							color.g = texture2D(uTexture, pixelatedUV).g;
+							color.b = texture2D(uTexture, pixelatedUV - vec2(offset, 0.0)).b;
+							
+							// Pattern RGB meno pronunciato su mobile
+							vec2 pixelPos = mod(uv * uResolution, pixelSize);
+							float subPixel = pixelPos.x / pixelSize;
+							
+							vec3 rgbMask = vec3(0.0);
+							if (subPixel < 0.33) {
+								rgbMask.r = 1.0;
+							} else if (subPixel < 0.66) {
+								rgbMask.g = 1.0;
+							} else {
+								rgbMask.b = 1.0;
+							}
+							
+							// RGB mask meno intensa su mobile
+							float maskIntensity = uIsMobile ? 0.6 : 0.3;
+							color.rgb *= rgbMask + maskIntensity;
+							
+							// Scanlines meno evidenti su mobile
+							float scanlineIntensity = uIsMobile ? 0.005 : 0.02;
+							float scanline = sin(uv.y * uResolution.y * 1.5) * scanlineIntensity;
+							color.rgb -= scanline;
+							
+							// Flickering ridotto su mobile
+							float flickerAmount = uIsMobile ? 0.02 : 0.02;
+							float flicker = (1.0 - flickerAmount) + flickerAmount * sin(uTime * 20.0 + sin(uTime * 13.0));
+							color.rgb *= flicker;
+							
+							// Vignette
+							vec2 center = vec2(0.5, 0.5);
+							float dist = distance(uv, center);
+							float vignette = 1.0 - smoothstep(0.3, 1.2, dist);
+							color.rgb *= vignette;
+							
+							// Noise ridotto su mobile
+							float noise = fract(sin(dot(uv + uTime * 0.002, vec2(12.9898, 78.233))) * 43758.5453);
+							float noiseIntensity = uIsMobile ? 0.02 : 0.05;
+							color.rgb += noise * noiseIntensity;
+							
+							// Luminosità leggermente aumentata su mobile
+							float brightness = uIsMobile ? 10.0 : 8.0;
+							color.rgb *= brightness;
+							
+							// Saturazione
+							float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+							color.rgb = mix(vec3(gray), color.rgb, 0.8);
+							
+							gl_FragColor = color;
+						}
+						`
 					);
 				};
 
@@ -127,6 +134,7 @@
 						tvShader.setUniform("uTexture", pg);
 						tvShader.setUniform("uTime", p.millis() * 0.001);
 						tvShader.setUniform("uResolution", [p.width, p.height]);
+						tvShader.setUniform("uIsMobile", isMobile);
 
 						// Disegna un rettangolo che copre tutto lo schermo
 						p.noStroke();
@@ -136,6 +144,7 @@
 
 				p.windowResized = () => {
 					p.resizeCanvas(window.innerWidth, window.innerHeight);
+					isMobile = window.innerWidth <= 768; // Aggiorna detection mobile
 					if (pg) {
 						pg = p.createGraphics(window.innerWidth, window.innerHeight);
 					}
