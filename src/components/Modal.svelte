@@ -35,7 +35,7 @@ const draggableMap = new Map();
    draggableElements.forEach(element => {
       const draggable = createDraggable(element, {
         trigger: element.querySelector('.drag-area'),
-        container: document.querySelector(".modals-container"),
+        container: document.querySelector(".gallery-container"),
         onGrab: () => {
         // Rimuove "top-modal" da tutti gli altri
         draggableElements.forEach(el => el.classList.remove('top-modal'));
@@ -45,6 +45,10 @@ const draggableMap = new Map();
       }
           });
       draggableMap.set(element, draggable);
+  element.addEventListener('resize', () => {
+    const d = draggableMap.get(element);
+    d.refresh(); // safe call
+  });
 
 
     });
@@ -54,7 +58,7 @@ const draggableMap = new Map();
 
 function refreshAllDraggables() {
   for (const draggable of draggableMap.values()) {
-    draggable.refresh?.();
+    draggable.refresh();
   }
 }
 
@@ -65,7 +69,6 @@ function refreshAllDraggables() {
   modal?.focus();
    document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
     modal.classList.add('top-modal');
-    modal.addEventListener('focus', () => refreshAllDraggables());
 
   });
 </script>
@@ -74,7 +77,7 @@ function refreshAllDraggables() {
   <div
     id={"modal-" + data.data.slug}
     class="modal"
-    style="z-index:1000"
+    style="z-index:10"
     role="dialog"
     tabindex="0"
    
@@ -139,7 +142,7 @@ function refreshAllDraggables() {
     max-height: 90vh;
     outline: none;
         pointer-events: visible;
-    z-index: 100;
+    z-index: 0;
       resize:both;
   overflow:auto; /* something other than visible */
   min-width: 50px;

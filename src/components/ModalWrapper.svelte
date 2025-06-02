@@ -151,26 +151,40 @@
 
       on:click={() => handleImageClick(img.slug)}
     >
-      <enhanced:img
-        src={img.src}
-        alt={img.slug}
-        width="300"
-        class="gallery-image"
-        draggable="false"
-      />
-      <button class="info-button" on:click|stopPropagation={(e) => handleInfoClick(e, img)}>
+    <div>
+    <enhanced:img
+            src={img.src}
+            alt={img.slug}
+            width="300"
+            class="gallery-image"
+            draggable="false"
+          
+            />
+             <button class="info-button" on:click|stopPropagation={(e) => handleInfoClick(e, img)}>
         ?
       </button>
     </div>
+      
+<!--      
+         {#if openModals.find(m => m.data.slug === img.slug)}
+        <Modal
+          data={openModals.find(m => m.data.slug === img.slug)}
+          onClose={() => closeModal(img.slug)}
+        />
+      {/if} -->
+    </div>
+
+       
+
   {/each}
 </div>
-<div class="modals-container">
+<!-- <div class="modals-container"> -->
 {#each openModals as modal (modal.data.slug)}
   <Modal data={modal} onClose={() => closeModal(modal.data.slug)} />
 {/each}
 
 
-</div>
+<!-- </div> -->
 
 
 
@@ -216,7 +230,7 @@
   }
 .modals-container {
   position: relative;
-  z-index: 100;
+  z-index: 20;
   width: 100%;
   height: 100%;
   pointer-events: none;
