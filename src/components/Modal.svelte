@@ -6,7 +6,7 @@
   import EnhancedImage from './EnhancedImage.svelte';
   
   // export let data;
-  const { data, onClose } = $props(); 
+  const { data, onClose, isFullscreen } = $props(); 
 
   import { mapImages } from '../stores/mapImages.js';
   import { mapTesti } from '../stores/testi.js';
@@ -76,7 +76,7 @@ function refreshAllDraggables() {
 <!-- <div class="backdrop"> -->
   <div
     id={"modal-" + data.data.slug}
-    class="modal"
+class="modal {isFullscreen ? 'fullsize' : ''}"
     style="z-index:10"
     role="dialog"
     tabindex="0"

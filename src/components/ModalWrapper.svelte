@@ -3,7 +3,6 @@
   import { onMount } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
   import Modal from './Modal.svelte'; // o il path corretto
-  import { fullscreen } from 'p5';
 
   export let images = [];
   // Stato per il modale
@@ -11,32 +10,24 @@
   // let modalContent = null;
   export let data;
   let openModals = [];
- 
+ let initialSlug = null;
+
 
   // function openModal(entry) {
   //   openModals = [...openModals, entry];
   // }
 
- function openModal(entry, isFullscreen) {
-  console.log("Opening modal for entry:", entry);
-  console.log(data);
-
-  // Se è una stringa, assumiamo che sia uno slug
+function openModal(entry, isFullscreen = false) {
   if (typeof entry === 'string') {
     const item = data.find(d => d.data.slug === entry);
-    if (item) {
-      console.log("Found item for slug:", entry, item);
-      if (!openModals.find(m => m.data.slug === entry)) {
-        openModals = [...openModals, item];
-      }
+    if (item && !openModals.find(m => m.data.slug === entry)) {
+      openModals = [...openModals, { ...item, isFullscreen }];
     }
   } else {
     if (!openModals.find(m => m.data.slug === entry.data.slug)) {
-      openModals = [...openModals, entry];
+      openModals = [...openModals, { ...entry, isFullscreen }];
     }
   }
-
-  console.log("Current open modals:", openModals);
 }
 
   function closeModal(slug) {
@@ -134,20 +125,23 @@
     });
   }
 
-  function openFromSlug() {
-  
-    const slug = window.location.pathname.slice(1); // rimuove lo slash iniziale
-
-    openModal(slug, true);
-  
+function openFromSlug() {
+  const slug = window.location.pathname.slice(1); // rimuove lo slash iniziale
+  if (slug !== "") {
+    initialSlug = slug;
+    openModal(slug, true); // true = fullscreen
+    console.log("Opening from slug:", slug);
   }
+}
+
 
   onMount(() => {
-
-    openFromSlug();
-
+    const slug =  openFromSlug();
+    
     randomizePositions();
     animateImagesIn();
+
+
     setTimeout(() => {
       makeDraggableAndClickable();
     }, 800);
@@ -196,7 +190,11 @@
 </div>
 <!-- <div class="modals-container"> -->
 {#each openModals as modal (modal.data.slug)}
-  <Modal data={modal} onClose={() => closeModal(modal.data.slug)} />
+ <Modal
+  data={modal}
+  isFullscreen={modal.isFullscreen}
+  onClose={() => closeModal(modal.data.slug)}
+/>
 {/each}
 
 
