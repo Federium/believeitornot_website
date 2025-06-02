@@ -1,4 +1,8 @@
+
+
 <script>
+  import { draggableMap } from '../stores/draggableMap.js';
+
   import {  onMount } from 'svelte';
   import { createDraggable } from 'animejs';
   import Menu from './Menu.svelte';
@@ -39,13 +43,11 @@ console.log("dato passato al modale",data.data);
 
   // function redoOtherDraggable()
 
-const draggableMap = new Map();
 
-  function makeDraggable() {
-    const draggableElements = document.querySelectorAll(".modal");
+export function draggableModale(element) {
+      const draggableElements = document.querySelectorAll(".modal");
 
-   draggableElements.forEach(element => {
-      const draggable = createDraggable(element, {
+    const draggable = createDraggable(element, {
         trigger: element.querySelector('.drag-area'),
         container: document.querySelector(".gallery-container"),
         onGrab: () => {
@@ -56,10 +58,21 @@ const draggableMap = new Map();
         element.classList.add('top-modal');
       }
           });
+
+      return draggable;
+}
+
+  function makeDraggable() {
+    const draggableElements = document.querySelectorAll(".modal");
+
+   draggableElements.forEach(element => {
+
+      const draggable = draggableModale(element);
       draggableMap.set(element, draggable);
   element.addEventListener('resize', () => {
     const d = draggableMap.get(element);
     d.refresh(); // safe call
+
   });
 
 
@@ -88,7 +101,7 @@ function refreshAllDraggables() {
 <!-- <div class="backdrop"> -->
   <div
     id={"modal-" + data.data.slug}
-class="modal {isFullscreen ? 'fullsize' : ''}"
+class="modal {isFullscreen ? 'fullsize disable' : ''}"
     style="z-index:10"
     role="dialog"
     tabindex="0"
@@ -288,14 +301,12 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
     margin-top: 0;
     margin-bottom: 4px;
     font-size: 1.6em;
-  }
-
-    .modal-content h3 {
-    font-family: 'Arial',sans-serif;
-    margin-top: 0;
-    margin-bottom: 4px;
+        line-height: 100%;
 
   }
+
+
+  
 
   .modal.fullsize {
     width: calc(100vw - 40px);

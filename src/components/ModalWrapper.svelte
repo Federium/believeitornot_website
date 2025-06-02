@@ -4,6 +4,8 @@
   import { animate, createDraggable, stagger } from "animejs";
   import Modal from './Modal.svelte'; // o il path corretto
 
+  import { draggableMap } from '../stores/draggableMap.js';
+
   export let images = [];
   // Stato per il modale
   // let modalOpen = false;
@@ -43,8 +45,17 @@ function openModal(entry, isFullscreen = false) {
     console.log("Expanding modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
+    element.style.width = "";
+    element.style.height = "";
+    element.style.height = "";
     element.classList.add('fullsize');
     element.focus();
+    const d = draggableMap.get(element);
+    d.setX(0);
+    d.setY(0);
+
+    d.disable(); // safe call
+
    window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
   
   }
@@ -52,7 +63,15 @@ function openModal(entry, isFullscreen = false) {
     function minimizeModal(slug) {
     console.log("Minimizing modal with slug:", slug);
     const id = "modal-"+slug;
+    const element = document.getElementById(id);
+console.log(draggableMap);
+    const d = draggableMap.get(element);
+    if (d) {
+      d.enable();
+     }
+  
     document.getElementById(id).classList.remove('fullsize');
+    
     window.history.pushState({}, '', '/'); // <-- torna alla root
   
   }
@@ -128,7 +147,8 @@ function openModal(entry, isFullscreen = false) {
     draggableElements.forEach(element => {
       createDraggable(element, {
         container: ".gallery-container",
-        onDrag: () => element.style.zIndex = "999",
+        // onDrag: () => element.style.zIndex = "999",
+        // onRelease: () => element.style.zIndex = "5"
       });
     });
   }
@@ -193,6 +213,7 @@ setTimeout(() => {
             width="300"
             class="gallery-image"
             draggable="false"
+            style="z-index: 10"
           
             />
             
@@ -250,7 +271,7 @@ Ciao
     cursor: grab;
   }
     .image-wrapper:hover {
-    z-index: 10;
+    z-index: 100;
   }
   .image-wrapper:active {
     cursor: grabbing;
