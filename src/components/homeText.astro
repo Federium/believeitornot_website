@@ -5,7 +5,10 @@ import Logo from "../assets/title/title.svg";
 <div class="title-container">
 	<Logo aria-label="Title" class="title-svg" preserveAspectRatio="none" />
 </div>
-<div class="text-container">
+<div class="subtitle-container" class="blur">
+	<h6>speculating on (un)real conspiracy theories</h6>
+</div>
+<div class="text-container" class="blur">
 	<div class="text-content">
 		<div class="text-top">
 			<div class="text-block draggable" data-text-id="block1">
@@ -47,6 +50,17 @@ import Logo from "../assets/title/title.svg";
 		height: 100%;
 	}
 
+	.subtitle-container {
+		position: absolute;
+		bottom: 0;
+		width: 100vw;
+		overflow: hidden;
+		display: flex;
+		font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+		font-size: clamp(2rem, 15vw, 6rem);
+		filter: blur(1px);
+	}
+
 	.text-container {
 		position: absolute;
 		top: 0;
@@ -86,6 +100,15 @@ import Logo from "../assets/title/title.svg";
 	}
 
 	.text-bottom {
-		margin-bottom: 4rem;
+		margin-bottom: 12rem;
+	}
+
+	h1,
+	h3 {
+		filter: blur(1px);
+	}
+	h2,
+	.text-links {
+		filter: blur(0.6px);
 	}
 </style>
