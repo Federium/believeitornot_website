@@ -1,6 +1,6 @@
 <script>
 
-  import { onMount } from 'svelte';
+  import { onMount, setContext } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
   import Modal from './Modal.svelte'; // o il path corretto
 
@@ -9,6 +9,8 @@
   // let modalOpen = false;
   // let modalContent = null;
   export let data;
+  setContext('progetti', data);
+
   let openModals = [];
  let initialSlug = null;
 
@@ -37,6 +39,23 @@ function openModal(entry, isFullscreen = false) {
   
   }
   
+   function expandModal(slug) {
+    console.log("Expanding modal with slug:", slug);
+    const id = "modal-"+slug;
+    const element = document.getElementById(id);
+    element.classList.add('fullsize');
+    element.focus();
+   window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
+  
+  }
+
+    function minimizeModal(slug) {
+    console.log("Minimizing modal with slug:", slug);
+    const id = "modal-"+slug;
+    document.getElementById(id).classList.remove('fullsize');
+    window.history.pushState({}, '', '/'); // <-- torna alla root
+  
+  }
   function handleInfoClick(event, image) {
     console.log("Info button clicked for image:", image);
     event.stopPropagation();
@@ -45,7 +64,7 @@ function openModal(entry, isFullscreen = false) {
 
   function handleImageClick(slug) {
     console.log("Image clicked with slug:", slug);
-   window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
+  //  window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
 
     openModal(slug);
   }
@@ -131,18 +150,25 @@ function openFromSlug() {
     initialSlug = slug;
     openModal(slug, true); // true = fullscreen
     console.log("Opening from slug:", slug);
+    return true;
   }
 }
 
 
   onMount(() => {
-    const slug =  openFromSlug();
-    
-    randomizePositions();
+setTimeout(() => {
+      
+      openFromSlug();
+    }, 100);
+
+          randomizePositions();
     animateImagesIn();
+    
+
 
 
     setTimeout(() => {
+      
       makeDraggableAndClickable();
     }, 800);
 
@@ -190,11 +216,17 @@ function openFromSlug() {
 </div>
 <!-- <div class="modals-container"> -->
 {#each openModals as modal (modal.data.slug)}
- <Modal
+ <Modal client:load
   data={modal}
   isFullscreen={modal.isFullscreen}
   onClose={() => closeModal(modal.data.slug)}
-/>
+  onExpand={() => expandModal(modal.data.slug)}
+  onMinimize={() => minimizeModal(modal.data.slug)}
+
+  
+>
+Ciao
+ </Modal>
 {/each}
 
 
@@ -213,6 +245,7 @@ function openFromSlug() {
     z-index: 2;
   }
   .image-wrapper {
+    opacity: 0;
     position: absolute;
     cursor: grab;
   }

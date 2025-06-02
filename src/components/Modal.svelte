@@ -1,12 +1,12 @@
 <script>
   import {  onMount } from 'svelte';
   import { createDraggable } from 'animejs';
-
+  import Menu from './Menu.svelte';
 
   import EnhancedImage from './EnhancedImage.svelte';
   
   // export let data;
-  const { data, onClose, isFullscreen } = $props(); 
+  const { data, onClose, onExpand, onMinimize, isFullscreen } = $props(); 
 
   import { mapImages } from '../stores/mapImages.js';
   import { mapTesti } from '../stores/testi.js';
@@ -18,8 +18,20 @@
 
   function handleClose() {
     onClose?.(); // chiama la funzione se esiste
+
   }
 
+
+  function handleExpand() {
+    onExpand?.(); // chiama la funzione se esiste
+
+  }
+
+
+  function handleMinimize() {
+    onMinimize?.(); // chiama la funzione se esiste
+
+  }
 
 console.log("dato passato al modale",data.data);
   const body = data.body;
@@ -86,16 +98,31 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
     <div class="top-bar">
       <div class="drag-area">
         <label>
-            Believe it or not
         </label>
       </div>
       <div class="modal-buttons">
-        <button class="close" on:click={handleClose}>×</button>
+        <button class="close" id="expand" on:click={handleExpand}>↗</button>
+        <button class="close" id="minimize" on:click={handleMinimize}>↙</button>
+        <button class="close" id="close" on:click={handleClose}>×</button>
 
+        
       </div>
     </div>
     <div class="modal-content-wrapper">
-        <div class="modal-content">
+      <div class="left-column">
+        <div class="modal-menu">
+                  <Menu />
+                </div>
+        <div class="modal-about">
+          <h2>Antidisciplinary Design Lab</h2>
+          <div>Laboratorio di Sintesi Finale – C1</div>
+          <div>Corso di Laurea in Design della Comunicazione</div>
+          <div>Politecnico di Miilano</div>
+        </div>
+      </div>
+        
+        <div class="modal-content-parent">
+            <div class="modal-content">
 
               <h2>{data.data.title}</h2>
 
@@ -121,7 +148,9 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
                 {/each}
               {/if}
-            </div>
+        </div>
+        </div>
+       
     </div>
    
   
@@ -168,8 +197,8 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
   background-color: red;
 }
 
-.modal.top-modal .close,
-.modal:focus .close{
+.modal.top-modal:focus button,
+.modal:focus button{
   color: black;
 }
     .modal-content .content-img  { 
@@ -182,7 +211,11 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
     -ms-user-select: none;
     }
   
-  
+  .modal-content::selection {
+  color: red;
+  background-color: black;
+}
+
   .top-bar {
     background-color: black;
     height: 2em;
@@ -200,7 +233,7 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
 
 
 
-  .close {
+  .modal-buttons button {
     width: 40px;
     height: 100%;
     font-size: 1.5rem;
@@ -208,20 +241,35 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
     border: none;
     cursor: pointer;
     color: white;
+    display: flex;
+    align-items: center;
     
   }
 
-  .modal-content-wrapper {
+  #minimize, #expand {
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+  .modal-content-parent {
     display: flex;
     justify-content: center;
     overflow-y: auto;
     width: 100%;
   }
 
+  .modal-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+        padding: 4px;
+        gap: 16px;
+    height: 100%;
+  }
+
+
   .modal-content {
     display: flex;
     flex-direction: column;
-    padding: 4px;
         max-width: 800px;
 
   }
@@ -257,5 +305,48 @@ class="modal {isFullscreen ? 'fullsize' : ''}"
         max-height: 100vw;
         z-index: 2000 !important;
     resize: none;
+    position: absolute;
   }
+
+    .left-column {
+      max-width: 30%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: auto;
+      display: none;
+    }
+
+      .modal.fullsize  .left-column {
+
+      display: flex;
+    }
+    .modal-about div {
+      margin-top: 4px;
+    }
+
+    .modal-about h2 {
+      font-family: 'Arial Narrow';
+      margin: 0;
+    }
+
+    .modal-buttons {
+      display: flex;
+    }
+
+
+    .modal #minimize {
+      display: none;
+    }
+    .modal #expand {
+      display: flex;
+    }
+
+    .modal.fullsize #minimize {
+      display: flex;
+    }
+    .modal.fullsize #expand {
+      display: none;
+    }
+
 </style>

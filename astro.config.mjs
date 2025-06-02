@@ -11,9 +11,7 @@ export default defineConfig({
   // output: 'static', // per fare fallback su index.html
   // trailingSlash: 'never',
   integrations: [svelte(), mdx()],
-  redirects: {
-    "/vtv": "/",
-  },
+
   vite: {
     plugins: [enhancedImages()]
   }
