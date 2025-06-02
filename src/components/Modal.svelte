@@ -25,13 +25,15 @@ console.log("dato passato al modale",data.data);
   const body = data.body;
 
 
+  // function redoOtherDraggable()
 
+const draggableMap = new Map();
 
   function makeDraggable() {
     const draggableElements = document.querySelectorAll(".modal");
 
-    draggableElements.forEach(element => {
-      createDraggable(element, {
+   draggableElements.forEach(element => {
+      const draggable = createDraggable(element, {
         trigger: element.querySelector('.drag-area'),
         container: document.querySelector(".modals-container"),
         onGrab: () => {
@@ -40,11 +42,22 @@ console.log("dato passato al modale",data.data);
 
         // Aggiunge "top-modal" solo a quello trascinato
         element.classList.add('top-modal');
-      },
+      }
+          });
+      draggableMap.set(element, draggable);
 
-      });
+
     });
+
   }
+
+
+function refreshAllDraggables() {
+  for (const draggable of draggableMap.values()) {
+    draggable.refresh?.();
+  }
+}
+
 
   onMount(() => {
     const modal = document.getElementById(`modal-${data.data.slug}`);
@@ -52,6 +65,7 @@ console.log("dato passato al modale",data.data);
   modal?.focus();
    document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
     modal.classList.add('top-modal');
+    modal.addEventListener('focus', () => refreshAllDraggables());
 
   });
 </script>
@@ -63,7 +77,7 @@ console.log("dato passato al modale",data.data);
     style="z-index:1000"
     role="dialog"
     tabindex="0"
-    on:click|stopPropagation
+   
     on:keydown={(e) => e.key === 'Escape' && handleClose()}
   >
     <div class="top-bar">
@@ -75,7 +89,7 @@ console.log("dato passato al modale",data.data);
 
               <h2>{data.data.title}</h2>
 
-              <h3>Complotto</h3>
+              <h3>{data.data.whatif}</h3>
 
               <p>{testi['scenario']}</p>
               {#if images[0]}
@@ -188,7 +202,7 @@ console.log("dato passato al modale",data.data);
   }
 
   .modal-content-wrapper {
-    overflow-y: scroll;
+    overflow-y: visible;
     width: 100%;
   }
 
