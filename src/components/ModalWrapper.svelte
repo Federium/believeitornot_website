@@ -205,6 +205,8 @@
   .image-wrapper:active {
     cursor: grabbing;
   }
+
+
   .gallery-image {
     /* width: 100%;
     height: 100%; */
@@ -230,7 +232,7 @@
   }
 .modals-container {
   position: relative;
-  z-index: 20;
+  z-index: 100;
   width: 100%;
   height: 100%;
   pointer-events: none;
