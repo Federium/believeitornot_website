@@ -249,6 +249,9 @@ Ciao
     position: absolute;
     cursor: grab;
   }
+    .image-wrapper:hover {
+    z-index: 10;
+  }
   .image-wrapper:active {
     cursor: grabbing;
   }
