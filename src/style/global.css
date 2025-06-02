@@ -6,6 +6,7 @@
 }
 
 html, body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -41,3 +42,16 @@ h1, h3 {
 	-ms-user-select: none; 
 	user-select: none; 
 } 
+
+
+@media (max-width: 768px) {
+h2, ul {
+  font-weight: bold;
+  font-size: clamp(0.6rem, 1vw, 2rem);
+}
+
+h1, h3 {
+  font-weight: bold;
+  font-size: clamp(1.2rem, 2vw, 4rem); /* Min 1rem, ideale 4vw, max 3rem */
+}
+}
