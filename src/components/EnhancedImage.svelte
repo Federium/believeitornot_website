@@ -13,4 +13,12 @@
   
 </script>
 
-<enhanced:img src={src} alt={alt} />
+<enhanced:img class="no-drag" src={src} alt={alt} />
+
+<style>
+.no-drag {
+          user-drag: none;
+    -webkit-user-drag: none;
+
+  }
+</style>

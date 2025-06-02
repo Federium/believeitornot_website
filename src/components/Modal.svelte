@@ -25,70 +25,88 @@ console.log("dato passato al modale",data.data);
   const body = data.body;
 
 
+
+
   function makeDraggable() {
     const draggableElements = document.querySelectorAll(".modal");
 
     draggableElements.forEach(element => {
       createDraggable(element, {
-        trigger: element.querySelector('.top-bar'),
-        onDrag: () => element.style.zIndex = "999",
-        onRelease: () => element.style.zIndex = "100",
+        trigger: element.querySelector('.drag-area'),
+        container: document.querySelector(".modals-container"),
+        onGrab: () => {
+        // Rimuove "top-modal" da tutti gli altri
+        draggableElements.forEach(el => el.classList.remove('top-modal'));
+
+        // Aggiunge "top-modal" solo a quello trascinato
+        element.classList.add('top-modal');
+      },
+
       });
     });
   }
 
   onMount(() => {
-    const modal = document.getElementById(`modal-${data.slug}`);
+    const modal = document.getElementById(`modal-${data.data.slug}`);
   makeDraggable();
-    modal?.focus();
+  modal?.focus();
+   document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
+    modal.classList.add('top-modal');
+
   });
 </script>
 
 <!-- <div class="backdrop"> -->
   <div
-    id={"modal-" + data.slug}
+    id={"modal-" + data.data.slug}
     class="modal"
+    style="z-index:1000"
     role="dialog"
     tabindex="0"
     on:click|stopPropagation
     on:keydown={(e) => e.key === 'Escape' && handleClose()}
   >
     <div class="top-bar">
-          <button class="close" on:click={handleClose}>×</button>
-
+      <div class="drag-area"></div>
+<button class="close" on:click={handleClose}>×</button>
     </div>
-    <h2>{data.data.title}</h2>
+    <div class="modal-content-wrapper">
+        <div class="modal-content">
 
-<h3>Complotto</h3>
+              <h2>{data.data.title}</h2>
 
-<p>{testi['scenario']}</p>
-{#if images[0]}
-  {#each images[0] as image, index}
-    <EnhancedImage src={image} alt="Immagine scenario {index + 1}" draggable="false" />
-  {/each}
-{/if}
+              <h3>Complotto</h3>
 
-<p>{testi['progetto']}</p>
-{#if images[1]}
-  {#each images[1] as image, index}
-    <EnhancedImage src={image} alt="Immagine progetto {index + 1}" draggable="false"  />
-  {/each}
-{/if}
+              <p>{testi['scenario']}</p>
+              {#if images[0]}
+                {#each images[0] as image, index}
+                  <EnhancedImage src={image} alt="Immagine scenario {index + 1}" class="content-img" draggable="false" />
+                {/each}
+              {/if}
 
-<p>{testi['altro']}</p>
-{#if images[2]}
-  {#each images[2] as image, index}
-    <EnhancedImage src={image} alt="Immagine altro {index + 1}" draggable="false"  />
-  {/each}
-{/if}
+              <p>{testi['progetto']}</p>
+              {#if images[1]}
+                {#each images[1] as image, index}
+                  <EnhancedImage src={image} alt="Immagine progetto {index + 1}" class="content-img"  draggable="false"  />
+                {/each}
+              {/if}
+
+              <p>{testi['altro']}</p>
+              {#if images[2]}
+                {#each images[2] as image, index}
+                  <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
+                {/each}
+              {/if}
+            </div>
+    </div>
+   
+  
   </div>
 <!-- </div> -->
 
 <style>
   .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
+ 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,35 +117,109 @@ console.log("dato passato al modale",data.data);
     background: white;
     display: flex;
     flex-direction: column;
-    width: 80%;
-    max-width: 700px;
-    border-radius: 10px;
-    position: relative;
-    overflow-y: auto;
+    max-width: 1000px;
+    border-radius: 2px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
     max-height: 90vh;
     outline: none;
         pointer-events: visible;
     z-index: 100;
       resize:both;
   overflow:auto; /* something other than visible */
+  min-width: 50px;
+  min-height: 2em;
+  
 
-    img {    width: 100%;
+  }
+
+.modal.top-modal,
+.modal:focus{
+  z-index: 2000 !important ;
+}
+
+.modal.top-modal .top-bar,
+.modal:focus .top-bar {
+  background-color: red;
+}
+
+.modal.top-modal .close,
+.modal:focus .close{
+  color: black;
+}
+    .modal-content .content-img  { 
+      width: 100%;
+          user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     }
   
-  }
+  
   .top-bar {
-    margin-bottom: 1rem;
-    background-color: red;
-    height: 40px;
+    background-color: black;
+    height: 2em;
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    color: white; 
+
   }
 
+  .top-bar .drag-area {
+    width: 100%;
+  }
+
+
+
+
   .close {
+    width: 40px;
+    height: 100%;
     font-size: 1.5rem;
     background: none;
     border: none;
     cursor: pointer;
+    color: white;
+    
+  }
+
+  .modal-content-wrapper {
+    overflow-y: scroll;
+    width: 100%;
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+        max-width: 800px;
+
+  }
+
+  .modal-content h2 {
+    font-family: 'Arial Narrow',sans-serif;
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-size: 3em;
+    line-height: 100%;
+  }
+
+
+  .modal-content h3 {
+    font-family: 'Arial Narrow',sans-serif;
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-size: 1.6em;
+  }
+
+    .modal-content h3 {
+    font-family: 'Arial',sans-serif;
+    margin-top: 0;
+    margin-bottom: 4px;
+
   }
 </style>

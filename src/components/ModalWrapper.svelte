@@ -164,18 +164,23 @@
     </div>
   {/each}
 </div>
+<div class="modals-container">
 {#each openModals as modal (modal.data.slug)}
   <Modal data={modal} onClose={() => closeModal(modal.data.slug)} />
 {/each}
 
+
+</div>
 
 
 
 <style>
   .gallery-container {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    top:0;
+    left:0;
+    height: 100%;
     overflow: hidden;
     z-index: 2;
   }
@@ -209,23 +214,13 @@
     justify-content: center;
     z-index: 3;
   }
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  .modal-content {
-    background: white;
-    padding: 1rem;
-    border-radius: 6px;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
+.modals-container {
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
   button {
     margin-top: 1rem;
   }
