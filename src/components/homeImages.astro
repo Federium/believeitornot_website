@@ -18,67 +18,56 @@ const images = [
 		src: image1,
 		alt: "Immagine 1",
 		id: "img1",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image2,
 		alt: "Immagine 2",
 		id: "img2",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image3,
 		alt: "Immagine 3",
 		id: "img3",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image4,
-		alt: "Immagine 3",
+		alt: "Immagine 4",
 		id: "img4",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image5,
-		alt: "Immagine 3",
+		alt: "Immagine 5",
 		id: "img5",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image6,
-		alt: "Immagine 3",
+		alt: "Immagine 6",
 		id: "img6",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image7,
-		alt: "Immagine 3",
+		alt: "Immagine 7",
 		id: "img7",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image9,
-		alt: "Immagine 3",
+		alt: "Immagine 8",
 		id: "img8",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image9,
-		alt: "Immagine 3",
+		alt: "Immagine 9",
 		id: "img9",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image10,
-		alt: "Immagine 3",
+		alt: "Immagine 10",
 		id: "img10",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image11,
-		alt: "Immagine 3",
+		alt: "Immagine 11",
 		id: "img11",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 ];
 ---
@@ -86,11 +75,7 @@ const images = [
 <div class="gallery-container" id="gallery-container">
 	{
 		images.map(img => (
-			<div
-				class="image-wrapper draggable"
-				data-image-id={img.id}
-				data-info-text={img.info}
-			>
+			<div class="image-wrapper draggable" data-image-id={img.id}>
 				<Image
 					src={img.src}
 					alt={img.alt}
@@ -99,14 +84,6 @@ const images = [
 					class="gallery-image"
 					draggable="false"
 				/>
-				<button class="info-button" data-info-id={img.id}>
-					?
-				</button>
-				<div class="info-text hidden" data-text-for={img.id}>
-					<div class="info-text-content">
-						<span class="highlight">{img.info}</span>
-					</div>
-				</div>
 			</div>
 		))
 	}
@@ -171,54 +148,6 @@ const images = [
 			-o-user-drag: none;
 			user-drag: none;
 		}
-	}
-
-	.info-button {
-		position: absolute;
-		bottom: 10px;
-		right: 5px;
-		width: 15px;
-		height: 15px;
-		border-radius: 10%;
-		background-color: rgb(242, 255, 0);
-		color: rgb(255, 0, 0);
-		border: none;
-		font-size: 12px;
-		font-weight: bold;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 3;
-	}
-	.info-text {
-		position: absolute;
-		top: 0;
-		left: 0;
-		/* width: 100%;
-		height: 100%; */
-		padding: 10px;
-		color: rgb(255, 0, 0);
-		font-size: 12px;
-		z-index: 4;
-		transition: opacity 0.3s ease;
-	}
-
-	.info-text.hidden {
-		opacity: 0;
-		pointer-events: none;
-	}
-
-	.info-text.visible {
-		opacity: 1;
-		pointer-events: all;
-	}
-
-	.info-text-content {
-	}
-
-	.highlight {
-		background-color: yellow;
 	}
 </style>
 
@@ -570,7 +499,7 @@ const images = [
 		}
 	}
 
-	// Funzione per gestire il click sulle immagini (modificata per mobile)
+	// Funzione per gestire il click sulle immagini (solo desktop)
 	function handleImageClick(event: Event) {
 		const wrapper = event.currentTarget as HTMLElement | null;
 		if (!wrapper) return;
@@ -578,17 +507,12 @@ const images = [
 
 		console.log(`forzaNapoli: ${imageId}`);
 
-		if (isMobile) {
-			// Su mobile, il click fa swipe
-			swipeToNextImage();
-		} else {
-			// Su desktop, mantieni l'animazione originale
-			animate(wrapper, {
-				scale: [1, 1.1, 1],
-				duration: 300,
-				easing: "easeOutElastic(1, .6)",
-			});
-		}
+		// Solo su desktop - animazione di click
+		animate(wrapper, {
+			scale: [1, 1.1, 1],
+			duration: 300,
+			easing: "easeOutElastic(1, .6)",
+		});
 	}
 
 	// Funzione per rendere le immagini draggable e cliccabili (solo desktop)
@@ -611,83 +535,15 @@ const images = [
 				},
 			});
 
-			// Aggiungi event listener per il click
+			// Aggiungi event listener per il click solo su desktop
 			element.addEventListener("click", handleImageClick);
-
-			// Aggiungi event listener per il click sul bottone info
-			const infoButton = element.querySelector(".info-button");
-			if (infoButton) {
-				infoButton.addEventListener("click", handleInfoClick);
-			}
-
-			// Funzione per mostrare/nascondere il testo informativo
-			function handleInfoClick(event: {
-				stopPropagation: () => void;
-				currentTarget: any;
-			}) {
-				event.stopPropagation();
-				const button = event.currentTarget;
-				const wrapper = button.closest(".image-wrapper");
-				const infoText = wrapper.querySelector(".info-text");
-				if (infoText) {
-					const isVisible = infoText.classList.contains("visible");
-					infoText.classList.toggle("visible", !isVisible);
-					infoText.classList.toggle("hidden", isVisible);
-				}
-			}
-
-			// Nascondi il testo info quando si clicca sull'area del testo
-			const infoText = element.querySelector(".info-text");
-			if (infoText) {
-				infoText.addEventListener("click", e => {
-					e.stopPropagation();
-					infoText.classList.remove("visible");
-					infoText.classList.add("hidden");
-				});
-			}
 		});
 	}
 
-	// Funzione per mostrare/nascondere il testo informativo (definita fuori dal ciclo)
-	function handleInfoClick(event: {
-		stopPropagation: () => void;
-		currentTarget: any;
-	}) {
-		event.stopPropagation();
-		const button = event.currentTarget;
-		const wrapper = button.closest(".image-wrapper");
-		const infoText = wrapper.querySelector(".info-text");
-		if (infoText) {
-			const isVisible = infoText.classList.contains("visible");
-			infoText.classList.toggle("visible", !isVisible);
-			infoText.classList.toggle("hidden", isVisible);
-		}
-	}
-
-	// Funzione per abilitare click su mobile
+	// Rimuovi completamente enableMobileClick o lasciala vuota
 	function enableMobileClick() {
-		const container = document.getElementById("gallery-container");
-		if (!container) return;
-		const imageElements = container.querySelectorAll(".image-wrapper");
-
-		imageElements.forEach(element => {
-			element.addEventListener("click", handleImageClick);
-
-			// Gestisci info button anche su mobile
-			const infoButton = element.querySelector(".info-button");
-			if (infoButton) {
-				infoButton.addEventListener("click", handleInfoClick);
-			}
-
-			const infoText = element.querySelector(".info-text");
-			if (infoText) {
-				infoText.addEventListener("click", e => {
-					e.stopPropagation();
-					infoText.classList.remove("visible");
-					infoText.classList.add("hidden");
-				});
-			}
-		});
+		// Nessuna funzionalità di click su mobile
+		return;
 	}
 
 	// Animazione di entrata delle immagini
@@ -702,7 +558,6 @@ const images = [
 				rotate: () => (Math.random() - 0.5) * 15,
 				duration: 400,
 				delay: stagger(150, { from: "last" }), // Inizia dall'ultima (quella dietro)
-				easing: "easeOutBack(1.7)",
 			});
 		} else {
 			// Animazione originale per desktop
@@ -720,11 +575,12 @@ const images = [
 		initializeGallery();
 		animateImagesIn();
 
-		if (isMobile) {
-			setTimeout(() => {
-				enableMobileClick();
-			}, 800);
-		}
+		// Non abilitare click su mobile
+		// if (isMobile) {
+		// 	setTimeout(() => {
+		// 		enableMobileClick();
+		// 	}, 800);
+		// }
 
 		// Riposiziona al resize
 		window.addEventListener("resize", () => {
