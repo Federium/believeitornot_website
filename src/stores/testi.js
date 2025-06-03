@@ -1,18 +1,17 @@
 export const mapTesti = {
   nwo: {
     scenario: `
-Il complotto dei rettiliani è una delle teorie cospirazioniste più affascinanti e discusse dell’epoca contemporanea.
-Secondo i suoi sostenitori, esisterebbe una razza di rettili umanoidi, provenienti da un altro pianeta o da dimensioni parallele, che da millenni controllerebbe la Terra infiltrandosi ai vertici del potere politico, economico e culturale. Questi esseri, capaci di mutare forma, sarebbero responsabili di manipolare eventi globali, guerre, crisi economiche e l'informazione, con l’obiettivo di mantenere l’umanità in uno stato di sottomissione e ignoranza.
-La teoria è stata resa popolare da David Icke, ex conduttore televisivo britannico, che ha individuato presunti rettiliani tra celebri leader mondiali e membri di famiglie reali. Pur priva di prove concrete, l’ipotesi affascina per il suo mix di fantascienza, mitologia e diffidenza verso le élite. Per molti, però, è solo un’allegoria del potere disumano e alienante che domina il mondo moderno.
+La teoria del Progetto Blue Beam sostiene l’esistenza di un piano segreto per instaurare un Nuovo Ordine Mondiale. Secondo questa teoria, attraverso l’uso di tecnologie avanzate si simulerebbero eventi soprannaturali, come apparizioni divine o invasioni aliene, per generare un caos tale da giustificare, agli occhi della popolazione, l’implementazione di un governo mondiale centralizzato.<br>
+Il piano si basa sulla manipolazione delle percezioni umane, unita al controllo delle tecnologie di comunicazione e dei sistemi psicologici, per assicurare l’unificazione globale sotto un unico potere.
     `,
 
     progetto: `
-Il complotto dei rettiliani è una delle teorie cospirazioniste più affascinanti e discusse dell’epoca contemporanea.
-Secondo i suoi sostenitori, esisterebbe una razza di rettili umanoidi, provenienti da un altro pianeta o da dimensioni parallele, che da millenni controllerebbe la Terra infiltrandosi ai vertici del potere politico, economico e culturale. Questi esseri, capaci di mutare forma, sarebbero responsabili di manipolare eventi globali, guerre, crisi economiche e l'informazione, con l’obiettivo di mantenere l’umanità in uno stato di sottomissione e ignoranza.
-La teoria è stata resa popolare da David Icke, ex conduttore televisivo britannico, che ha individuato presunti rettiliani tra celebri leader mondiali e membri di famiglie reali. Pur priva di prove concrete, l’ipotesi affascina per il suo mix di fantascienza, mitologia e diffidenza verso le élite. Per molti, però, è solo un’allegoria del potere disumano e alienante che domina il mondo moderno.
+In un mondo sempre più frammentato da diverse lingue e culture, Lingua si presenta come soluzione al disordine globale: un linguaggio sintetico progettato non per esprimere il pensiero, ma per controllarlo. Parte integrante del più ampio piano Blue Beam, che prevede l’ascesa di un governo mondiale centralizzato, Lingua riduce l’intera comunicazione a 55 simboli universali, ognuno associato a specifiche frequenze vibrazionali e gesti manuali. <br>
+Essendo uno strumento per la pace e il progresso, Lingua elimina l’ambiguità e la complessità standardizzando il pensiero stesso. Ciò che sembra una conquista è in realtà un sistema di controllo – dove è il linguaggio a plasmare le persone, anziché le persone plasmare il linguaggio.
     `,
 
-    altroHeading: `Ciao`
+    macchina: `Per garantirne la diffusione, è stato introdotto Creare Lingua: un dispositivo di comunicazione modulare installato in ogni abitazione. Il dispositivo registra il parlato, lo traduce in Lingua e addestra gli utenti attraverso feedback visivi, gestuali e sonori. In modo sottile, la parola trasforma la comunicazione quotidiana in un meccanismo di allineamento ideologico e controllo collettivo.
+`
   },
 
   sneic: {
@@ -22,7 +21,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per sneic)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   milestone: {
@@ -32,7 +31,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per milestone)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   gummm: {
@@ -42,7 +41,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per gummm)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   shift: {
@@ -52,7 +51,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per shift)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   antistreamingarmy: {
@@ -62,7 +61,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per antistreamingarmy)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   habitsystem: {
@@ -72,7 +71,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per habitsystem)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   vtv: {
@@ -82,7 +81,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per vtv)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   tego: {
@@ -92,7 +91,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per tego)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   watever: {
@@ -102,7 +101,7 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per watever)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   },
 
   last: {
@@ -112,6 +111,6 @@ La teoria è stata resa popolare da David Icke, ex conduttore televisivo britann
     progetto: `
 (qui testo progetto per last)
     `,
-    altroHeading: `Ciao`
+    macchina: `Ciao`
   }
 };

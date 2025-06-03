@@ -161,7 +161,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
                 {/each}
               {/if}
 
-              <p>{testi['altro']}</p>
+              <p>{testi['macchina']}</p>
               {#if images[2]}
                 {#each images[2] as image, index}
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />

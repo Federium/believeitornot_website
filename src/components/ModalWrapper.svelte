@@ -70,16 +70,17 @@ console.log(draggableMap);
     if (d) {
       d.enable();
      }
-  
+     element.focus();
     document.getElementById(id).classList.remove('fullsize');
     
-    window.history.pushState({}, '', '/'); // <-- torna alla root
+    window.history.pushState({}, '', '/'); 
   
   }
   function handleInfoClick(event, image) {
     console.log("Info button clicked for image:", image);
     event.stopPropagation();
     openModal(image);
+
   }
 
 function handleImageClick(slug) {
@@ -250,6 +251,19 @@ openFromSlug();
           onClose={() => closeModal(img.slug)}
         />
       {/if} -->
+
+      <!-- {#each openModals.filter(m => m.data.slug === img.slug) as modal (modal.data.slug)}
+  <Modal client:load
+    data={modal}
+    isFullscreen={modal.isFullscreen}
+    onClose={() => closeModal(modal.data.slug)}
+    onExpand={() => expandModal(modal.data.slug)}
+    onMinimize={() => minimizeModal(modal.data.slug)}
+    onChange={(slug) => changeModal(slug)}
+  />
+     
+
+  {/each} -->
     </div>
 
        
@@ -265,11 +279,7 @@ openFromSlug();
   onExpand={() => expandModal(modal.data.slug)}
   onMinimize={() => minimizeModal(modal.data.slug)}
   onChange={(slug) => changeModal(slug)}
-
-  
->
-Ciao
- </Modal>
+/>
 {/each}
 
 
