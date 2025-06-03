@@ -8,9 +8,10 @@
   import Menu from './Menu.svelte';
 
   import EnhancedImage from './EnhancedImage.svelte';
+
   
   // export let data;
-  const { data, onClose, onExpand, onMinimize, isFullscreen } = $props(); 
+  const { data, onClose, onExpand, onMinimize, onChange, isFullscreen } = $props(); 
 
   import { mapImages } from '../stores/mapImages.js';
   import { mapTesti } from '../stores/testi.js';
@@ -87,6 +88,11 @@ function refreshAllDraggables() {
   }
 }
 
+function handleChange(newSlug) {
+  handleClose();
+  onChange(newSlug);
+}
+
 
   onMount(() => {
     const modal = document.getElementById(`modal-${data.data.slug}`);
@@ -124,7 +130,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     <div class="modal-content-wrapper">
       <div class="left-column">
         <div class="modal-menu">
-                  <Menu />
+                  <Menu   onChange={(slug) => handleChange(slug)}/>
                 </div>
         <div class="modal-about">
           <h2>Antidisciplinary Design Lab</h2>
@@ -200,17 +206,20 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
   }
 
+.modal.fullsize,
 .modal.top-modal,
 .modal:focus{
   z-index: 2000 !important ;
 }
 
+.modal.fullsize .top-bar,
 .modal.top-modal .top-bar,
 .modal:focus .top-bar {
   background-color: red;
 }
 
-.modal.top-modal:focus button,
+.modal.fullsize button,
+.modal.top-modal button,
 .modal:focus button{
   color: black;
 }

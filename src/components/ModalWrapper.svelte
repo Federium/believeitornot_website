@@ -51,10 +51,11 @@ function openModal(entry, isFullscreen = false) {
     element.classList.add('fullsize');
     element.focus();
     const d = draggableMap.get(element);
-    d.setX(0);
-    d.setY(0);
+ 
 
     d.disable(); // safe call
+     d.setX(0);
+    d.setY(0);
 
    window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
   
@@ -81,12 +82,29 @@ console.log(draggableMap);
     openModal(image);
   }
 
-  function handleImageClick(slug) {
-    console.log("Image clicked with slug:", slug);
-  //  window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
+function handleImageClick(slug) {
+  console.log("Image clicked with slug:", slug, openModals);
+  
+  const isAlreadyOpen = openModals.some(modal => modal.id === slug);
 
-    openModal(slug);
+  if (isAlreadyOpen) {
+    // Rimuovi la classe top-modal da tutti i modali
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.classList.remove('top-modal');
+    });
+
+    // Aggiungi la classe top-modal al modal attuale
+    const modalEl = document.getElementById(`modal-${slug}`);
+    console.log(modalEl);
+    if (modalEl) {
+      modalEl.classList.add('top-modal');
+      modalEl.focus?.(); // metti il focus se supportato
+    }
+  } else {
+    openModal(slug); // presumibilmente aggiunge un oggetto con id === slug
   }
+}
+
 
   // Posizionamento casuale immagini
   function randomizePositions() {
@@ -163,6 +181,7 @@ console.log(draggableMap);
       delay: stagger(100),
     });
   }
+  
 
 function openFromSlug() {
   const slug = window.location.pathname.slice(1); // rimuove lo slash iniziale
@@ -174,12 +193,14 @@ function openFromSlug() {
   }
 }
 
+function changeModal(slug) {
+     window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
+openFromSlug();
+}
+
 
   onMount(() => {
-setTimeout(() => {
-      
-      openFromSlug();
-    }, 100);
+openFromSlug();
 
           randomizePositions();
     animateImagesIn();
@@ -243,6 +264,7 @@ setTimeout(() => {
   onClose={() => closeModal(modal.data.slug)}
   onExpand={() => expandModal(modal.data.slug)}
   onMinimize={() => minimizeModal(modal.data.slug)}
+  onChange={(slug) => changeModal(slug)}
 
   
 >

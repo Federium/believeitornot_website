@@ -2,7 +2,17 @@
 import { getContext } from 'svelte'
 
 const progetti = getContext('progetti')
-console.log(progetti);
+
+
+const { onChange } = $props(); 
+  const currentSlug = window.location.pathname.slice(1); // rimuove lo slash iniziale
+
+function changeModal(slug){ 
+    console.log("change",slug, currentSlug);
+    onChange(slug);
+    // open(slug);
+}
+
 </script>
 
 
@@ -12,9 +22,10 @@ console.log(progetti);
   <ul>
     {#each progetti as project}
       <li>
-        <a href={"/" + project.data.slug}>
+        <!-- <a href={"/" + project.data.slug}>
           {project.data.title}
-        </a>
+        </a> -->
+        <button onclick={() => changeModal(project.data.slug)}>{project.data.title}</button>
       </li>
     {/each}
   </ul>
@@ -32,14 +43,19 @@ console.log(progetti);
   nav li {
 white-space: nowrap; 
   }
-  nav a {
-    color: black;
-  }
+  nav button {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;  }
 
-  nav a:active {
+  nav button:active {
     color: red;
   }
-  nav a:hover {
+  nav button:hover {
     color: red;
   }
 
