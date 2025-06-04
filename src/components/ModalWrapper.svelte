@@ -160,7 +160,7 @@
 		const containerWidth = container.offsetWidth;
 		const containerHeight = container.offsetHeight;
 		const centerX = containerWidth / 2;
-		const centerY = containerHeight / 2;
+		const centerY = containerHeight / 3;
 
 		imageWrappers.forEach((wrapper, index) => {
 			const randomOffsetX = (Math.random() - 0.5) * 20;

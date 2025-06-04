@@ -201,7 +201,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     position: absolute;
     top: 20px;
     left: 20px;
-    max-height: 90vh;
+    height: 90vh; /* Cambia da max-height a height fisso */
     outline: none;
         pointer-events: visible;
     z-index: 0;
@@ -291,6 +291,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     justify-content: start;
     overflow-y: auto;
     width: 100%;
+    height: 100%;
   }
 
   .modal-content-wrapper {
