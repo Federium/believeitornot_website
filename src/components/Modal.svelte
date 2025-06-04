@@ -202,6 +202,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   overflow: hidden;
   min-width: 50px;
   min-height: 2em;
+  border: 2px solid black;
   
 
   }
@@ -273,9 +274,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     font-weight: bold;
   }
 
+  .modal.fullsize .modal-content-parent {
+    justify-content: center;
+
+  }
   .modal-content-parent {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     overflow-y: auto;
     width: 100%;
   }
@@ -335,6 +340,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       justify-content: space-between;
       height: auto;
       display: none;
+      border-right: 2px solid black;
     }
 
       .modal.fullsize  .left-column {
