@@ -15,7 +15,12 @@
 
   let openModals = [];
  let initialSlug = null;
+  let isMobile = false;
+  	let currentImageIndex = 0;
+    	let isDragging = false;
 
+	let currentDragElement;
+	let initialTransform = { x: 0, y: 0, rotation: 0 };
 
   // function openModal(entry) {
   //   openModals = [...openModals, entry];
@@ -157,6 +162,260 @@ function handleImageClick(slug) {
     }
   }
 
+  	// Funzione per rilevare se è mobile
+	function detectMobile() {
+		return window.innerWidth <= 768;
+	}
+
+	function positionMobileStack() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = Array.from(
+			container.querySelectorAll(".image-wrapper")
+		);
+
+		if (imageWrappers.length === 0) return;
+
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+		const centerX = containerWidth / 2;
+		const centerY = containerHeight / 2;
+
+		imageWrappers.forEach((wrapper, index) => {
+			const randomOffsetX = (Math.random() - 0.5) * 20;
+			const randomOffsetY = (Math.random() - 0.5) * 20;
+			const randomRotation = (Math.random() - 0.5) * 15;
+
+			// Z-index inverso: l'immagine corrente ha z-index più alto
+			const zIndex = imageWrappers.length - index;
+		  wrapper.style.zIndex = zIndex.toString();
+
+			animate(wrapper, {
+				translateX: centerX - 100 + randomOffsetX,
+				translateY: centerY - 75 + randomOffsetY,
+				rotate: randomRotation,
+				scale: index === currentImageIndex ? 1 : 0.95 - index * 0.02,
+				duration: 0.2,
+				easing: "linear",
+			});
+		});
+	}
+
+	// Funzione per gestire lo swipe con trascinamento visibile
+	function setupMobileSwipe() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+
+		let startX = 0;
+		let startY = 0;
+		let currentX = 0;
+		let currentY = 0;
+		let initialTransform = { x: 0, y: 0, rotation: 0 };
+
+		container.addEventListener("touchstart", e => {
+			const imageWrappers = Array.from(
+				document.querySelectorAll(".image-wrapper")
+			);
+			if (imageWrappers.length === 0) return;
+
+			currentDragElement = imageWrappers[currentImageIndex];
+			if (!currentDragElement) return;
+
+			startX = e.touches[0].clientX;
+			startY = e.touches[0].clientY;
+			currentX = startX;
+			currentY = startY;
+			isDragging = true;
+
+			// Salva la posizione iniziale
+			const style = getComputedStyle(currentDragElement);
+			const matrix = new DOMMatrix(style.transform);
+			initialTransform = {
+				x: matrix.m41,
+				y: matrix.m42,
+				rotation: Math.atan2(matrix.m12, matrix.m11) * (180 / Math.PI),
+			};
+
+			// Porta l'elemento in primo piano
+			currentDragElement.style.zIndex = "1000";
+			e.preventDefault();
+		});
+
+		container.addEventListener("touchmove", e => {
+			if (!isDragging || !currentDragElement) return;
+
+			currentX = e.touches[0].clientX;
+			currentY = e.touches[0].clientY;
+
+			const deltaX = currentX - startX;
+			const deltaY = currentY - startY;
+
+			// Calcola la rotazione basata sul movimento
+			const rotation = deltaX * 0.1; // Moltiplicatore per controllare l'intensità
+
+			// Calcola l'opacità basata sulla distanza
+			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+			const opacity = Math.max(0.3, 1 - distance / 300);
+
+			// Applica la trasformazione in tempo reale
+			animate(currentDragElement, {
+				translateX: initialTransform.x + deltaX,
+				translateY: initialTransform.y + deltaY,
+				rotate: initialTransform.rotation + rotation,
+				opacity: opacity,
+				duration: 0,
+				easing: "linear",
+			});
+
+			e.preventDefault();
+		});
+
+		container.addEventListener("touchend", e => {
+			if (!isDragging || !currentDragElement) return;
+
+			isDragging = false;
+
+			const deltaX = currentX - startX;
+			const deltaY = currentY - startY;
+			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+			const minSwipeDistance = 80;
+
+			if (distance > minSwipeDistance) {
+				// Swipe sufficientemente lungo - completa l'animazione di uscita
+				completeSwipeAnimation(deltaX, deltaY);
+			} else {
+				// Swipe troppo breve - riporta l'immagine in posizione
+				returnToPosition();
+			}
+		});
+	}
+
+	// Funzione per completare l'animazione di swipe
+	function completeSwipeAnimation(deltaX, deltaY) {
+		if (!currentDragElement) return;
+
+		// Calcola la direzione di uscita amplificando il movimento
+		const exitX = deltaX > 0 ? window.innerWidth + 200 : -200;
+		const exitY = initialTransform.y + deltaY * 2;
+		const exitRotation = deltaX > 0 ? 30 : -30;
+
+		animate(currentDragElement, {
+			translateX: exitX,
+			translateY: exitY,
+			rotate: exitRotation,
+			opacity: 0,
+			scale: 0.8,
+			duration: 300,
+			easing: "easeOutQuad",
+			complete: () => {
+				// Passa all'immagine successiva
+				currentImageIndex =
+					(currentImageIndex + 1) %
+					document.querySelectorAll(".image-wrapper").length;
+				repositionAfterSwipe();
+				currentDragElement = null;
+			},
+		});
+	}
+
+	// Funzione per riportare l'immagine in posizione se lo swipe è troppo breve
+	function returnToPosition() {
+		if (!currentDragElement) return;
+
+		animate(currentDragElement, {
+			translateX: initialTransform.x,
+			translateY: initialTransform.y,
+			rotate: initialTransform.rotation,
+			opacity: 1,
+			scale: 1,
+			duration: 300,
+			easing: "easeOutBack(1.7)",
+			complete: () => {
+				// Ripristina il z-index
+				const imageWrappers = Array.from(
+					document.querySelectorAll(".image-wrapper")
+				);
+				const zIndex = imageWrappers.length - currentImageIndex;
+				if (currentDragElement) {
+					if (currentDragElement instanceof HTMLElement) {
+						currentDragElement.style.zIndex = zIndex.toString();
+					}
+				}
+				currentDragElement = null;
+			},
+		});
+	}
+
+	// Funzione per passare all'immagine successiva
+	function swipeToNextImage() {
+		const imageWrappers = Array.from(
+			document.querySelectorAll(".image-wrapper")
+		);
+
+		if (imageWrappers.length === 0) return;
+
+		const currentWrapper = imageWrappers[currentImageIndex];
+
+		// Simula uno swipe casuale per il click
+		const direction = Math.random() > 0.5 ? 1 : -1;
+
+		// Porta l'elemento in primo piano
+		currentWrapper.style.zIndex = "1000";
+
+		animate(currentWrapper, {
+			translateX: direction * (window.innerWidth + 200),
+			translateY: (Math.random() - 0.5) * 200,
+			rotate: direction * 25,
+			scale: 0.8,
+			opacity: 0,
+			duration: 400,
+			easing: "easeInOutQuad",
+			complete: () => {
+				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				repositionAfterSwipe();
+			},
+		});
+	}
+
+	// Funzione per riposizionare le immagini dopo lo swipe
+	function repositionAfterSwipe() {
+		const imageWrappers = Array.from(
+			document.querySelectorAll(".image-wrapper")
+		);
+
+		const containerWidth = window.innerWidth;
+		const containerHeight = window.innerHeight;
+		const centerX = containerWidth / 2;
+		const centerY = containerHeight / 2;
+
+		imageWrappers.forEach((wrapper, index) => {
+			const randomOffsetX = (Math.random() - 0.5) * 20;
+			const randomOffsetY = (Math.random() - 0.5) * 20;
+			const randomRotation = (Math.random() - 0.5) * 15;
+
+			// Calcola il nuovo ordine relativo all'immagine corrente
+			const relativeIndex =
+				(index - currentImageIndex + imageWrappers.length) %
+				imageWrappers.length;
+			const zIndex = imageWrappers.length - relativeIndex;
+			wrapper.style.zIndex = zIndex.toString();
+
+			animate(wrapper, {
+				translateX: centerX - 100 + randomOffsetX,
+				translateY: centerY - 75 + randomOffsetY,
+				rotate: randomRotation,
+				scale: relativeIndex === 0 ? 1 : 0.95 - relativeIndex * 0.02,
+				opacity: 1,
+				duration: 300,
+				easing: "easeOutQuad",
+			});
+		});
+	}
+
+
+  // FINE CODICE MOBILE 
+
+
   // Drag & Click
   function makeDraggableAndClickable() {
     const container = document.getElementById("gallery-container");
@@ -200,8 +459,26 @@ openFromSlug();
 }
 
 
+
+  
+	function initializeGallery() {
+		isMobile = detectMobile();
+
+		if (isMobile) {
+			positionMobileStack();
+			setupMobileSwipe();
+		} else {
+			randomizePositions();
+			setTimeout(() => {
+				makeDraggableAndClickable();
+			}, 800);
+		}
+  }
+
   onMount(() => {
+    
 openFromSlug();
+		initializeGallery();
 
           randomizePositions();
     animateImagesIn();
@@ -209,14 +486,24 @@ openFromSlug();
 
 
 
-    setTimeout(() => {
+    // setTimeout(() => {
       
-      makeDraggableAndClickable();
-    }, 800);
+    //   makeDraggableAndClickable();
+    // }, 800);
 
-    window.addEventListener("resize", () => {
-      randomizePositions();
-    });
+   	window.addEventListener("resize", () => {
+			const wasMobile = isMobile;
+			isMobile = detectMobile();
+
+			if (wasMobile !== isMobile) {
+				// Il tipo di dispositivo è cambiato, reinizializza
+				initializeGallery();
+			} else if (isMobile) {
+				positionMobileStack();
+			} else {
+				randomizePositions();
+			}
+		});
   });
 
 </script>
