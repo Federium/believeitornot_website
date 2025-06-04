@@ -1,5 +1,8 @@
 ---
 import Logo from "../assets/title/title.svg";
+import BackgroundText from "./homeText.svelte";
+import AboutButton from "./About.svelte";
+// import '../style/background.css'
 ---
 
 <header class="title-container">
@@ -8,7 +11,10 @@ import Logo from "../assets/title/title.svg";
 <div class="subtitle-container" class="blur">
 	<p>speculating on (un)real conspiracy theories</p>
 </div>
-<div class="text-container" class="blur">
+
+<BackgroundText client:load>
+
+<!-- <div class="text-container" class="blur">
 	<div class="text-content">
 		<div class="text-top">
 			<div class="text-block draggable" data-text-id="block1">
@@ -23,7 +29,9 @@ import Logo from "../assets/title/title.svg";
 				</h2>
 				<ul class="text-links" class="no-select">
 					<li>
-						<a href="">ABOUT</a>
+						<AboutButton client:load/>
+												<a href="">EN/ITA</a>
+
 						<a href="">EN/ITA</a>
 					</li>
 				</ul>
@@ -36,21 +44,9 @@ import Logo from "../assets/title/title.svg";
 			</h3>
 		</div>
 	</div>
-</div>
-
+</div> -->
 <style>
-	.text-top h1,h2,h3,h4,h5,h6,p,a,ul{
-		color: var(--giallo);
-		text-transform: uppercase;
-	}
 
-	.text-top h3 {
-		  text-align: center;
-}
-
-
-	
-	
 	.title-container {
 		height: 100vh;
 		width: 100vw;
@@ -74,70 +70,8 @@ import Logo from "../assets/title/title.svg";
 				color: var(--giallo);
 		line-height: 95%;
 	}
-
-	.text-container {
-		position: absolute;
-		top: 0;
-		height: 100vh;
-		width: 100vw;
-		overflow: hidden;
-		display: flex;
-		justify-content: right;
-	}
-
-	.text-content {
-		color: white;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		min-width: 0;
-	}
-
-	.text-top {
-		display: flex;
-		padding: 0 2rem;
-		text-wrap: nowrap;
-		overflow: hidden;
-		min-width: 0;
-		gap: 2rem;
-	}
-
-	.text-top-right {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
-
-	.text-links li {
-		display: flex;
-		gap: 1rem;
-	}
-
-	.text-bottom {
-		margin-bottom: 12rem;
-	}
-
-	h1,
-	h3 {
-		filter: blur(1px);
-	}
-	h2,
-	.text-links {
-		filter: blur(0.6px);
-	}
-
 	@media (max-width: 768px) {
-		.text-container {
-			justify-content: left;
-		}
-		.text-content {
-			width: 100%;
-		}
-		.text-top {
-			padding: 1rem 1rem;
-			gap: 0;
-			justify-content: space-between;
-		}
+	
 		.title-svg {
 			height: 100%;
 			width: 100vw;
