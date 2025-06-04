@@ -583,11 +583,13 @@ openFromSlug();
     height: 100%;
     overflow: hidden;
     z-index: 2;
+    pointer-events: none;
   }
   .image-wrapper {
     opacity: 0;
     position: absolute;
     cursor: grab;
+    pointer-events: all;
   }
     .image-wrapper:hover {
     z-index: 100;

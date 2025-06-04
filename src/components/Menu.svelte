@@ -16,7 +16,6 @@ function changeModal(slug){
 </script>
 
 
-<h2>Believe it or not</h2>
 
 <nav>
   <ul>

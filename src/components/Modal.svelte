@@ -130,10 +130,12 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     <div class="modal-content-wrapper">
       <div class="left-column">
         <div class="modal-menu">
+                    <label>Believe It Or Not</label>
+
                   <Menu   onChange={(slug) => handleChange(slug)}/>
                 </div>
         <div class="modal-about">
-          <h2>Antidisciplinary Design Lab</h2>
+          <label>Antidisciplinary Design Lab</label>
           <div>Laboratorio di Sintesi Finale – C1</div>
           <div>Corso di Laurea in Design della Comunicazione</div>
           <div>Politecnico di Miilano</div>
@@ -243,6 +245,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     background-color: black;
     height: 2em;
     width: 100%;
+    border-bottom: 2px solid black;
     display: flex;
     justify-content: flex-end;
     color: white; 
@@ -288,9 +291,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   .modal-content-wrapper {
     display: flex;
     justify-content: space-between;
-        padding: 4px;
         gap: 16px;
     height: 100%;
+  }
+
+  .modal-content-wrapper>div {
+            padding: 4px;
+
   }
 
 
@@ -341,6 +348,12 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       height: auto;
       display: none;
       border-right: 2px solid black;
+    }
+
+    .left-column label {
+      font-family: 'Arial Narrow';
+      font-size: clamp(1.5rem, 1.5vw, 3rem);
+      font-weight: bold;
     }
 
       .modal.fullsize  .left-column {

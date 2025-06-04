@@ -2,11 +2,11 @@
 import Logo from "../assets/title/title.svg";
 ---
 
-<div class="title-container">
-	<Logo aria-label="Title" class="title-svg" preserveAspectRatio="none" />
-</div>
+<header class="title-container">
+	<Logo aria-label="BELIEVE IT OR NOT" class="title-svg" preserveAspectRatio="none" />
+</header>
 <div class="subtitle-container" class="blur">
-	<h6>speculating on (un)real conspiracy theories</h6>
+	<p>speculating on (un)real conspiracy theories</p>
 </div>
 <div class="text-container" class="blur">
 	<div class="text-content">
@@ -39,6 +39,18 @@ import Logo from "../assets/title/title.svg";
 </div>
 
 <style>
+	.text-top h1,h2,h3,h4,h5,h6,p,a,ul{
+		color: var(--giallo);
+		text-transform: uppercase;
+	}
+
+	.text-top h3 {
+		  text-align: center;
+}
+
+
+	
+	
 	.title-container {
 		height: 100vh;
 		width: 100vw;
@@ -59,6 +71,8 @@ import Logo from "../assets/title/title.svg";
 		font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 		font-size: clamp(2rem, 15vw, 6rem);
 		filter: blur(1px);
+				color: var(--giallo);
+		line-height: 95%;
 	}
 
 	.text-container {
