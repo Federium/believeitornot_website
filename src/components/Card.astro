@@ -1,0 +1,87 @@
+---
+// src/components/ProjectCard.astro
+const { project } = Astro.props;
+---
+
+<div class="project-card" data-project-slug={project.slug}>
+  {project.data.image && (
+    <img src={project.data.image} alt={project.data.title} class="card-image" />
+  )}
+  
+  <div class="card-content">
+    <h3>{project.data.title}</h3>
+    <p>{project.data.description}</p>
+    
+    {project.data.tags && (
+      <div class="tags">
+        {project.data.tags.map(tag => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .project-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-card:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    transform: translateY(-2px);
+  }
+
+  .project-card:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .card-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .card-content p {
+    margin: 0 0 1rem 0;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+</style>

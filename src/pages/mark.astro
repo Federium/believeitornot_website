@@ -1,0 +1,13 @@
+---
+import { getEntry, render } from 'astro:content';
+const entry = await getEntry('projects', 'nwo');
+
+if (!entry) {
+   // Handle Error, for example:
+  throw new Error('Could not find blog post 1');
+}
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+---
+---
+
+  <Content />

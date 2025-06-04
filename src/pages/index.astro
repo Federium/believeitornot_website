@@ -1,9 +1,19 @@
 ---
+
 import Layout from "../layouts/Layout.astro";
-import HomeImages from "../components/homeImages.astro";
+import HomeImages from "../components/homeImagesPerSvelte.astro";
 import Effect from "../components/effect.astro";
 import Contents from "../components/homeText.astro";
 import "../style/global.css";
+import Logo from "../assets/title/title.svg";
+
+import { getCollection } from "astro:content";
+const projects = await getCollection("projects");
+
+import ProjectModal from "../components/Modal.svelte";
+let modalComponent;
+import ProjectCard from "../components/Card.astro";
+
 ---
 
 <Layout>
@@ -12,7 +22,22 @@ import "../style/global.css";
 		<HomeImages />
 		<Contents />
 	</div>
+	<!-- <HomeImages /> -->
+<!-- {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+
+
+  <script>
+    import '../scripts/projectCards.js';
+  </script> -->
+
+	<!-- <div class="title-container"> -->
+		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
+		 <!-- <Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
+	</div> -->
 </Layout>
+
 
 <script>
 	// Mostra i componenti dopo 2 secondi con fade-in

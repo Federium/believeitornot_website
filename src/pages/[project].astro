@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects'); // sostituisci 'projects' col nome della tua collection
+
+  return projects.map(project => ({
+    params: { project: project.data.slug }
+  }));
+}
+
+return Astro.rewrite('/');
+
+---
