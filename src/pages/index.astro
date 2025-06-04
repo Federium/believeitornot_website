@@ -3,6 +3,7 @@
 import Layout from "../layouts/Layout.astro";
 import HomeImages from "../components/homeImagesPerSvelte.astro";
 import Effect from "../components/effect.astro";
+import Contents from "../components/homeText.astro";
 import "../style/global.css";
 import Logo from "../assets/title/title.svg";
 
@@ -17,12 +18,9 @@ import ProjectCard from "../components/Card.astro";
 
 <Layout>
 	<Effect />
-
- <div class="crt-overlay"></div>
-	<HomeImages />
-	<div class="title-container">
-		<!-- <img src={titleSvg.src} alt="Title" class="title-svg" /> -->
-		<Logo alt="Title" class="title-svg" preserveAspectRatio="none" />
+	<div id="delayed-content" style="opacity: 0;">
+		<HomeImages />
+		<Contents />
 	</div>
 	<!-- <HomeImages /> -->
 <!-- {projects.map((project) => (
@@ -40,32 +38,13 @@ import ProjectCard from "../components/Card.astro";
 	</div> -->
 </Layout>
 
-<style>
-	.title-container {
-		height: 100vh;
-		width: 100vw;
-		overflow: hidden;
-		position: absolute;
-		top: 0;
-		/* padding-left: 1rem; */
-		pointer-events: none;
-	}
-
-	.title-svg {
-		width: 50vw;
-		height: 100%;
-	}
-</style>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', () => {
-        const i = Number(card.getAttribute('data-index'));
-        if (modalComponent && modalComponent.openModal) {
-          modalComponent.openModal(i);
-        }
-      });
-    });
-  });
+	// Mostra i componenti dopo 2 secondi con fade-in
+	setTimeout(() => {
+		const delayedContent = document.getElementById("delayed-content");
+		if (delayedContent) {
+			delayedContent.style.opacity = "1";
+		}
+	}, 400); // 2000ms = 2 secondi
 </script>

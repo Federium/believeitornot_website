@@ -18,67 +18,56 @@ const images = [
 		src: image1,
 		alt: "Immagine 1",
 		id: "img1",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image2,
 		alt: "Immagine 2",
 		id: "img2",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image3,
 		alt: "Immagine 3",
 		id: "img3",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image4,
-		alt: "Immagine 3",
+		alt: "Immagine 4",
 		id: "img4",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image5,
-		alt: "Immagine 3",
+		alt: "Immagine 5",
 		id: "img5",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image6,
-		alt: "Immagine 3",
+		alt: "Immagine 6",
 		id: "img6",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image7,
-		alt: "Immagine 3",
+		alt: "Immagine 7",
 		id: "img7",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image8,
 		alt: "Immagine 3",
 		id: "img8",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image9,
-		alt: "Immagine 3",
+		alt: "Immagine 9",
 		id: "img9",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image10,
-		alt: "Immagine 3",
+		alt: "Immagine 10",
 		id: "img10",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 	{
 		src: image11,
-		alt: "Immagine 3",
+		alt: "Immagine 11",
 		id: "img11",
-		info: "Informazioni su Immagine 1 per la mostra Believe it or not",
 	},
 ];
 ---
@@ -86,11 +75,7 @@ const images = [
 <div class="gallery-container" id="gallery-container">
 	{
 		images.map(img => (
-			<div
-				class="image-wrapper draggable"
-				data-image-id={img.id}
-				data-info-text={img.info}
-			>
+			<div class="image-wrapper draggable" data-image-id={img.id}>
 				<Image
 					src={img.src}
 					alt={img.alt}
@@ -99,14 +84,6 @@ const images = [
 					class="gallery-image"
 					draggable="false"
 				/>
-				<button class="info-button" data-info-id={img.id}>
-					?
-				</button>
-				<div class="info-text hidden" data-text-for={img.id}>
-					<div class="info-text-content">
-						<span class="highlight">{img.info}</span>
-					</div>
-				</div>
 			</div>
 		))
 	}
@@ -121,166 +98,418 @@ const images = [
 		height: 100vh;
 		overflow: hidden;
 		z-index: 2;
+		/* Previene il bounce su iOS */
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior: none;
 	}
 
 	.image-wrapper {
 		position: absolute;
 		cursor: grab;
+		/* Migliora le performance durante l'animazione */
+		will-change: transform;
+		-webkit-transform: translateZ(0);
+		transform: translateZ(0);
+		/* Abilita l'accelerazione hardware */
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
 	}
 
 	.image-wrapper:active {
 		cursor: grabbing;
 	}
 	.image-wrapper:hover {
-	z-index: 999;
-}
-
-	.gallery-image {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+		z-index: 999;
 	}
 
-	.info-button {
-		position: absolute;
-		bottom: 10px;
-		right: 5px;
-		width: 15px;
-		height: 15px;
-		border-radius: 10%;
-		background-color: rgb(242, 255, 0);
-		color: rgb(255, 0, 0);
-		border: none;
-		font-size: 12px;
-		font-weight: bold;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 3;
-	}
-	.info-text {
-		position: absolute;
-		top: 0;
-		left: 0;
-		/* width: 100%;
-		height: 100%; */
-		padding: 10px;
-		color: rgb(255, 0, 0);
-		font-size: 12px;
-		z-index: 4;
-		transition: opacity 0.3s ease;
-	}
+	/* Stili specifici per mobile */
+	@media (max-width: 768px) {
+		.image-wrapper {
+			cursor: default;
+			/* Migliora la responsività del touch */
+			touch-action: none;
+		}
 
-	.info-text.hidden {
-		opacity: 0;
-		pointer-events: none;
-	}
+		.gallery-container {
+			/* Disabilita la selezione del testo su mobile */
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			/* Disabilita il tap highlight */
+			-webkit-tap-highlight-color: transparent;
+			/* Previene il comportamento di scroll nativo */
+			touch-action: none;
+		}
 
-	.info-text.visible {
-		opacity: 1;
-		pointer-events: all;
-	}
-
-	.info-text-content {
-	}
-
-	.highlight {
-		background-color: yellow;
+		.gallery-image {
+			/* Previene il trascinamento delle immagini */
+			-webkit-user-drag: none;
+			-khtml-user-drag: none;
+			-moz-user-drag: none;
+			-o-user-drag: none;
+			user-drag: none;
+		}
 	}
 </style>
 
 <script>
-	import { animate, createDraggable, stagger } from "animejs";
+	import {
+		animate,
+		createDraggable,
+		stagger,
+		type JSTarget,
+		type TargetSelector,
+	} from "animejs";
 
-	// Funzione per gestire il click sul bottone info
-	function handleInfoClick(event) {
-		event.stopPropagation(); // Previene il trigger del click sull'immagine
-		const button = event.currentTarget;
-		const imageId = button.getAttribute("data-info-id");
-		const wrapper = button.closest(".image-wrapper");
-		const infoText = wrapper.querySelector(".info-text");
+	let currentImageIndex = 0;
+	let isMobile = false;
+	let isDragging = false;
+	let currentDragElement:
+		| string
+		| Element
+		| NodeList
+		| TargetSelector[]
+		| SVGElement
+		| JSTarget
+		| null = null;
+	let initialTransform = { x: 0, y: 0, rotation: 0 };
 
-		if (infoText) {
-			if (infoText.classList.contains("hidden")) {
-				infoText.classList.remove("hidden");
-				infoText.classList.add("visible");
-			} else {
-				infoText.classList.remove("visible");
-				infoText.classList.add("hidden");
+	// Funzione per rilevare se è mobile
+	function detectMobile() {
+		return window.innerWidth <= 768;
+	}
+
+	// Funzione per posizionare le immagini casualmente al centro
+	function randomizePositions() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = Array.from(
+			container.querySelectorAll(".image-wrapper")
+		);
+
+		if (imageWrappers.length === 0) return;
+
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+
+		const wrapperWidth = (imageWrappers[0] as HTMLElement).offsetWidth;
+		const wrapperHeight = (imageWrappers[0] as HTMLElement).offsetHeight;
+		const verticalSpacing = wrapperHeight * 1.2;
+
+		// Struttura della griglia: numero di elementi per riga
+		const gridStructure = [4, 3, 4];
+		const totalRows = gridStructure.length;
+		const totalGridHeight = totalRows * verticalSpacing;
+		const baseOffsetY = (containerHeight - totalGridHeight) / 2;
+
+		let index = 0;
+		for (let row = 0; row < gridStructure.length; row++) {
+			const itemsInRow = gridStructure[row];
+			const rowY = baseOffsetY + row * verticalSpacing;
+
+			// Calcola larghezza totale della riga
+			const totalRowWidth = itemsInRow * wrapperWidth;
+			const baseOffsetX = (containerWidth - totalRowWidth) / 2;
+
+			for (let col = 0; col < itemsInRow; col++) {
+				if (index >= imageWrappers.length) break;
+
+				const wrapper = imageWrappers[index];
+				const baseX = baseOffsetX + col * wrapperWidth;
+				const baseY = rowY;
+
+				// Randomizzazione locale ±50% (cioè jitter = 1.0)
+				const jitterX = (Math.random() - 0.3) * wrapperWidth;
+				const jitterY = (Math.random() - 0.3) * wrapperHeight;
+				const randomRotation = (Math.random() - 0.5) * 30;
+
+				const finalX = baseX + jitterX;
+				const finalY = baseY + jitterY;
+
+				animate(wrapper, {
+					translateX: finalX,
+					translateY: finalY,
+					// rotate: randomRotation,
+					duration: 0,
+					easing: "linear",
+				});
+
+				index++;
 			}
 		}
 	}
 
-	// Funzione per posizionare le immagini casualmente al centro
-function randomizePositions() {
-	const container = document.getElementById("gallery-container");
-	if (!container) return;
-	const imageWrappers = Array.from(container.querySelectorAll(".image-wrapper"));
+	// Nuova funzione per posizionare le immagini in stile stack per mobile
+	function positionMobileStack() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = Array.from(
+			container.querySelectorAll(".image-wrapper")
+		);
 
-	if (imageWrappers.length === 0) return;
+		if (imageWrappers.length === 0) return;
 
-	const containerWidth = container.offsetWidth;
-	const containerHeight = container.offsetHeight;
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+		const centerX = containerWidth / 2;
+		const centerY = containerHeight / 2;
 
-	const wrapperWidth = imageWrappers[0].offsetWidth;
-	const wrapperHeight = imageWrappers[0].offsetHeight;
-	const verticalSpacing = wrapperHeight * 1.2;
+		imageWrappers.forEach((wrapper, index) => {
+			const randomOffsetX = (Math.random() - 0.5) * 20;
+			const randomOffsetY = (Math.random() - 0.5) * 20;
+			const randomRotation = (Math.random() - 0.5) * 15;
 
-	// Struttura della griglia: numero di elementi per riga
-	const gridStructure = [4, 3, 4];
-	const totalRows = gridStructure.length;
-	const totalGridHeight = totalRows * verticalSpacing;
-	const baseOffsetY = (containerHeight - totalGridHeight) / 2;
-
-	let index = 0;
-	for (let row = 0; row < gridStructure.length; row++) {
-		const itemsInRow = gridStructure[row];
-		const rowY = baseOffsetY + row * verticalSpacing;
-
-		// Calcola larghezza totale della riga
-		const totalRowWidth = itemsInRow * wrapperWidth;
-		const baseOffsetX = (containerWidth - totalRowWidth) / 2;
-
-		for (let col = 0; col < itemsInRow; col++) {
-			if (index >= imageWrappers.length) break;
-
-			const wrapper = imageWrappers[index];
-			const baseX = baseOffsetX + col * wrapperWidth;
-			const baseY = rowY;
-
-			// Randomizzazione locale ±50% (cioè jitter = 1.0)
-			const jitterX = (Math.random() - 0.3) * wrapperWidth;
-			const jitterY = (Math.random() - 0.3) * wrapperHeight;
-			const randomRotation = (Math.random() - 0.5) * 30;
-
-			const finalX = baseX + jitterX;
-			const finalY = baseY + jitterY;
+			// Z-index inverso: l'immagine corrente ha z-index più alto
+			const zIndex = imageWrappers.length - index;
+			(wrapper as HTMLElement).style.zIndex = zIndex.toString();
 
 			animate(wrapper, {
-				translateX: finalX,
-				translateY: finalY,
-				// rotate: randomRotation,
+				translateX: centerX - 100 + randomOffsetX,
+				translateY: centerY - 75 + randomOffsetY,
+				rotate: randomRotation,
+				scale: index === currentImageIndex ? 1 : 0.95 - index * 0.02,
+				duration: 0,
+				easing: "linear",
+			});
+		});
+	}
+
+	// Funzione per gestire lo swipe con trascinamento visibile
+	function setupMobileSwipe() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+
+		let startX = 0;
+		let startY = 0;
+		let currentX = 0;
+		let currentY = 0;
+		let initialTransform = { x: 0, y: 0, rotation: 0 };
+
+		container.addEventListener("touchstart", e => {
+			const imageWrappers = Array.from(
+				document.querySelectorAll(".image-wrapper")
+			);
+			if (imageWrappers.length === 0) return;
+
+			currentDragElement = imageWrappers[currentImageIndex];
+			if (!currentDragElement) return;
+
+			startX = e.touches[0].clientX;
+			startY = e.touches[0].clientY;
+			currentX = startX;
+			currentY = startY;
+			isDragging = true;
+
+			// Salva la posizione iniziale
+			const style = getComputedStyle(currentDragElement as Element);
+			const matrix = new DOMMatrix(style.transform);
+			initialTransform = {
+				x: matrix.m41,
+				y: matrix.m42,
+				rotation: Math.atan2(matrix.m12, matrix.m11) * (180 / Math.PI),
+			};
+
+			// Porta l'elemento in primo piano
+			(currentDragElement as HTMLElement).style.zIndex = "1000";
+			e.preventDefault();
+		});
+
+		container.addEventListener("touchmove", e => {
+			if (!isDragging || !currentDragElement) return;
+
+			currentX = e.touches[0].clientX;
+			currentY = e.touches[0].clientY;
+
+			const deltaX = currentX - startX;
+			const deltaY = currentY - startY;
+
+			// Calcola la rotazione basata sul movimento
+			const rotation = deltaX * 0.1; // Moltiplicatore per controllare l'intensità
+
+			// Calcola l'opacità basata sulla distanza
+			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+			const opacity = Math.max(0.3, 1 - distance / 300);
+
+			// Applica la trasformazione in tempo reale
+			animate(currentDragElement, {
+				translateX: initialTransform.x + deltaX,
+				translateY: initialTransform.y + deltaY,
+				rotate: initialTransform.rotation + rotation,
+				opacity: opacity,
 				duration: 0,
 				easing: "linear",
 			});
 
-			index++;
+			e.preventDefault();
+		});
+
+		container.addEventListener("touchend", e => {
+			if (!isDragging || !currentDragElement) return;
+
+			isDragging = false;
+
+			const deltaX = currentX - startX;
+			const deltaY = currentY - startY;
+			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+			const minSwipeDistance = 80;
+
+			if (distance > minSwipeDistance) {
+				// Swipe sufficientemente lungo - completa l'animazione di uscita
+				completeSwipeAnimation(deltaX, deltaY);
+			} else {
+				// Swipe troppo breve - riporta l'immagine in posizione
+				returnToPosition();
+			}
+		});
+	}
+
+	// Funzione per completare l'animazione di swipe
+	function completeSwipeAnimation(deltaX: number, deltaY: number) {
+		if (!currentDragElement) return;
+
+		// Calcola la direzione di uscita amplificando il movimento
+		const exitX = deltaX > 0 ? window.innerWidth + 200 : -200;
+		const exitY = initialTransform.y + deltaY * 2;
+		const exitRotation = deltaX > 0 ? 30 : -30;
+
+		animate(currentDragElement, {
+			translateX: exitX,
+			translateY: exitY,
+			rotate: exitRotation,
+			opacity: 0,
+			scale: 0.8,
+			duration: 300,
+			easing: "easeOutQuad",
+			complete: () => {
+				// Passa all'immagine successiva
+				currentImageIndex =
+					(currentImageIndex + 1) %
+					document.querySelectorAll(".image-wrapper").length;
+				repositionAfterSwipe();
+				currentDragElement = null;
+			},
+		});
+	}
+
+	// Funzione per riportare l'immagine in posizione se lo swipe è troppo breve
+	function returnToPosition() {
+		if (!currentDragElement) return;
+
+		animate(currentDragElement, {
+			translateX: initialTransform.x,
+			translateY: initialTransform.y,
+			rotate: initialTransform.rotation,
+			opacity: 1,
+			scale: 1,
+			duration: 300,
+			easing: "easeOutBack(1.7)",
+			complete: () => {
+				// Ripristina il z-index
+				const imageWrappers = Array.from(
+					document.querySelectorAll(".image-wrapper")
+				);
+				const zIndex = imageWrappers.length - currentImageIndex;
+				if (currentDragElement) {
+					if (currentDragElement instanceof HTMLElement) {
+						currentDragElement.style.zIndex = zIndex.toString();
+					}
+				}
+				currentDragElement = null;
+			},
+		});
+	}
+
+	// Funzione per passare all'immagine successiva
+	function swipeToNextImage() {
+		const imageWrappers = Array.from(
+			document.querySelectorAll(".image-wrapper")
+		);
+
+		if (imageWrappers.length === 0) return;
+
+		const currentWrapper = imageWrappers[currentImageIndex];
+
+		// Simula uno swipe casuale per il click
+		const direction = Math.random() > 0.5 ? 1 : -1;
+
+		// Porta l'elemento in primo piano
+		(currentWrapper as HTMLElement).style.zIndex = "1000";
+
+		animate(currentWrapper, {
+			translateX: direction * (window.innerWidth + 200),
+			translateY: (Math.random() - 0.5) * 200,
+			rotate: direction * 25,
+			scale: 0.8,
+			opacity: 0,
+			duration: 400,
+			easing: "easeInOutQuad",
+			complete: () => {
+				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				repositionAfterSwipe();
+			},
+		});
+	}
+
+	// Funzione per riposizionare le immagini dopo lo swipe
+	function repositionAfterSwipe() {
+		const imageWrappers = Array.from(
+			document.querySelectorAll(".image-wrapper")
+		);
+
+		const containerWidth = window.innerWidth;
+		const containerHeight = window.innerHeight;
+		const centerX = containerWidth / 2;
+		const centerY = containerHeight / 2;
+
+		imageWrappers.forEach((wrapper, index) => {
+			const randomOffsetX = (Math.random() - 0.5) * 20;
+			const randomOffsetY = (Math.random() - 0.5) * 20;
+			const randomRotation = (Math.random() - 0.5) * 15;
+
+			// Calcola il nuovo ordine relativo all'immagine corrente
+			const relativeIndex =
+				(index - currentImageIndex + imageWrappers.length) %
+				imageWrappers.length;
+			const zIndex = imageWrappers.length - relativeIndex;
+			(wrapper as HTMLElement).style.zIndex = zIndex.toString();
+
+			animate(wrapper, {
+				translateX: centerX - 100 + randomOffsetX,
+				translateY: centerY - 75 + randomOffsetY,
+				rotate: randomRotation,
+				scale: relativeIndex === 0 ? 1 : 0.95 - relativeIndex * 0.02,
+				opacity: 1,
+				duration: 300,
+				easing: "easeOutQuad",
+			});
+		});
+	}
+
+	// Funzione modificata per gestire desktop e mobile
+	function initializeGallery() {
+		isMobile = detectMobile();
+
+		if (isMobile) {
+			positionMobileStack();
+			setupMobileSwipe();
+		} else {
+			randomizePositions();
+			setTimeout(() => {
+				makeDraggableAndClickable();
+			}, 800);
 		}
 	}
-}
 
-
-
-	// Funzione per gestire il click sulle immagini
-	function handleImageClick(event) {
-		const wrapper = event.currentTarget;
+	// Funzione per gestire il click sulle immagini (solo desktop)
+	function handleImageClick(event: Event) {
+		const wrapper = event.currentTarget as HTMLElement | null;
+		if (!wrapper) return;
 		const imageId = wrapper.getAttribute("data-image-id");
 
-		// Aggiungi qui la logica per il click
 		console.log(`forzaNapoli: ${imageId}`);
 
-		// Esempio: animazione al click
+		// Solo su desktop - animazione di click
 		animate(wrapper, {
 			scale: [1, 1.1, 1],
 			duration: 300,
@@ -288,71 +517,95 @@ function randomizePositions() {
 		});
 	}
 
-	// Funzione per rendere le immagini draggable e cliccabili
+	// Funzione per rendere le immagini draggable e cliccabili (solo desktop)
 	function makeDraggableAndClickable() {
+		if (isMobile) return; // Non abilitare drag su mobile
+
 		const container = document.getElementById("gallery-container");
 		if (!container) return;
 		const draggableElements = container.querySelectorAll(".draggable");
 
 		draggableElements.forEach(element => {
-			// Rendi draggable
+			// Rendi draggable solo su desktop
 			createDraggable(element, {
 				container: ".gallery-container",
 				onDrag: () => {
-					element.style.zIndex = "999"
+					(element as HTMLElement).style.zIndex = "999";
 				},
 				onRelease: () => {
-					element.style.zIndex = ""; // oppure "auto" o un valore basso
-	}
+					(element as HTMLElement).style.zIndex = "";
+				},
 			});
 
-			// Aggiungi event listener per il click sull'immagine
+			// Aggiungi event listener per il click solo su desktop
 			element.addEventListener("click", handleImageClick);
-
-			// Aggiungi event listener per il click sul bottone info
-			const infoButton = element.querySelector(".info-button");
-			if (infoButton) {
-				infoButton.addEventListener("click", handleInfoClick);
-			}
-
-			// Nascondi il testo info quando si clicca sull'area del testo
-			const infoText = element.querySelector(".info-text");
-			if (infoText) {
-				infoText.addEventListener("click", e => {
-					e.stopPropagation();
-					infoText.classList.remove("visible");
-					infoText.classList.add("hidden");
-				});
-			}
 		});
+	}
+
+	// Rimuovi completamente enableMobileClick o lasciala vuota
+	function enableMobileClick() {
+		// Nessuna funzionalità di click su mobile
+		return;
 	}
 
 	// Animazione di entrata delle immagini
 	function animateImagesIn() {
 		const imageWrappers = document.querySelectorAll(".image-wrapper");
 
-		animate(imageWrappers, {
-			scale: [0, 1],
-			opacity: [0, 1],
-			// rotate: () => (Math.random() - 0.5) * 30,
-			duration: 200,
-			delay: stagger(100),
-		});
+		if (isMobile) {
+			// Animazione speciale per mobile - entrata a cascata
+			animate(imageWrappers, {
+				scale: [0, 1],
+				opacity: [0, 1],
+				rotate: () => (Math.random() - 0.5) * 15,
+				duration: 400,
+				delay: stagger(150, { from: "last" }), // Inizia dall'ultima (quella dietro)
+			});
+		} else {
+			// Animazione originale per desktop
+			animate(imageWrappers, {
+				scale: [0, 1],
+				opacity: [0, 1],
+				duration: 200,
+				delay: stagger(100),
+			});
+		}
 	}
 
 	// Inizializza quando il DOM è caricato
 	document.addEventListener("DOMContentLoaded", () => {
-		randomizePositions();
+		initializeGallery();
 		animateImagesIn();
 
-		// Aspetta che l'animazione di entrata finisca prima di abilitare il drag
-		setTimeout(() => {
-			makeDraggableAndClickable();
-		}, 800);
+		// Non abilitare click su mobile
+		// if (isMobile) {
+		// 	setTimeout(() => {
+		// 		enableMobileClick();
+		// 	}, 800);
+		// }
 
 		// Riposiziona al resize
 		window.addEventListener("resize", () => {
-			randomizePositions();
+			const wasMobile = isMobile;
+			isMobile = detectMobile();
+
+			if (wasMobile !== isMobile) {
+				// Il tipo di dispositivo è cambiato, reinizializza
+				initializeGallery();
+			} else if (isMobile) {
+				positionMobileStack();
+			} else {
+				randomizePositions();
+			}
 		});
 	});
 </script>
+
+<style>
+	.gallery-container {
+		pointer-events: none;
+	}
+	.image-wrapper {
+		pointer-events: all;
+	}
+</style>
