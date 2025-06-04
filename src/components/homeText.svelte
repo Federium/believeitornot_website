@@ -1,16 +1,29 @@
 <script>
 	import About from './About.svelte';
+	import Map from './Map.svelte'
+	import ModalComp from './ModalComp.svelte';
 
-	let aboutModalOpen = false;
-
-	function openModal() {
+	let aboutModalOpen, mapModalOpen = false;
+	function openAbout() {
 		aboutModalOpen = true;
 	}
 
-	function closeModal() {
+	function closeAbout() {
 		aboutModalOpen = false;
 	}
+
+	function openMap() {
+		mapModalOpen = true;
+	}
+
+	function closeMap() {
+		mapModalOpen = false;
+	}
+
+
+	
     
+    // import '../style/background.css';
 </script>
 
 
@@ -29,7 +42,7 @@
 				</h2>
 				<ul class="text-links no-select">
 					<li>
-                    <a href="#" on:click|preventDefault={openModal}>ABOUT</a>
+                    <a href="#" on:click|preventDefault={openAbout}>ABOUT</a>
 						<a href="">EN/ITA</a>
 
 						<a href="">EN/ITA</a>
@@ -39,19 +52,28 @@
 		</div>
 		<div class="text-bottom draggable" data-text-id="block3">
 			<h3 class="no-select">
-				14 June 2025 <br /> 11AM–7PM <br /> @DotDotDot <br /> Via Tertulliano 68,
-				MI
+				14 June 2025 <br /> 11AM–7PM <br />
+				<a href="/#" on:click|preventDefault={openMap}>@DotDotDot <br /> Via Tertulliano 68,
+				MI</a> 
 			</h3>
 		</div>
 	</div>
 </div>
-<About isOpen={aboutModalOpen} onClose={closeModal} />
+
+{#if aboutModalOpen}
+<ModalComp  onClose={closeAbout} isFullscreen={true} id="modal-about" slug="about" Content={About}/>
+{/if}
+
+{#if mapModalOpen}
+<ModalComp  onClose={closeMap} isFullscreen={false} id="modal-map" slug="map" Content={Map}/>
+{/if}
 
 <style>
     	.text-top h1,h2,h3,h4,h5,h6,p,a,ul{
 		color: var(--giallo);
 		text-transform: uppercase;
 	}
+
 
 	.text-container {
 		position: absolute;

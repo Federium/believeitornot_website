@@ -70,7 +70,6 @@ function openModal(entry, isFullscreen = false) {
     console.log("Minimizing modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
-console.log(draggableMap);
     const d = draggableMap.get(element);
     if (d) {
       d.enable();
