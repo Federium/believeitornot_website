@@ -196,7 +196,7 @@
 	// Funzione per gestire lo swipe con trascinamento visibile
 	function setupMobileScroll() {
 		let lastScrollTime = 0;
-		const scrollThrottle = 300; // Tempo minimo tra scroll events (ms)
+		const scrollThrottle = 100; // Ridotto per maggiore reattività
 
 		// Touch scroll per dispositivi touch su tutto il documento
 		let touchStartY = 0;
@@ -215,8 +215,8 @@
 			const deltaY = touchStartY - touchY;
 			const timeDiff = now - touchStartTime;
 			
-			// Solo se il movimento è significativo e non troppo veloce
-			if (Math.abs(deltaY) > 80 && timeDiff > 200 && !isScrolling) {
+			// Ridotta la soglia di movimento per maggiore sensibilità
+			if (Math.abs(deltaY) > 30 && timeDiff > 80 && !isScrolling) {
 				if (now - lastScrollTime < scrollThrottle) return;
 				
 				lastScrollTime = now;
@@ -225,15 +225,27 @@
 				const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 				if (imageWrappers.length === 0) return;
 
+				// Animazione molto leggera dell'immagine corrente
+				const currentWrapper = imageWrappers[currentImageIndex];
+				if (currentWrapper) {
+					animate(currentWrapper, {
+						scale: 0.98,
+						duration: 100,
+						easing: "linear"
+					});
+				}
+
+				// Aggiorna l'indice
 				if (deltaY > 0) {
-					// Swipe up - prossima immagine
 					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
 				} else {
-					// Swipe down - immagine precedente
 					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
 				}
 
-				positionMobileStack();
+				// Riposiziona lo stack con animazione leggera
+				setTimeout(() => {
+					positionMobileStackSmooth();
+				}, 50);
 				
 				// Reset per evitare scroll multipli
 				setTimeout(() => {
@@ -244,6 +256,8 @@
 
 		// Mouse wheel su tutto il window per testing su desktop
 		window.addEventListener("wheel", e => {
+			if (!isMobile) return;
+			
 			const now = Date.now();
 			if (now - lastScrollTime < scrollThrottle) return;
 			
@@ -253,19 +267,77 @@
 			const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 			if (imageWrappers.length === 0) return;
 
-			if (e.deltaY > 0) {
-				// Scroll down - prossima immagine
-				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
-			} else {
-				// Scroll up - immagine precedente
-				currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
-			}
+			if (Math.abs(e.deltaY) > 20) {
+				// Animazione molto leggera dell'immagine corrente
+				const currentWrapper = imageWrappers[currentImageIndex];
+				if (currentWrapper) {
+					animate(currentWrapper, {
+						scale: 0.98,
+						duration: 100,
+						easing: "linear"
+					});
+				}
 
-			positionMobileStack();
+				// Aggiorna l'indice
+				if (e.deltaY > 0) {
+					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				} else {
+					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+				}
+
+				setTimeout(() => {
+					positionMobileStackSmooth();
+				}, 50);
+			}
 		}, { passive: false });
 	}
 
-	function completeSwipeAnimation(deltaX, deltaY) {
+	// Nuova funzione per posizionare lo stack con animazioni molto leggere
+	function positionMobileStackSmooth() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
+		const imageWrappers = Array.from(
+			container.querySelectorAll(".image-wrapper")
+		);
+
+		if (imageWrappers.length === 0) return;
+
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+		const centerX = containerWidth / 2;
+		const centerY = containerHeight / 3;
+
+		imageWrappers.forEach((wrapper, index) => {
+			const randomOffsetX = (Math.random() - 0.5) * 20;
+			const randomOffsetY = (Math.random() - 0.5) * 20;
+			const randomRotation = (Math.random() - 0.5) * 15;
+
+			// Z-index basato sulla distanza dall'immagine corrente
+			let zIndex;
+			if (index === currentImageIndex) {
+				zIndex = imageWrappers.length;
+				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+			} else {
+				const distance = Math.abs(index - currentImageIndex);
+				zIndex = imageWrappers.length - distance;
+				wrapper.style.filter = '';
+			}
+			wrapper.style.zIndex = zIndex.toString();
+
+			// Animazione molto più leggera e veloce
+			animate(wrapper, {
+				translateX: centerX - 100 + randomOffsetX,
+				translateY: centerY - 75 + randomOffsetY,
+				rotate: randomRotation,
+				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
+				duration: 250, // Ridotta da 400 a 250
+				easing: "easeOutQuad", // Easing più leggero
+				delay: index === currentImageIndex ? 0 : 20 // Solo un piccolo delay per le altre
+			});
+		});
+	}
+
+  function completeSwipeAnimation(deltaX, deltaY) {
         if (!currentDragElement) return;
         
         const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
