@@ -171,10 +171,14 @@
 			let zIndex;
 			if (index === currentImageIndex) {
 				zIndex = imageWrappers.length; // L'immagine corrente ha z-index più alto
+				// Aggiungi ombra alla prima immagine
+				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
 			} else {
 				// Le altre immagini hanno z-index decrescente
 				const distance = Math.abs(index - currentImageIndex);
 				zIndex = imageWrappers.length - distance;
+				// Rimuovi ombra dalle altre immagini
+				wrapper.style.filter = '';
 			}
 			wrapper.style.zIndex = zIndex.toString();
 
@@ -190,115 +194,75 @@
 	}
 
 	// Funzione per gestire lo swipe con trascinamento visibile
-	function setupMobileSwipe() {
-		const container = document.getElementById("gallery-container");
-		if (!container) return;
+	function setupMobileScroll() {
+		let lastScrollTime = 0;
+		const scrollThrottle = 300; // Tempo minimo tra scroll events (ms)
 
-		let startX = 0;
-		let startY = 0;
-		let currentX = 0;
-		let currentY = 0;
-		let startTime = 0;
+		// Touch scroll per dispositivi touch su tutto il documento
+		let touchStartY = 0;
+		let touchStartTime = 0;
+		let isScrolling = false;
 
-		container.addEventListener("touchstart", e => {
-			const imageWrappers = Array.from(
-				document.querySelectorAll(".image-wrapper")
-			);
+		document.addEventListener("touchstart", e => {
+			touchStartY = e.touches[0].clientY;
+			touchStartTime = Date.now();
+			isScrolling = false;
+		}, { passive: true });
+
+		document.addEventListener("touchmove", e => {
+			const now = Date.now();
+			const touchY = e.touches[0].clientY;
+			const deltaY = touchStartY - touchY;
+			const timeDiff = now - touchStartTime;
+			
+			// Solo se il movimento è significativo e non troppo veloce
+			if (Math.abs(deltaY) > 80 && timeDiff > 200 && !isScrolling) {
+				if (now - lastScrollTime < scrollThrottle) return;
+				
+				lastScrollTime = now;
+				isScrolling = true;
+
+				const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+				if (imageWrappers.length === 0) return;
+
+				if (deltaY > 0) {
+					// Swipe up - prossima immagine
+					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				} else {
+					// Swipe down - immagine precedente
+					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+				}
+
+				positionMobileStack();
+				
+				// Reset per evitare scroll multipli
+				setTimeout(() => {
+					isScrolling = false;
+				}, scrollThrottle);
+			}
+		}, { passive: true });
+
+		// Mouse wheel su tutto il window per testing su desktop
+		window.addEventListener("wheel", e => {
+			const now = Date.now();
+			if (now - lastScrollTime < scrollThrottle) return;
+			
+			e.preventDefault();
+			lastScrollTime = now;
+			
+			const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 			if (imageWrappers.length === 0) return;
 
-			currentDragElement = imageWrappers[currentImageIndex];
-			if (!currentDragElement) return;
-
-			startX = e.touches[0].clientX;
-			startY = e.touches[0].clientY;
-			currentX = startX;
-			currentY = startY;
-			startTime = Date.now();
-			isDragging = true;
-
-			// Salva la posizione iniziale nella variabile globale
-			const style = getComputedStyle(currentDragElement);
-			const matrix = new DOMMatrix(style.transform);
-			initialTransform = { // <-- usa la variabile globale
-				x: matrix.m41,
-				y: matrix.m42,
-				rotation: Math.atan2(matrix.m12, matrix.m11) * (180 / Math.PI),
-			};
-
-			// Porta l'elemento in primo piano
-			currentDragElement.style.zIndex = "1000";
-		});
-
-		container.addEventListener("touchmove", e => {
-			if (!isDragging || !currentDragElement) return;
-
-			currentX = e.touches[0].clientX;
-			currentY = e.touches[0].clientY;
-
-			const deltaX = currentX - startX;
-			const deltaY = currentY - startY;
-			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-			// Solo se il movimento è significativo, previeni il click
-			if (distance > 10) {
-				e.preventDefault();
-				
-				// Calcola la rotazione basata sul movimento
-				const rotation = deltaX * 0.1;
-				
-				// Calcola l'opacità basata sulla distanza
-				const opacity = Math.max(0.3, 1 - distance / 300);
-
-				// Applica la trasformazione in tempo reale
-				animate(currentDragElement, {
-					translateX: initialTransform.x + deltaX,
-					translateY: initialTransform.y + deltaY,
-					rotate: initialTransform.rotation + rotation,
-					opacity: opacity,
-					duration: 0,
-					easing: "linear",
-				});
-			}
-		});
-
-		container.addEventListener("touchend", e => {
-			if (!isDragging || !currentDragElement) return;
-
-			isDragging = false;
-
-			const deltaX = currentX - startX;
-			const deltaY = currentY - startY;
-			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-			const duration = Date.now() - startTime;
-			const minSwipeDistance = 80;
-
-			// Se è un tap veloce e senza movimento, lascia che il click handler gestisca
-			if (distance < 10 && duration < 300) {
-				// Reset della posizione senza animazione
-				if (currentDragElement) {
-					currentDragElement.style.zIndex = "";
-					animate(currentDragElement, {
-						translateX: initialTransform.x,
-						translateY: initialTransform.y,
-						rotate: initialTransform.rotation,
-						opacity: 1,
-						scale: 1,
-						duration: 0,
-						easing: "linear",
-					});
-				}
-				currentDragElement = null;
-				return;
-			}
-
-			if (distance > minSwipeDistance) {
-				// Swipe sufficientemente lungo - completa l'animazione di uscita
-				completeSwipeAnimation(deltaX, deltaY);
+			if (e.deltaY > 0) {
+				// Scroll down - prossima immagine
+				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
 			} else {
-				// Swipe troppo breve - riporta l'immagine in posizione
-				returnToPosition();
+				// Scroll up - immagine precedente
+				currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
 			}
-		});
+
+			positionMobileStack();
+		}, { passive: false });
 	}
 
 	function completeSwipeAnimation(deltaX, deltaY) {
@@ -417,7 +381,7 @@
 
     if (isMobile) {
       positionMobileStack();
-      setupMobileSwipe();
+      setupMobileScroll(); // Cambiato da setupMobileSwipe()
       // Abilita il click anche su mobile
       setTimeout(() => {
         enableMobileClick();

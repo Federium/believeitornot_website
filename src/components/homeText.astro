@@ -37,11 +37,16 @@ import Logo from "../assets/title/title.svg";
 				</ul>
 			</div>
 		</div>
-		<div class="text-bottom draggable" data-text-id="block3">
-			<h3 class="no-select">
-				14 June 2025 <br /> 11AM–7PM <br /> @DotDotDot <br /> Via Tertulliano 68,
-				MI
-			</h3>
+		<div class="mobile-bottom-content">
+			<div class="text-bottom draggable" data-text-id="block3">
+				<h3 class="no-select">
+					14 June 2025 <br /> 11AM–7PM <br /> @DotDotDot <br /> Via Tertulliano 68,
+					MI
+				</h3>
+			</div>
+			<div class="subtitle-mobile">
+				<p>speculating on (un)real conspiracy theories</p>
+			</div>
 		</div>
 	</div>
 </div>
@@ -58,6 +63,8 @@ import Logo from "../assets/title/title.svg";
 	ul {
 		color: var(--giallo);
 		text-transform: uppercase;
+		font-family: "Arial Narrow", Arial, sans-serif;
+		line-height: 0.8;
 	}
 
 	.text-top h3 {
@@ -65,7 +72,7 @@ import Logo from "../assets/title/title.svg";
 	}
 
 	.title-container {
-		height: 100vh;
+		height: 100svh;
 		width: 100vw;
 		overflow: hidden;
 		display: flex;
@@ -81,7 +88,8 @@ import Logo from "../assets/title/title.svg";
 		width: 100vw;
 		overflow: hidden;
 		display: flex;
-		font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+		font-weight: bold;
+		font-family: Impact, "Arial Narrow Bold", sans-serif;
 		font-size: clamp(2rem, 10vw, 4rem);
 		filter: blur(1px);
 		color: var(--giallo);
@@ -140,7 +148,44 @@ import Logo from "../assets/title/title.svg";
 		filter: blur(0.6px);
 	}
 
+	.mobile-bottom-content {
+		display: none;
+	}
+
+	.subtitle-mobile {
+		display: none;
+		font-weight: bold;
+		font-size: clamp(2rem, 10vw, 4rem);
+		filter: blur(1px);
+		color: var(--giallo);
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.subtitle-mobile p {
+		font-family: "impact", sans-serif !important;
+		line-height: 0.9;
+	}
+
 	@media (max-width: 768px) {
+		.subtitle-container {
+			display: none;
+		}
+
+		.mobile-bottom-content {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			gap: 2rem;
+		}
+
+		.subtitle-mobile {
+			display: block;
+			text-align: left;
+			align-self: flex-start;
+			margin-bottom: 0;
+		}
+
 		.text-container {
 			justify-content: left;
 		}
@@ -157,7 +202,9 @@ import Logo from "../assets/title/title.svg";
 			width: 100vw;
 		}
 		.text-bottom {
-			margin-bottom: 10rem;
+			margin-bottom: 0;
+			text-align: center;
+			align-self: center;
 		}
 		.text-links li {
 			gap: 0.5rem;
