@@ -244,8 +244,8 @@ export function draggableModale(element) {
   .modal-content-wrapper {
     display: flex;
     justify-content: space-between;
-        gap: 16px;
     height: 100%;
+    overflow: auto;
   }
 
   .modal-content-wrapper>div {

@@ -116,8 +116,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   >
     <div class="top-bar">
       <div class="drag-area">
-        <label>
-        </label>
+    
       </div>
       <div class="modal-buttons">
         <button class="close" id="expand" on:click={handleExpand}>↗</button>
@@ -291,8 +290,10 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   .modal-content-wrapper {
     display: flex;
     justify-content: space-between;
-        gap: 16px;
+    
     height: 100%;
+        overflow: auto;
+
   }
 
   .modal-content-wrapper>div {
