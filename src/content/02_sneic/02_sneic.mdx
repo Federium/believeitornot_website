@@ -13,3 +13,27 @@ images:
 
 
 
+{/* Come IMPORTARE le immagini
+
+- importare ogni immagine singolarmente mettendo "?enhanced" alla fine dell'url
+- idem per la cover
+- riorganizzare l'array images (ogni array nell'array indica le immagini che vanno messe dopo ogni sezione)
+- in videos mettere solo l'id youtube del video 
+*/}
+
+import coverStatic from "./img/cover.jpg?enhanced";
+import coverGif from "./img/cover.gif";
+
+import img0 from "./img/cover.jpg?enhanced";
+import img1 from "./img/img1.png?enhanced";
+import img2 from "./img/img1.png?enhanced";
+
+export const cover = { static: coverStatic, gif: coverGif };
+export const images = [
+  [img0, img1],
+  [img2, img0, img0],
+];
+export const videos = [
+  "q6x6_2VMTtw",
+  "q6x6_2VMTtw"
+]
