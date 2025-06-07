@@ -153,47 +153,48 @@
 	}
 
 	function positionMobileStack() {
-		const container = document.getElementById("gallery-container");
-		if (!container) return;
-		const imageWrappers = Array.from(
-			container.querySelectorAll(".image-wrapper")
-		);
+    const container = document.getElementById("gallery-container");
+    if (!container) return;
+    const imageWrappers = Array.from(
+        container.querySelectorAll(".image-wrapper")
+    );
 
-		if (imageWrappers.length === 0) return;
+    if (imageWrappers.length === 0) return;
 
-		const containerWidth = container.offsetWidth;
-		const containerHeight = container.offsetHeight;
-		const centerX = containerWidth / 2;
-		const centerY = containerHeight / 3;
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    const centerX = containerWidth / 2;
+    const centerY = containerHeight / 3;
 
-		imageWrappers.forEach((wrapper, index) => {
-			const randomOffsetX = (Math.random() - 0.5) * 20;
-			const randomOffsetY = (Math.random() - 0.5) * 20;
-			const randomRotation = (Math.random() - 0.5) * 15;
+    imageWrappers.forEach((wrapper, index) => {
+        const randomOffsetX = (Math.random() - 0.5) * 20;
+        const randomOffsetY = (Math.random() - 0.5) * 20;
+        const randomRotation = (Math.random() - 0.5) * 15;
 
-			// Z-index basato sulla distanza dall'immagine corrente
-			let zIndex;
-			if (index === currentImageIndex) {
-				zIndex = imageWrappers.length; // L'immagine corrente ha z-index più alto
-				// Aggiungi ombra alla prima immagine
-				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
-			} else {
-				// Le altre immagini hanno z-index decrescente
-				const distance = Math.abs(index - currentImageIndex);
-				zIndex = imageWrappers.length - distance;
-				// Rimuovi ombra dalle altre immagini
-				wrapper.style.filter = '';
-			}
-			wrapper.style.zIndex = zIndex.toString();
+        // Ottieni le dimensioni effettive del wrapper
+        const wrapperWidth = wrapper.offsetWidth;
+        const wrapperHeight = wrapper.offsetHeight;
 
-			animate(wrapper, {
-				translateX: centerX - 100 + randomOffsetX,
-				translateY: centerY - 75 + randomOffsetY,
-				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
-				duration: 0,
-				easing: "linear",
-			});
-		});
+        // Z-index basato sulla distanza dall'immagine corrente
+        let zIndex;
+        if (index === currentImageIndex) {
+            zIndex = imageWrappers.length;
+            wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+        } else {
+            const distance = Math.abs(index - currentImageIndex);
+            zIndex = imageWrappers.length - distance;
+            wrapper.style.filter = '';
+        }
+        wrapper.style.zIndex = zIndex.toString();
+
+        animate(wrapper, {
+            translateX: centerX - (wrapperWidth / 2) + randomOffsetX, // Centrato dinamicamente
+            translateY: centerY - (wrapperHeight / 2) + randomOffsetY, // Centrato dinamicamente
+            scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
+            duration: 0,
+            easing: "linear",
+        });
+    });
 	}
 
 	// Funzione per gestire lo swipe con trascinamento visibile
@@ -315,10 +316,15 @@
 			const randomOffsetY = (Math.random() - 0.5) * 20;
 			const randomRotation = (Math.random() - 0.5) * 15;
 
+			// Ottieni le dimensioni effettive del wrapper
+			const wrapperWidth = wrapper.offsetWidth;
+			const wrapperHeight = wrapper.offsetHeight;
+
 			// Z-index basato sulla distanza dall'immagine corrente
 			let zIndex;
 			if (index === currentImageIndex) {
 				zIndex = imageWrappers.length;
+				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
 			} else {
 				const distance = Math.abs(index - currentImageIndex);
 				zIndex = imageWrappers.length - distance;
@@ -328,13 +334,13 @@
 
 			// Animazione molto più leggera e veloce
 			animate(wrapper, {
-				translateX: centerX - 100 + randomOffsetX,
-				translateY: centerY - 75 + randomOffsetY,
+				translateX: centerX - (wrapperWidth / 2) + randomOffsetX, // Centrato dinamicamente
+				translateY: centerY - (wrapperHeight / 2) + randomOffsetY, // Centrato dinamicamente
 				rotate: randomRotation,
 				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
-				duration: 250, // Ridotta da 400 a 250
-				easing: "easeOutQuad", // Easing più leggero
-				delay: index === currentImageIndex ? 0 : 20 // Solo un piccolo delay per le altre
+				duration: 250,
+				easing: "easeOutQuad",
+				delay: index === currentImageIndex ? 0 : 20
 			});
 		});
 	}
@@ -563,7 +569,6 @@ openFromSlug();
     <enhanced:img
       src={imgData.static}
       alt={slug}
-      width="200"
       class="gallery-image static"
       draggable="false"
     />
@@ -571,10 +576,8 @@ openFromSlug();
     <img
       src={imgData.gif.src}
       alt={slug}
-      width="200"
       class="gallery-image gif"
       draggable="false"
-
     />
     
   </div>
@@ -610,6 +613,8 @@ openFromSlug();
     cursor: grab;
     pointer-events: all;
     z-index: var(--z-index);
+    width: 200px; /* Larghezza fissa */
+    height: 150px; /* Altezza per rapporto 4:3 (200 * 3/4 = 150) */
   }
   
 .gallery-container.notDragging .image-wrapper:hover {
@@ -624,6 +629,8 @@ openFromSlug();
   }
 
   .gallery-image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 
@@ -663,6 +670,8 @@ openFromSlug();
     .image-wrapper {
       cursor: default;
       touch-action: none;
+      width: 60vw; /* Aumentato da 160px a 240px */
+      height: 45vw; /* Mantenendo il rapporto 4:3 (240 * 3/4 = 180) */
     }
 
     .gallery-container {
