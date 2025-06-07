@@ -403,6 +403,7 @@
     // Rendi l'elemento draggable (solo su desktop)
     if (!detectMobile()) {
       const draggable = createDraggable(wrapper, {
+        releaseStiffness: 1000,
         container: container,
         onGrab: () => {
           wrapper.style.zIndex = "1000";

@@ -49,6 +49,7 @@ export function draggableModale(element) {
     const draggable = createDraggable(element, {
         trigger: element.querySelector('.drag-area'),
         container: document.querySelector(".gallery-container"),
+        releaseStiffness: 1000,
         onGrab: () => {
         // Rimuove "top-modal" da tutti gli altri
         draggableElements.forEach(el => el.classList.remove('top-modal'));
