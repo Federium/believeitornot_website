@@ -1,5 +1,8 @@
 ---
 import Logo from "../assets/title/title.svg";
+import BackgroundText from "./homeText.svelte";
+import AboutButton from "./About.svelte";
+// import '../style/background.css'
 ---
 
 <header class="title-container">
@@ -12,7 +15,10 @@ import Logo from "../assets/title/title.svg";
 <div class="subtitle-container" class="blur">
 	<p>speculating on (un)real conspiracy theories</p>
 </div>
-<div class="text-container" class="blur">
+
+<BackgroundText client:load>
+
+<!-- <div class="text-container" class="blur">
 	<div class="text-content">
 		<div class="text-top">
 			<div class="text-block draggable" data-text-id="block1">
@@ -27,12 +33,12 @@ import Logo from "../assets/title/title.svg";
 				</h2>
 				<ul class="text-links" class="no-select">
 					<li>
-						<a href="">ABOUT</a>
+						<AboutButton client:load/>
 						<a
 							href="https://noncielodicono.freeforums.net/board/1/general-discussion"
 							>FORUM</a
 						>
-						<a href="">EN/ITA</a>
+					  <a href="">EN/ITA</a>
 					</li>
 				</ul>
 			</div>
@@ -49,8 +55,7 @@ import Logo from "../assets/title/title.svg";
 			</div>
 		</div>
 	</div>
-</div>
-
+</div> -->
 <style>
 	.text-top h1,
 	h2,
@@ -138,14 +143,8 @@ import Logo from "../assets/title/title.svg";
 		margin-bottom: 12rem;
 		text-align: center;
 	}
+				
 
-	h1,
-	h3 {
-		filter: blur(1px);
-	}
-	h2,
-	.text-links {
-		filter: blur(0.6px);
 	}
 
 	.mobile-bottom-content {
@@ -197,6 +196,7 @@ import Logo from "../assets/title/title.svg";
 			gap: 0;
 			justify-content: space-between;
 		}
+
 		.title-svg {
 			height: 100vh;
 			width: 100vw;

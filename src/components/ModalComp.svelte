@@ -1,23 +1,16 @@
+
+
 <script>
   import { draggableMap } from '../stores/draggableMap.js';
 
   import {  onMount } from 'svelte';
   import { createDraggable } from 'animejs';
-  import Menu from './Menu.svelte';
 
   import EnhancedImage from './EnhancedImage.svelte';
 
   
   // export let data;
-  const { data, onClose, onExpand, onMinimize, onChange, isFullscreen } = $props(); 
-
-  import { mapImages } from '../stores/mapImages.js';
-  import { mapTesti } from '../stores/testi.js';
-  console.log(mapTesti)
-
-  let images = mapImages[data.data.slug];
-  let testi = mapTesti[data.data.slug];
-  console.log(testi);
+  const { onClose, isFullscreen, slug, id, Content } = $props(); 
 
   function handleClose() {
     onClose?.(); // chiama la funzione se esiste
@@ -26,19 +19,34 @@
 
 
   function handleExpand() {
-    onExpand?.(); // chiama la funzione se esiste
+    const element = document.getElementById(id);
+    element.style.width = "";
+    element.style.height = "";
+    element.style.height = "";
+    element.classList.add('fullsize');
+    element.focus();
+    const d = draggableMap.get(element);
+ 
+    d.disable(); // safe call
+     d.setX(0);
+    d.setY(0);
 
+   window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
   }
 
+  
 
   function handleMinimize() {
-    onMinimize?.(); // chiama la funzione se esiste
-
+    const element = document.getElementById(id);
+    const d = draggableMap.get(element);
+    if (d) {
+      d.enable();
+     }
+     element.focus();
+    document.getElementById(id).classList.remove('fullsize');
+    
+    window.history.pushState({}, '', '/'); 
   }
-
-console.log("dato passato al modale",data.data);
-  const body = data.body;
-
 
   // function redoOtherDraggable()
 
@@ -62,13 +70,6 @@ export function draggableModale(element) {
 }
 
   function makeDraggable() {
-    // Controlla se siamo su mobile
-    const isMobile = window.innerWidth <= 768;
-    
-    if (isMobile) {
-      return; // Non applicare draggable su mobile
-    }
-
     const draggableElements = document.querySelectorAll(".modal");
 
    draggableElements.forEach(element => {
@@ -87,32 +88,23 @@ export function draggableModale(element) {
   }
 
 
-function refreshAllDraggables() {
-  for (const draggable of draggableMap.values()) {
-    draggable.refresh();
-  }
-}
 
-function handleChange(newSlug) {
-  handleClose();
-  onChange(newSlug);
-}
 
 
   onMount(() => {
-    const modal = document.getElementById(`modal-${data.data.slug}`);
-  makeDraggable();
-  modal?.focus();
-   document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
-    modal.classList.add('top-modal');
+    const modal = document.getElementById(`${id}`);
+        makeDraggable();
+        modal?.focus();
+        document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
+        modal.classList.add('top-modal');
 
   });
 </script>
 
 <!-- <div class="backdrop"> -->
   <div
-    id={"modal-" + data.data.slug}
-class="modal {isFullscreen ? 'fullsize disable' : ''}"
+    id={id}
+    class="modal {isFullscreen ? 'fullsize disable' : ''}"
     style="z-index:10"
     role="dialog"
     tabindex="0"
@@ -121,7 +113,8 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   >
     <div class="top-bar">
       <div class="drag-area">
-    
+        <label>
+        </label>
       </div>
       <div class="modal-buttons">
         <button class="close" id="expand" on:click={handleExpand}>↗</button>
@@ -132,55 +125,11 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       </div>
     </div>
     <div class="modal-content-wrapper">
-      <div class="left-column">
-        <div class="modal-menu">
-                    <label>Believe It Or Not</label>
-
-                  <Menu   onChange={(slug) => handleChange(slug)}/>
-                </div>
-        <div class="modal-about">
-          <label>Antidisciplinary Design Lab</label>
-          <div>Laboratorio di Sintesi Finale – C1</div>
-          <div>Corso di Laurea in Design della Comunicazione</div>
-          <div>Politecnico di Miilano</div>
-        </div>
-      </div>
-        
-        <div class="modal-content-parent">
-            <div class="modal-content">
-
-              <h2>{data.data.title}</h2>
-
-              <h3>{data.data.whatif}</h3>
-
-              <p>{testi['scenario']}</p>
-              {#if images[0]}
-                {#each images[0] as image, index}
-                  <EnhancedImage src={image} alt="Immagine scenario {index + 1}" class="content-img" draggable="false" />
-                {/each}
-              {/if}
-
-              <p>{testi['progetto']}</p>
-              {#if images[1]}
-                {#each images[1] as image, index}
-                  <EnhancedImage src={image} alt="Immagine progetto {index + 1}" class="content-img"  draggable="false"  />
-                {/each}
-              {/if}
-
-              <p>{testi['macchina']}</p>
-              {#if images[2]}
-                {#each images[2] as image, index}
-                  <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
-                {/each}
-              {/if}
-        </div>
-        </div>
-       
-    </div>
+    <Content/>  
    
   
   </div>
-<!-- </div> -->
+</div>
 
 <style>
   .backdrop {
@@ -200,7 +149,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     position: absolute;
     top: 20px;
     left: 20px;
-    height: 90vh; /* Cambia da max-height a height fisso */
+    max-height: 90vh;
     outline: none;
         pointer-events: visible;
     z-index: 0;
@@ -215,7 +164,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
 .modal.fullsize,
 .modal.top-modal,
-.modal:focus{
+.modal:focus-within{
   z-index: 2000 !important ;
 }
 
@@ -290,16 +239,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     justify-content: start;
     overflow-y: auto;
     width: 100%;
-    height: 100%;
   }
 
   .modal-content-wrapper {
     display: flex;
     justify-content: space-between;
-    
     height: 100%;
-        overflow: auto;
-
+    overflow: auto;
   }
 
   .modal-content-wrapper>div {
@@ -307,31 +253,6 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
   }
 
-
-  .modal-content {
-    display: flex;
-    flex-direction: column;
-        max-width: 800px;
-
-  }
-
-  .modal-content h2 {
-    font-family: 'Arial Narrow',sans-serif;
-    margin-top: 0;
-    margin-bottom: 4px;
-    font-size: 3em;
-    line-height: 100%;
-  }
-
-
-  .modal-content h3 {
-    font-family: 'Arial Narrow',sans-serif;
-    margin-top: 0;
-    margin-bottom: 4px;
-    font-size: 1.6em;
-        line-height: 100%;
-
-  }
 
 
   
@@ -347,34 +268,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     position: absolute;
   }
 
-    .left-column {
-      max-width: 30%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: auto;
-      display: none;
-      border-right: 2px solid black;
-    }
-
-    .left-column label {
-      font-family: 'Arial Narrow';
-      font-size: clamp(1.5rem, 1.5vw, 3rem);
-      font-weight: bold;
-    }
-
-      .modal.fullsize  .left-column {
-
-      display: flex;
-    }
-    .modal-about div {
-      margin-top: 4px;
-    }
-
-    .modal-about h2 {
-      font-family: 'Arial Narrow';
-      margin: 0;
-    }
+   
 
     .modal-buttons {
       display: flex;
@@ -393,21 +287,6 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     }
     .modal.fullsize #expand {
       display: none;
-    }
-
-
-
-    /* MOBILE */
-
-    @media (max-width: 768px) {
-      .modal {
-        left: 0;
-        margin: 10px 10px;
-      }
-      #minimize, #expand {
-        display: none !important;
-      }
-    
     }
 
 </style>
