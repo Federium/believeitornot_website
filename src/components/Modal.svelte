@@ -289,7 +289,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     display: flex;
     justify-content: start;
     width: 100%;
-    height: 100%;
+     overflow: auto;
   }
 
   .modal-content-wrapper {
@@ -297,7 +297,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     justify-content: space-between;
     
     height: 100%;
-        overflow: auto;
+     overflow: auto;
 
   }
 
