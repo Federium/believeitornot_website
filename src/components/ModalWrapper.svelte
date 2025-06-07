@@ -59,7 +59,6 @@
     console.log("Minimizing modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
-    console.log(draggableMap);
     const d = draggableMap.get(element);
     if (d) {
       d.enable();
@@ -185,9 +184,8 @@
 			animate(wrapper, {
 				translateX: centerX - 100 + randomOffsetX,
 				translateY: centerY - 75 + randomOffsetY,
-				rotate: randomRotation,
 				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
-				duration: 0.2,
+				duration: 0,
 				easing: "linear",
 			});
 		});
@@ -316,7 +314,6 @@
 			let zIndex;
 			if (index === currentImageIndex) {
 				zIndex = imageWrappers.length;
-				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
 			} else {
 				const distance = Math.abs(index - currentImageIndex);
 				zIndex = imageWrappers.length - distance;
@@ -406,6 +403,7 @@
     // Rendi l'elemento draggable (solo su desktop)
     if (!detectMobile()) {
       const draggable = createDraggable(wrapper, {
+        releaseStiffness: 1000,
         container: container,
         onGrab: () => {
           wrapper.style.zIndex = "1000";
