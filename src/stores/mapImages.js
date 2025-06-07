@@ -1,14 +1,14 @@
 import { cover as cover01_nwo } from '../content/01_nwo/01_nwo.mdx';
-import { cover as cover02_sneic } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover03_milestone } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover04_gummm } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover05_shift } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover06_antistreaming } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover07_habitsystem } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover08_vtv } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover09_tego } from '../content/01_nwo/01_nwo.mdx';
-import { cover as cover10_watever } from  '../content/01_nwo/01_nwo.mdx';
-import { cover as cover11_last } from '../content/01_nwo/01_nwo.mdx';
+import { cover as cover02_sneic } from  '../content/02_sneic/02_sneic.mdx';
+import { cover as cover03_milestone } from  '../content/03_milestone/03_milestone.mdx';
+import { cover as cover04_gummm } from  '../content/04_gummm/04_gummm.mdx';
+import { cover as cover05_shift } from  '../content/05_shift/05_shift.mdx';
+import { cover as cover06_antistreaming } from  '../content/06_antistreamingarmy/06_antistreamingarmy.mdx';
+import { cover as cover07_habitsystem } from  '../content/07_habitsystem/07_habitsystem.mdx';
+import { cover as cover08_vtv } from  '../content/08_vtv/08_vtv.mdx';
+import { cover as cover09_tego } from '../content/09_tego/09_tego.mdx';
+import { cover as cover10_watever } from  '../content/10_watever/10_watever.mdx';
+import { cover as cover11_last } from '../content/11_last/11_last.mdx';
 
 export const mapCovers = {
   "nwo": cover01_nwo,
