@@ -1,5 +1,7 @@
 @import url('https://fonts.cdnfonts.com/css/impact');
 
+
+
 :root {
   --rosso: #e31b1a;
   --giallo: #ebe130;
@@ -44,11 +46,11 @@ h1, h3 {
 @media (max-width: 768px) {
 h2, ul {
   font-weight: bold;
-  font-size: clamp(0.6rem, 1vw, 2rem);
+  font-size: clamp(0.7rem, 1vw, 2.5rem);
 }
 
 h1, h3 {
   font-weight: bold;
-  font-size: clamp(1.2rem, 2vw, 4rem); /* Min 1rem, ideale 4vw, max 3rem */
+  font-size: clamp(1.5rem, 3vw, 6rem); /* Min 1rem, ideale 4vw, max 3rem */
 }
 }

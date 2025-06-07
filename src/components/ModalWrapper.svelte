@@ -1,52 +1,43 @@
 <script>
-
   import { onMount, setContext } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
-  import Modal from './Modal.svelte'; // o il path corretto
+  import Modal from './Modal.svelte';
 
   import { draggableMap } from '../stores/draggableMap.js';
 
   export let images = [];
-  // Stato per il modale
-  // let modalOpen = false;
-  // let modalContent = null;
   export let data;
   setContext('progetti', data);
 
   let openModals = [];
- let initialSlug = null;
+  let initialSlug = null;
   let isMobile = false;
-  	let currentImageIndex = 0;
-    	let isDragging = false;
+  let currentImageIndex = 0;
+  let isDragging = false;
 
-	let currentDragElement;
-	let initialTransform = { x: 0, y: 0, rotation: 0 };
+  let currentDragElement;
+  let initialTransform = { x: 0, y: 0, rotation: 0 };
 
-  // function openModal(entry) {
-  //   openModals = [...openModals, entry];
-  // }
-
-function openModal(entry, isFullscreen = false) {
-  if (typeof entry === 'string') {
-    const item = data.find(d => d.data.slug === entry);
-    if (item && !openModals.find(m => m.data.slug === entry)) {
-      openModals = [...openModals, { ...item, isFullscreen }];
-    }
-  } else {
-    if (!openModals.find(m => m.data.slug === entry.data.slug)) {
-      openModals = [...openModals, { ...entry, isFullscreen }];
+  function openModal(entry, isFullscreen = false) {
+    if (typeof entry === 'string') {
+      const item = data.find(d => d.data.slug === entry);
+      if (item && !openModals.find(m => m.data.slug === entry)) {
+        openModals = [...openModals, { ...item, isFullscreen }];
+      }
+    } else {
+      if (!openModals.find(m => m.data.slug === entry.data.slug)) {
+        openModals = [...openModals, { ...entry, isFullscreen }];
+      }
     }
   }
-}
 
   function closeModal(slug) {
     console.log("Closing modal with slug:", slug);
     openModals = openModals.filter(m => m.data.slug !== slug);
-    window.history.pushState({}, '', '/'); // <-- torna alla root
-  
+    window.history.pushState({}, '', '/');
   }
   
-   function expandModal(slug) {
+  function expandModal(slug) {
     console.log("Expanding modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
@@ -56,59 +47,49 @@ function openModal(entry, isFullscreen = false) {
     element.classList.add('fullsize');
     element.focus();
     const d = draggableMap.get(element);
- 
 
-    d.disable(); // safe call
-     d.setX(0);
+    d.disable();
+    d.setX(0);
     d.setY(0);
 
-   window.history.pushState({}, '', `/${slug}`); // <-- cambia URL
-  
+    window.history.pushState({}, '', `/${slug}`);
   }
 
-    function minimizeModal(slug) {
+  function minimizeModal(slug) {
     console.log("Minimizing modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
     const d = draggableMap.get(element);
     if (d) {
       d.enable();
-     }
-     element.focus();
+    }
+    element.focus();
     document.getElementById(id).classList.remove('fullsize');
     
     window.history.pushState({}, '', '/'); 
-  
-  }
-  function handleInfoClick(event, image) {
-    console.log("Info button clicked for image:", image);
-    event.stopPropagation();
-    openModal(image);
-
   }
 
-function handleImageClick(slug) {
-  console.log("Image clicked with slug:", slug, openModals);
-  
-  const isAlreadyOpen = openModals.some(modal => modal.id === slug);
+  function handleImageClick(slug) {
+    console.log("Image clicked with slug:", slug, openModals);
+    
+    const isAlreadyOpen = openModals.some(modal => modal.data.slug === slug);
 
-  if (isAlreadyOpen) {
-    // Rimuovi la classe top-modal da tutti i modali
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.classList.remove('top-modal');
-    });
+    if (isAlreadyOpen) {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.remove('top-modal');
+      });
 
-    // Aggiungi la classe top-modal al modal attuale
-    const modalEl = document.getElementById(`modal-${slug}`);
-    console.log(modalEl);
-    if (modalEl) {
-      modalEl.classList.add('top-modal');
-      modalEl.focus?.(); // metti il focus se supportato
+      const modalEl = document.getElementById(`modal-${slug}`);
+      console.log(modalEl);
+      if (modalEl) {
+        modalEl.classList.add('top-modal');
+        modalEl.focus?.();
+      }
+    } else {
+      // Apre il modale sia su desktop che su mobile
+      openModal(slug);
     }
-  } else {
-    openModal(slug); // presumibilmente aggiunge un oggetto con id === slug
   }
-}
 
 
   // Posizionamento casuale immagini
@@ -178,22 +159,33 @@ function handleImageClick(slug) {
 		const containerWidth = container.offsetWidth;
 		const containerHeight = container.offsetHeight;
 		const centerX = containerWidth / 2;
-		const centerY = containerHeight / 2;
+		const centerY = containerHeight / 3;
 
 		imageWrappers.forEach((wrapper, index) => {
 			const randomOffsetX = (Math.random() - 0.5) * 20;
 			const randomOffsetY = (Math.random() - 0.5) * 20;
 			const randomRotation = (Math.random() - 0.5) * 15;
 
-			// Z-index inverso: l'immagine corrente ha z-index più alto
-			const zIndex = imageWrappers.length - index;
-		  wrapper.style.zIndex = zIndex.toString();
+			// Z-index basato sulla distanza dall'immagine corrente
+			let zIndex;
+			if (index === currentImageIndex) {
+				zIndex = imageWrappers.length; // L'immagine corrente ha z-index più alto
+				// Aggiungi ombra alla prima immagine
+				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+			} else {
+				// Le altre immagini hanno z-index decrescente
+				const distance = Math.abs(index - currentImageIndex);
+				zIndex = imageWrappers.length - distance;
+				// Rimuovi ombra dalle altre immagini
+				wrapper.style.filter = '';
+			}
+			wrapper.style.zIndex = zIndex.toString();
 
 			animate(wrapper, {
 				translateX: centerX - 100 + randomOffsetX,
 				translateY: centerY - 75 + randomOffsetY,
 				rotate: randomRotation,
-				scale: index === currentImageIndex ? 1 : 0.95 - index * 0.02,
+				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
 				duration: 0.2,
 				easing: "linear",
 			});
@@ -201,233 +193,276 @@ function handleImageClick(slug) {
 	}
 
 	// Funzione per gestire lo swipe con trascinamento visibile
-	function setupMobileSwipe() {
-		const container = document.getElementById("gallery-container");
-		if (!container) return;
+	function setupMobileScroll() {
+		let lastScrollTime = 0;
+		const scrollThrottle = 100; // Ridotto per maggiore reattività
 
-		let startX = 0;
-		let startY = 0;
-		let currentX = 0;
-		let currentY = 0;
-		let initialTransform = { x: 0, y: 0, rotation: 0 };
+		// Touch scroll per dispositivi touch su tutto il documento
+		let touchStartY = 0;
+		let touchStartTime = 0;
+		let isScrolling = false;
 
-		container.addEventListener("touchstart", e => {
-			const imageWrappers = Array.from(
-				document.querySelectorAll(".image-wrapper")
-			);
+		document.addEventListener("touchstart", e => {
+			touchStartY = e.touches[0].clientY;
+			touchStartTime = Date.now();
+			isScrolling = false;
+		}, { passive: true });
+
+		document.addEventListener("touchmove", e => {
+			const now = Date.now();
+			const touchY = e.touches[0].clientY;
+			const deltaY = touchStartY - touchY;
+			const timeDiff = now - touchStartTime;
+			
+			// Ridotta la soglia di movimento per maggiore sensibilità
+			if (Math.abs(deltaY) > 30 && timeDiff > 80 && !isScrolling) {
+				if (now - lastScrollTime < scrollThrottle) return;
+				
+				lastScrollTime = now;
+				isScrolling = true;
+
+				const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+				if (imageWrappers.length === 0) return;
+
+				// Animazione molto leggera dell'immagine corrente
+				const currentWrapper = imageWrappers[currentImageIndex];
+				if (currentWrapper) {
+					animate(currentWrapper, {
+						scale: 0.98,
+						duration: 100,
+						easing: "linear"
+					});
+				}
+
+				// Aggiorna l'indice
+				if (deltaY > 0) {
+					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				} else {
+					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+				}
+
+				// Riposiziona lo stack con animazione leggera
+				setTimeout(() => {
+					positionMobileStackSmooth();
+				}, 50);
+				
+				// Reset per evitare scroll multipli
+				setTimeout(() => {
+					isScrolling = false;
+				}, scrollThrottle);
+			}
+		}, { passive: true });
+
+		// Mouse wheel su tutto il window per testing su desktop
+		window.addEventListener("wheel", e => {
+			if (!isMobile) return;
+			
+			const now = Date.now();
+			if (now - lastScrollTime < scrollThrottle) return;
+			
+			e.preventDefault();
+			lastScrollTime = now;
+			
+			const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 			if (imageWrappers.length === 0) return;
 
-			currentDragElement = imageWrappers[currentImageIndex];
-			if (!currentDragElement) return;
-
-			startX = e.touches[0].clientX;
-			startY = e.touches[0].clientY;
-			currentX = startX;
-			currentY = startY;
-			isDragging = true;
-
-			// Salva la posizione iniziale
-			const style = getComputedStyle(currentDragElement);
-			const matrix = new DOMMatrix(style.transform);
-			initialTransform = {
-				x: matrix.m41,
-				y: matrix.m42,
-				rotation: Math.atan2(matrix.m12, matrix.m11) * (180 / Math.PI),
-			};
-
-			// Porta l'elemento in primo piano
-			currentDragElement.style.zIndex = "1000";
-			e.preventDefault();
-		});
-
-		container.addEventListener("touchmove", e => {
-			if (!isDragging || !currentDragElement) return;
-
-			currentX = e.touches[0].clientX;
-			currentY = e.touches[0].clientY;
-
-			const deltaX = currentX - startX;
-			const deltaY = currentY - startY;
-
-			// Calcola la rotazione basata sul movimento
-			const rotation = deltaX * 0.1; // Moltiplicatore per controllare l'intensità
-
-			// Calcola l'opacità basata sulla distanza
-			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-			const opacity = Math.max(0.3, 1 - distance / 300);
-
-			// Applica la trasformazione in tempo reale
-			animate(currentDragElement, {
-				translateX: initialTransform.x + deltaX,
-				translateY: initialTransform.y + deltaY,
-				rotate: initialTransform.rotation + rotation,
-				opacity: opacity,
-				duration: 0,
-				easing: "linear",
-			});
-
-			e.preventDefault();
-		});
-
-		container.addEventListener("touchend", e => {
-			if (!isDragging || !currentDragElement) return;
-
-			isDragging = false;
-
-			const deltaX = currentX - startX;
-			const deltaY = currentY - startY;
-			const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-			const minSwipeDistance = 80;
-
-			if (distance > minSwipeDistance) {
-				// Swipe sufficientemente lungo - completa l'animazione di uscita
-				completeSwipeAnimation(deltaX, deltaY);
-			} else {
-				// Swipe troppo breve - riporta l'immagine in posizione
-				returnToPosition();
-			}
-		});
-	}
-
-	// Funzione per completare l'animazione di swipe
-	function completeSwipeAnimation(deltaX, deltaY) {
-		if (!currentDragElement) return;
-
-		// Calcola la direzione di uscita amplificando il movimento
-		const exitX = deltaX > 0 ? window.innerWidth + 200 : -200;
-		const exitY = initialTransform.y + deltaY * 2;
-		const exitRotation = deltaX > 0 ? 30 : -30;
-
-		animate(currentDragElement, {
-			translateX: exitX,
-			translateY: exitY,
-			rotate: exitRotation,
-			opacity: 0,
-			scale: 0.8,
-			duration: 300,
-			easing: "easeOutQuad",
-			complete: () => {
-				// Passa all'immagine successiva
-				currentImageIndex =
-					(currentImageIndex + 1) %
-					document.querySelectorAll(".image-wrapper").length;
-				repositionAfterSwipe();
-				currentDragElement = null;
-			},
-		});
-	}
-
-	// Funzione per riportare l'immagine in posizione se lo swipe è troppo breve
-	function returnToPosition() {
-		if (!currentDragElement) return;
-
-		animate(currentDragElement, {
-			translateX: initialTransform.x,
-			translateY: initialTransform.y,
-			rotate: initialTransform.rotation,
-			opacity: 1,
-			scale: 1,
-			duration: 300,
-			easing: "easeOutBack(1.7)",
-			complete: () => {
-				// Ripristina il z-index
-				const imageWrappers = Array.from(
-					document.querySelectorAll(".image-wrapper")
-				);
-				const zIndex = imageWrappers.length - currentImageIndex;
-				if (currentDragElement) {
-					if (currentDragElement instanceof HTMLElement) {
-						currentDragElement.style.zIndex = zIndex.toString();
-					}
+			if (Math.abs(e.deltaY) > 20) {
+				// Animazione molto leggera dell'immagine corrente
+				const currentWrapper = imageWrappers[currentImageIndex];
+				if (currentWrapper) {
+					animate(currentWrapper, {
+						scale: 0.98,
+						duration: 100,
+						easing: "linear"
+					});
 				}
-				currentDragElement = null;
-			},
-		});
+
+				// Aggiorna l'indice
+				if (e.deltaY > 0) {
+					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+				} else {
+					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+				}
+
+				setTimeout(() => {
+					positionMobileStackSmooth();
+				}, 50);
+			}
+		}, { passive: false });
 	}
 
-	// Funzione per passare all'immagine successiva
-	function swipeToNextImage() {
+	// Nuova funzione per posizionare lo stack con animazioni molto leggere
+	function positionMobileStackSmooth() {
+		const container = document.getElementById("gallery-container");
+		if (!container) return;
 		const imageWrappers = Array.from(
-			document.querySelectorAll(".image-wrapper")
+			container.querySelectorAll(".image-wrapper")
 		);
 
 		if (imageWrappers.length === 0) return;
 
-		const currentWrapper = imageWrappers[currentImageIndex];
-
-		// Simula uno swipe casuale per il click
-		const direction = Math.random() > 0.5 ? 1 : -1;
-
-		// Porta l'elemento in primo piano
-		currentWrapper.style.zIndex = "1000";
-
-		animate(currentWrapper, {
-			translateX: direction * (window.innerWidth + 200),
-			translateY: (Math.random() - 0.5) * 200,
-			rotate: direction * 25,
-			scale: 0.8,
-			opacity: 0,
-			duration: 400,
-			easing: "easeInOutQuad",
-			complete: () => {
-				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
-				repositionAfterSwipe();
-			},
-		});
-	}
-
-	// Funzione per riposizionare le immagini dopo lo swipe
-	function repositionAfterSwipe() {
-		const imageWrappers = Array.from(
-			document.querySelectorAll(".image-wrapper")
-		);
-
-		const containerWidth = window.innerWidth;
-		const containerHeight = window.innerHeight;
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
 		const centerX = containerWidth / 2;
-		const centerY = containerHeight / 2;
+		const centerY = containerHeight / 3;
 
 		imageWrappers.forEach((wrapper, index) => {
 			const randomOffsetX = (Math.random() - 0.5) * 20;
 			const randomOffsetY = (Math.random() - 0.5) * 20;
 			const randomRotation = (Math.random() - 0.5) * 15;
 
-			// Calcola il nuovo ordine relativo all'immagine corrente
-			const relativeIndex =
-				(index - currentImageIndex + imageWrappers.length) %
-				imageWrappers.length;
-			const zIndex = imageWrappers.length - relativeIndex;
+			// Z-index basato sulla distanza dall'immagine corrente
+			let zIndex;
+			if (index === currentImageIndex) {
+				zIndex = imageWrappers.length;
+				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+			} else {
+				const distance = Math.abs(index - currentImageIndex);
+				zIndex = imageWrappers.length - distance;
+				wrapper.style.filter = '';
+			}
 			wrapper.style.zIndex = zIndex.toString();
 
+			// Animazione molto più leggera e veloce
 			animate(wrapper, {
 				translateX: centerX - 100 + randomOffsetX,
 				translateY: centerY - 75 + randomOffsetY,
 				rotate: randomRotation,
-				scale: relativeIndex === 0 ? 1 : 0.95 - relativeIndex * 0.02,
-				opacity: 1,
-				duration: 300,
-				easing: "easeOutQuad",
+				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
+				duration: 250, // Ridotta da 400 a 250
+				easing: "easeOutQuad", // Easing più leggero
+				delay: index === currentImageIndex ? 0 : 20 // Solo un piccolo delay per le altre
 			});
 		});
 	}
 
+  function completeSwipeAnimation(deltaX, deltaY) {
+        if (!currentDragElement) return;
+        
+        const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+        
+        // Remove the current image from view
+        animate(currentDragElement, {
+            translateX: initialTransform.x + deltaX * 2,
+            translateY: initialTransform.y + deltaY * 2,
+            rotate: initialTransform.rotation + deltaX * 0.3,
+            opacity: 0,
+            scale: 0.8,
+            duration: 300,
+            easing: "easeOutQuad",
+            complete: () => {
+                // Move to next image
+                currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+                
+                // Reset the swiped image position and bring it to back
+                if (currentDragElement) {
+                    currentDragElement.style.zIndex = "";
+                    animate(currentDragElement, {
+                        translateX: initialTransform.x,
+                        translateY: initialTransform.y,
+                        rotate: initialTransform.rotation,
+                        opacity: 1,
+                        scale: 0.95 - imageWrappers.length * 0.02,
+                        duration: 0,
+                    });
+                }
+                
+                // Reposition all images for new stack order
+                positionMobileStack();
+                currentDragElement = null;
+            }
+        });
+    }
 
-  // FINE CODICE MOBILE 
+    function returnToPosition() {
+        if (!currentDragElement) return;
+        
+        // Return the image to its original position
+        animate(currentDragElement, {
+            translateX: initialTransform.x,
+            translateY: initialTransform.y,
+            rotate: initialTransform.rotation,
+            opacity: 1,
+            scale: 1,
+            duration: 300,
+            easing: "easeOutBack",
+            complete: () => {
+                if (currentDragElement) {
+                    currentDragElement.style.zIndex = "";
+                    currentDragElement = null;
+                }
+            }
+        });
+    }
 
-
-  // Drag & Click
   function makeDraggableAndClickable() {
+  const container = document.getElementById("gallery-container");
+  if (!container) return;
+  
+  const imageWrappers = Array.from(container.querySelectorAll(".image-wrapper"));
+  
+  imageWrappers.forEach(wrapper => {
+    // Rendi l'elemento draggable (solo su desktop)
+    if (!detectMobile()) {
+      const draggable = createDraggable(wrapper, {
+        container: container,
+        onGrab: () => {
+          wrapper.style.zIndex = "1000";
+        },
+        onRelease: () => {
+          wrapper.style.zIndex = "";
+        }
+      });
+    }
+    
+    // Aggiungi il click handler
+    wrapper.addEventListener("click", (e) => {
+      e.preventDefault();
+      const slug = wrapper.querySelector('.gallery-image')?.alt;
+      if (slug) {
+        handleImageClick(slug);
+      }
+    });
+  });
+}
+
+// Funzione per abilitare click su mobile
+  function enableMobileClick() {
     const container = document.getElementById("gallery-container");
     if (!container) return;
-    const draggableElements = container.querySelectorAll(".draggable");
+    const imageElements = container.querySelectorAll(".image-wrapper");
 
-    draggableElements.forEach(element => {
-      createDraggable(element, {
-        container: ".gallery-container",
-        // onDrag: () => element.style.zIndex = "999",
-        // onRelease: () => element.style.zIndex = "5"
+    imageElements.forEach(element => {
+      // Su mobile abilita il click per aprire il modale
+      element.addEventListener("click", (e) => {
+        // Previeni il comportamento di swipe se è un click veloce
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const slug = element.querySelector('.gallery-image')?.alt;
+        if (slug) {
+          handleImageClick(slug);
+        }
       });
     });
+  }
+
+  function initializeGallery() {
+    isMobile = detectMobile();
+
+    if (isMobile) {
+      positionMobileStack();
+      setupMobileScroll(); // Cambiato da setupMobileSwipe()
+      // Abilita il click anche su mobile
+      setTimeout(() => {
+        enableMobileClick();
+      }, 800);
+    } else {
+      randomizePositions();
+      setTimeout(() => {
+        makeDraggableAndClickable();
+      }, 800);
+    }
   }
 
   // Animazione entrata
@@ -460,26 +495,10 @@ openFromSlug();
 
 
   
-	function initializeGallery() {
-		isMobile = detectMobile();
-
-		if (isMobile) {
-			positionMobileStack();
-			setupMobileSwipe();
-		} else {
-			randomizePositions();
-			setTimeout(() => {
-				makeDraggableAndClickable();
-			}, 800);
-		}
-  }
-
-  onMount(() => {
+	onMount(() => {
     
 openFromSlug();
 		initializeGallery();
-
-          randomizePositions();
     animateImagesIn();
     
 
@@ -511,34 +530,30 @@ openFromSlug();
   {#each images as img}
     <div
       class="image-wrapper draggable"
-
+      role="button"
+      tabindex="0"
+      aria-label="Open modal for image"
       on:click={() => handleImageClick(img.slug)}
+      on:keydown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleImageClick(img.slug);
+        }
+      }}
     >
-    <div>
-    <enhanced:img
-            src={img.src}
-            alt={img.slug}
-            width="300"
-            class="gallery-image"
-            draggable="false"
-            style="z-index: 10"
-          
-            />
-            
-             <button class="info-button" on:click|stopPropagation={(e) => handleInfoClick(e, img)}>
-        ?
-      </button>
+      <enhanced:img
+        src={img.src}
+        alt={img.slug}
+        width="200"
+        class="gallery-image"
+        draggable="false"
+        style="z-index: 10"
+      />
     </div>
-      
-<!--      
-         {#if openModals.find(m => m.data.slug === img.slug)}
-        <Modal
-          data={openModals.find(m => m.data.slug === img.slug)}
-          onClose={() => closeModal(img.slug)}
-        />
-      {/if} -->
+  {/each}
+</div>
 
-      <!-- {#each openModals.filter(m => m.data.slug === img.slug) as modal (modal.data.slug)}
+{#each openModals as modal (modal.data.slug)}
   <Modal client:load
     data={modal}
     isFullscreen={modal.isFullscreen}
@@ -547,88 +562,73 @@ openFromSlug();
     onMinimize={() => minimizeModal(modal.data.slug)}
     onChange={(slug) => changeModal(slug)}
   />
-     
-
-  {/each} -->
-    </div>
-
-       
-
-  {/each}
-</div>
-<!-- <div class="modals-container"> -->
-{#each openModals as modal (modal.data.slug)}
- <Modal client:load
-  data={modal}
-  isFullscreen={modal.isFullscreen}
-  onClose={() => closeModal(modal.data.slug)}
-  onExpand={() => expandModal(modal.data.slug)}
-  onMinimize={() => minimizeModal(modal.data.slug)}
-  onChange={(slug) => changeModal(slug)}
-/>
 {/each}
-
-
-<!-- </div> -->
-
-
 
 <style>
   .gallery-container {
     position: absolute;
     width: 100%;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     height: 100%;
     overflow: hidden;
     z-index: 2;
     pointer-events: none;
   }
+  
   .image-wrapper {
     opacity: 0;
     position: absolute;
     cursor: grab;
     pointer-events: all;
   }
-    .image-wrapper:hover {
+  
+  .image-wrapper:hover {
     z-index: 100;
   }
+  
   .image-wrapper:active {
     cursor: grabbing;
   }
 
-
   .gallery-image {
-    /* width: 100%;
-    height: 100%; */
     object-fit: cover;
   }
-  .info-button {
-    position: absolute;
-    bottom: 10px;
-    right: 5px;
-    width: 15px;
-    height: 15px;
-    border-radius: 10%;
-    background-color: rgb(242, 255, 0);
-    color: rgb(255, 0, 0);
-    border: none;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
+  
+  .modals-container {
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
-.modals-container {
-  position: relative;
-  z-index: 100;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+  
   button {
     margin-top: 1rem;
+  }
+
+  /* Stili specifici per mobile */
+  @media (max-width: 768px) {
+    .image-wrapper {
+      cursor: default;
+      touch-action: none;
+    }
+
+    .gallery-container {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+    }
+
+    .gallery-image {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+    }
   }
 </style>

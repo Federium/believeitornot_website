@@ -1,5 +1,3 @@
-
-
 <script>
   import { draggableMap } from '../stores/draggableMap.js';
 
@@ -64,6 +62,13 @@ export function draggableModale(element) {
 }
 
   function makeDraggable() {
+    // Controlla se siamo su mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      return; // Non applicare draggable su mobile
+    }
+
     const draggableElements = document.querySelectorAll(".modal");
 
    draggableElements.forEach(element => {
@@ -195,7 +200,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     position: absolute;
     top: 20px;
     left: 20px;
-    max-height: 90vh;
+    height: 90vh; /* Cambia da max-height a height fisso */
     outline: none;
         pointer-events: visible;
     z-index: 0;
@@ -285,6 +290,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     justify-content: start;
     overflow-y: auto;
     width: 100%;
+    height: 100%;
   }
 
   .modal-content-wrapper {
@@ -387,6 +393,21 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     }
     .modal.fullsize #expand {
       display: none;
+    }
+
+
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
+      .modal {
+        left: 0;
+        margin: 10px 10px;
+      }
+      #minimize, #expand {
+        display: none !important;
+      }
+    
     }
 
 </style>
