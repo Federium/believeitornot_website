@@ -43,9 +43,11 @@
 				<ul class="text-links no-select">
 					<li>
                     <a href="#" on:click|preventDefault={openAbout}>ABOUT</a>
-						<a href="">EN/ITA</a>
-
-						<a href="">EN/ITA</a>
+					<a
+							href="https://noncielodicono.freeforums.net/board/1/general-discussion"
+							>FORUM</a
+						>
+					  <a href="">EN/ITA</a>
 					</li>
 				</ul>
 			</div>
@@ -69,10 +71,21 @@
 {/if}
 
 <style>
-    	.text-top h1,h2,h3,h4,h5,h6,p,a,ul{
+ 	.text-top h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	a,
+	ul {
 		color: var(--giallo);
 		text-transform: uppercase;
+		font-family: "Arial Narrow", Arial, sans-serif;
+		line-height: 0.8;
 	}
+
 
 
 	.text-container {
@@ -115,6 +128,34 @@
 
 	.text-bottom {
 		margin-bottom: 12rem;
+		text-align: center;
+	}
+				
+
+	
+
+	.mobile-bottom-content {
+		display: none;
+	}
+
+	.subtitle-mobile {
+		display: none;
+		font-weight: bold;
+		font-size: clamp(2rem, 10vw, 4rem);
+		filter: blur(1px);
+		color: var(--giallo);
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.subtitle-mobile p {
+		font-family: "impact", sans-serif !important;
+		line-height: 0.9;
+	}
+	
+
+	.text-bottom {
+		margin-bottom: 12rem;
 	}
 
 	h1,
@@ -127,6 +168,24 @@
 	}
 
 	@media (max-width: 768px) {
+	.subtitle-container {
+			display: none;
+		}
+
+		.mobile-bottom-content {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			gap: 2rem;
+		}
+
+		.subtitle-mobile {
+			display: block;
+			text-align: left;
+			align-self: flex-start;
+			margin-bottom: 0;
+		}
+
 		.text-container {
 			justify-content: left;
 		}
@@ -139,5 +198,17 @@
 			justify-content: space-between;
 		}
 
+		.title-svg {
+			height: 100vh;
+			width: 100vw;
+		}
+		.text-bottom {
+			margin-bottom: 0;
+			text-align: center;
+			align-self: center;
+		}
+		.text-links li {
+			gap: 0.5rem;
+		}
 	}
 </style>

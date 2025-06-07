@@ -288,7 +288,6 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   .modal-content-parent {
     display: flex;
     justify-content: start;
-    overflow-y: auto;
     width: 100%;
     height: 100%;
   }
