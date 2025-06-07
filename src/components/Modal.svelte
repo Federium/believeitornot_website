@@ -7,7 +7,7 @@
 
   import EnhancedImage from './EnhancedImage.svelte';
   import {lang} from '../stores/lang.js';
-  
+  import info from '../data/info.json';
   // export let data;
   const { data, onClose, onExpand, onMinimize, onChange, isFullscreen } = $props(); 
 
@@ -141,8 +141,8 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
                 </div>
         <div class="modal-about">
           <label>Antidisciplinary Design Lab</label>
-          <div>Laboratorio di Sintesi Finale – C1</div>
-          <div>Corso di Laurea in Design della Comunicazione</div>
+          <div>{info.context[$lang][0]}</div>
+          <div>{info.context[$lang][1].long}</div>
           <div>Politecnico di Miilano</div>
         </div>
       </div>
@@ -152,7 +152,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
               <h2>{data.data.title}</h2>
 
-              <h3>{data.data.whatif}</h3>
+              <h3>{testi['whatif'][$lang]}</h3>
 
               <p>{testi['scenario'][$lang]}</p>
               {#if images[0]}

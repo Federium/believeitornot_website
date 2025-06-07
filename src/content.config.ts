@@ -6,10 +6,8 @@ const projects = defineCollection({
 
   schema: z.object({
     title: z.string(),
-    whatif: z.string(),
     slug: z.string(), 
     team: z.array(z.string()),
-    images: z.array(z.string()),    // <-- aggiungi questa riga
 
   }),
 });

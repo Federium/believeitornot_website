@@ -1,5 +1,9 @@
 export const mapTesti = {
   nwo: {
+    whatif: {
+      it: 'E se il nwo esistesse?',
+      en: 'What if the nwo existed'
+    },
     scenario: {
       it: `
 La teoria del Progetto Blue Beam sostiene l’esistenza di un piano segreto per instaurare un Nuovo Ordine Mondiale. Secondo questa teoria, attraverso l’uso di tecnologie avanzate si simulerebbero eventi soprannaturali, come apparizioni divine o invasioni aliene, per generare un caos tale da giustificare, agli occhi della popolazione, l’implementazione di un governo mondiale centralizzato.<br>
@@ -31,6 +35,10 @@ To ensure its diffusion, the system introduced Creare Lingua: a modular communic
   },
 
   sneic: {
+    whatif: {
+      it: 'E se sneic esistesse?',
+      en: 'What if sneic existed'
+    },
     scenario: {
       it: `(qui testo scenario per sneic in italiano)`,
       en: `(here scenario text for sneic in English)`
@@ -46,54 +54,90 @@ To ensure its diffusion, the system introduced Creare Lingua: a modular communic
   },
 
   milestone: {
+    whatif: {
+      it: 'E se milestone esistesse?',
+      en: 'What if milestone existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   gummm: {
+    whatif: {
+      it: 'E se gummm esistesse?',
+      en: 'What if gummm existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   shift: {
+    whatif: {
+      it: 'E se shift esistesse?',
+      en: 'What if shift existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   antistreamingarmy: {
+    whatif: {
+      it: 'E se antistreamingarmy esistesse?',
+      en: 'What if antistreamingarmy existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   habitsystem: {
+    whatif: {
+      it: 'E se habitsystem esistesse?',
+      en: 'What if habitsystem existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   vtv: {
+    whatif: {
+      it: 'E se vtv esistesse?',
+      en: 'What if vtv existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   tego: {
+    whatif: {
+      it: 'E se tego esistesse?',
+      en: 'What if tego existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   watever: {
+    whatif: {
+      it: 'E se watever esistesse?',
+      en: 'What if watever existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }
   },
 
   last: {
+    whatif: {
+      it: 'E se last esistesse?',
+      en: 'What if last existed'
+    },
     scenario: { it: ``, en: `` },
     progetto: { it: ``, en: `` },
     macchina: { it: `Ciao`, en: `Hi` }

@@ -5,15 +5,20 @@
 
   import { draggableMap } from '../stores/draggableMap.js';
 
-  export let images = [];
+  import { mapCovers } from '../stores/mapImages.js';
+  console.log(mapCovers);
+  // export let images = [];
   export let data;
   setContext('progetti', data);
+
+  export let lastZIndex = 10;
+  let topZIndex = 11;
 
   let openModals = [];
   let initialSlug = null;
   let isMobile = false;
   let currentImageIndex = 0;
-  let isDragging = false;
+  let isDragging = false; 
 
   let currentDragElement;
   let initialTransform = { x: 0, y: 0, rotation: 0 };
@@ -406,10 +411,23 @@
         releaseStiffness: 1000,
         container: container,
         onGrab: () => {
-          wrapper.style.zIndex = "1000";
+          console.log("zindex",lastZIndex);
+          wrapper.style.zIndex = topZIndex;
+          container.classList.remove("notDragging");
+          wrapper.classList.add("dragging");
+          isDragging = true;
+
         },
         onRelease: () => {
-          wrapper.style.zIndex = "";
+          // wrapper.style.zIndex = "";
+             isDragging = false;
+          wrapper.style.zIndex = topZIndex;
+          topZIndex++;
+          container.classList.add("notDragging");
+          wrapper.classList.remove("dragging");
+    
+          
+
         }
       });
     }
@@ -525,31 +543,42 @@ openFromSlug();
 
 </script>
 
-<div class="gallery-container" id="gallery-container">
-  {#each images as img}
-    <div
-      class="image-wrapper draggable"
-      role="button"
-      tabindex="0"
-      aria-label="Open modal for image"
-      on:click={() => handleImageClick(img.slug)}
-      on:keydown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleImageClick(img.slug);
-        }
-      }}
-    >
-      <enhanced:img
-        src={img.src}
-        alt={img.slug}
-        width="200"
-        class="gallery-image"
-        draggable="false"
-        style="z-index: 10"
-      />
-    </div>
-  {/each}
+<div class="gallery-container notDragging" id="gallery-container">
+   {#each Object.entries(mapCovers) as [slug, imgData]}
+  <div
+    class="image-wrapper draggable"
+    style:--z-index={lastZIndex}
+       style:--top-z-index={topZIndex}
+    role="button"
+    tabindex="0"
+    aria-label="Open modal for image"
+    on:click={() => handleImageClick(slug)}
+    on:keydown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleImageClick(slug);
+      }
+    }}
+  >
+    <enhanced:img
+      src={imgData.static}
+      alt={slug}
+      width="200"
+      class="gallery-image static"
+      draggable="false"
+    />
+
+    <img
+      src={imgData.gif.src}
+      alt={slug}
+      width="200"
+      class="gallery-image gif"
+      draggable="false"
+
+    />
+    
+  </div>
+{/each}
 </div>
 
 {#each openModals as modal (modal.data.slug)}
@@ -580,10 +609,14 @@ openFromSlug();
     position: absolute;
     cursor: grab;
     pointer-events: all;
+    z-index: var(--z-index);
   }
   
-  .image-wrapper:hover {
-    z-index: 100;
+.gallery-container.notDragging .image-wrapper:hover {
+    z-index: var(--top-z-index);
+  }
+ :global(.image-wrapper.dragging) {
+    z-index: var(--top-z-index);
   }
   
   .image-wrapper:active {
@@ -593,7 +626,26 @@ openFromSlug();
   .gallery-image {
     object-fit: cover;
   }
+
+
   
+.gallery-container.notDragging .image-wrapper:hover .static,
+:global(.gallery-container:not(.notDragging) .image-wrapper.dragging .static) { /**global per evitare che svelte ignori la regola, essendo che di default non c'è notDragging*/
+  display: none;
+}
+
+.gallery-container.notDragging .image-wrapper:hover .gif,
+:global(.gallery-container:not(.notDragging) .image-wrapper.dragging .gif) {
+  display: block;
+}
+
+   .image-wrapper .static {
+    display: block;
+  }
+  
+  .image-wrapper .gif {
+    display: none;
+  }
   .modals-container {
     position: relative;
     z-index: 100;
