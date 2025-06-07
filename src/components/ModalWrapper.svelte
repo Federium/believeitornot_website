@@ -468,10 +468,10 @@
   function animateImagesIn() {
     const imageWrappers = document.querySelectorAll(".image-wrapper");
     animate(imageWrappers, {
-      scale: [0, 1],
+      // scale: [0, 1],
       opacity: [0, 1],
-      duration: 200,
-      delay: stagger(100),
+      duration: 1,
+      delay: stagger(200),
     });
   }
   

@@ -1,0 +1,144 @@
+{
+  "event": {
+    "date": {
+      "it": "14 Giugno 2025",
+      "en": "14 June 2025"
+    },
+    "time": {
+      "it": "11h00–19h00",
+      "en": "11AM–7PM"
+    },
+    "location": {
+      "name": "@DotDotDot",
+      "address": "Via Tertulliano 68, MI"
+    }
+  },
+  "context": {
+    "it": [
+      "Laboratorio di Sintesi Finale C1",
+      {"short": "Design della Comunicazione",
+      "full": "Corso di Laurea in Design della Comunicazione"
+    }
+      ,
+      "Scuola del Design",
+      "Politecnico di Milano",
+      "A.A. 2024/2025"
+    ],
+    "en": [
+      "Final Synthesis Design Studio C1",
+      {
+        "short": "BA Communication Design",
+      "full": "Bachelor in Communication Design"
+    },
+      "School of Design",
+      "Politecnico di Milano",
+      "A.Y. 2024/2025"
+    ]
+  },
+  "credits": [
+    {
+      "title": {
+        "it": "Professori",
+        "en": "Professors"
+      },
+      "names": [
+        "Francesco E. Guida",
+        "Pietro Buffa di Castelalto",
+        "Alessandro Masserdotti",
+        "Giacomo Scandolara"
+      ]
+    },
+    {
+      "title": {
+        "it": "Assistenti alla didattica",
+        "en": "Teaching Assistants"
+      },
+      "names": [
+        "Marcello J. Biffi",
+        "Davide Bruno",
+        "Pietro Forino",
+        "Martina Esposito",
+        "Enrico Isidori",
+        "Claudia Tranti"
+      ]
+    },
+    {
+      "title": {
+        "it": "Project Manager",
+        "en": "Project Managers"
+      },
+      "names": [
+        "Chiara Preialmini",
+        "Chiara Sisto"
+      ]
+    },
+    {
+      "title": {
+        "it": "Graphic Design",
+        "en": "Graphic Design"
+      },
+      "names": [
+        "Giulia Rossi",
+        "Renata Romagnuolo",
+        "Andrea Torriani",
+        "Francesca Bianchi",
+        "Giorgia Galenda"
+      ]
+    },
+    {
+      "title": {
+        "it": "Exhibition Design",
+        "en": "Exhibition Design"
+      },
+      "names": [
+        "Elia Caccia",
+        "Alice Torzoni",
+        "Giulia Roberti",
+        "Greta Piccioli",
+        "Elisa Buonaiuti"
+      ]
+    },
+    {
+      "title": {
+        "it": "Contenuti",
+        "en": "Content"
+      },
+      "names": [
+        "Marco Delbue"
+      ]
+    },
+    {
+      "title": {
+        "it": "Foto e Video",
+        "en": "Photos & Videos"
+      },
+      "names": [
+        "Giulia Ferrari",
+        "Andrea Ferrario",
+        "Pietro Zanotto"
+      ]
+    },
+    {
+      "title": {
+        "it": "Social Media",
+        "en": "Social Media"
+      },
+      "names": [
+        "Tommaso Boccaletti",
+        "Jessica Pace",
+        "Viola Ambrosini",
+        "Reinier Villanueva"
+      ]
+    },
+    {
+      "title": {
+        "it": "Sito web",
+        "en": "Website"
+      },
+      "names": [
+        "Filippo Mirandola",
+        "Federico Morsia"
+      ]
+    }
+  ]
+}

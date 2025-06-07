@@ -2,11 +2,15 @@
 	import About from './About.svelte';
 	import Map from './Map.svelte'
 	import ModalComp from './ModalComp.svelte';
+	import info from '../data/info.json';
+	import { lang } from '../stores/lang.js';
+
 
 	let aboutModalOpen, mapModalOpen = false;
 	function openAbout() {
 		aboutModalOpen = true;
 	}
+	
 
 	function closeAbout() {
 		aboutModalOpen = false;
@@ -20,6 +24,10 @@
 		mapModalOpen = false;
 	}
 
+	function setLang(l) {
+		lang.set(l);
+		console.log("lingua cambiata",$lang);
+	}
 
 	
     
@@ -37,26 +45,27 @@
 			</div>
 			<div class="text-top-right draggable" data-text-id="block2">
 				<h2 class="no-select">
-					Final Synthesis Studio C1 <br /> BA Communication Design <br /> Politecnico
-					di Milano <br /> School of Design
+					{info.context[$lang][0]}<br />{info.context[$lang][1].short}<br /> {info.context[$lang][2]} <br /> {info.context[$lang][3]}
 				</h2>
 				<ul class="text-links no-select">
 					<li>
-                    <a href="#" on:click|preventDefault={openAbout}>ABOUT</a>
+                    <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
 					<a
 							href="https://noncielodicono.freeforums.net/board/1/general-discussion"
 							>FORUM</a
 						>
-					  <a href="">EN/ITA</a>
+					  <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
+					  <span>/</span>
+					  <a href="" on:click|preventDefault={() => setLang('it')}>IT</a>
+
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="text-bottom draggable" data-text-id="block3">
 			<h3 class="no-select">
-				14 June 2025 <br /> 11AM–7PM <br />
-				<a href="/#" on:click|preventDefault={openMap}>@DotDotDot <br /> Via Tertulliano 68,
-				MI</a> 
+				{info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
+				<a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
 			</h3>
 		</div>
 	</div>

@@ -1,13 +1,11 @@
 <script>
-  import creditsData from '../data/credits.json';
+  import creditsData from '../data/info.json';
 
   // Variabile di lingua: "it" o "en"
-  export let lang = 'it';
+  import {lang} from '../stores/lang.js';
 
   // Funzione helper per scegliere il titolo giusto
-  const getTitle = (section) => {
-    return lang === 'it' ? section.title_it : section.title_en;
-  };
+
 </script>
 
 <div class="about-content">
@@ -17,17 +15,37 @@
 </header>
 
 <section id="about-description">
+  {#if $lang === "it"}
 <p>Quest’anno l’evento/mostra di presentazione dei progetti realizzati nel <b>Laboratorio di Sintesi Finale C1</b> del Corso di Laurea in <b>Design della Comunicazione, Scuola del Design, Politecnico di Milano</b> (a.a. 2024–2025, prof. Francesco E. Guida, Pietro Buffa di Castelalto, Alessandro Masserdotti e Giacomo Scandolara), si tiene il <b>14 giugno 2025</b> presso <b>Dotdotdot</b> (via Tertulliano 68, Milano, dalle 11 alle 19). </p>
 <p><b>Believe It or Not</b> presenta 11 progetti di design della comunicazione, 11 macchine comunicative, 11 scenari speculativi.</p>
 <p>11 progetti che raccontano realtà possibili basate su teorie del complotto, usate come punto di partenza per riflettere su immaginari, media e strutture del potere. </p>
 <p>11 sistemi comunicativi che interrogano il nostro presente per discutere dei confini tra realtà, finzione e manipolazione e tentano di ridefinire il ruolo del designer della comunicazione.</p>
+{:else if $lang === "en"}
+<p>This year, the event/exhibition presenting the projects developed in the <b>Final Synthesis Communication Design Studio C1, BSc in Communication Design, School of Design, Politecnico di Milano</b> (via Tertulliano 68, Milan, from 11 am to 7 pm).</p>
+<p><b>Believe It or Not</b> presents 11 communication design projects, 11 communicative machines, and 11 speculative scenarios.</p>
+<p>11 projects that explore possible scenarios based on conspiracy theories, used as a starting point to reflect on imaginaries, media and power structures. </p>
+<p>11 communication systems that question our present to discuss the boundaries between reality, fiction and manipulation, trying to redefine the role of the communication designer.</p>
+{/if}
+
 </section>
 
-<a href="/assets/fogliodisala.pdf">Scarica il foglio di sala</a>
+<a href="/assets/fogliodisala.pdf">
+  {#if $lang === "it"}
+Scarica il poster
+{:else if $lang === "en"}
+Download the poster
+{/if}
+</a>
 
 <section id="altri-progetti">
 
-  <h4>Altri progetti</h4>
+  <h4>  {#if $lang === "it"}
+Progetti precedenti
+{:else if $lang === "en"}
+Previous projects
+{/if}
+
+  </h4>
   <ul>
     <li>
       <a href="http://anthropogenicnarratives.antidisciplinarylab.it/index.html" target="_blank">Anthropogenic Narratives</a>
@@ -54,17 +72,17 @@
 </section>
 
 <section id="lab-description">
-  <h4>Laboratorio di Sintesi Finale C1</h4>
-        <p>Corso di Laurea in Design della Comunicazione</p>
-        <p>Scuola del Design</p>
-        <p>Politecnico di Milano</p>
-        <p>A.A. 2024/2025</p>
+  <h4>{creditsData.context[$lang][0]}</h4>
+        <p>{creditsData.context[$lang][1].full}</p>
+        <p>{creditsData.context[$lang][2]}</p>
+        <p>{creditsData.context[$lang][3]}</p>
+        <p>{creditsData.context[$lang][4]}</p>
 </section>
 
 <section id="credits">
         {#each creditsData.credits as section}
         <div class="credits-group">
-            <h4>{getTitle(section)}</h4>
+            <h4>{(section.title[$lang])}</h4>
                 <ul>
                     {#each section.names as name}
                     <li>{name}</li>

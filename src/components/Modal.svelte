@@ -6,7 +6,7 @@
   import Menu from './Menu.svelte';
 
   import EnhancedImage from './EnhancedImage.svelte';
-
+  import {lang} from '../stores/lang.js';
   
   // export let data;
   const { data, onClose, onExpand, onMinimize, onChange, isFullscreen } = $props(); 
@@ -154,21 +154,21 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
               <h3>{data.data.whatif}</h3>
 
-              <p>{testi['scenario']}</p>
+              <p>{testi['scenario'][$lang]}</p>
               {#if images[0]}
                 {#each images[0] as image, index}
                   <EnhancedImage src={image} alt="Immagine scenario {index + 1}" class="content-img" draggable="false" />
                 {/each}
               {/if}
 
-              <p>{testi['progetto']}</p>
+              <p>{testi['progetto'][$lang]}</p>
               {#if images[1]}
                 {#each images[1] as image, index}
                   <EnhancedImage src={image} alt="Immagine progetto {index + 1}" class="content-img"  draggable="false"  />
                 {/each}
               {/if}
 
-              <p>{testi['macchina']}</p>
+              <p>{testi['macchina'][$lang]}</p>
               {#if images[2]}
                 {#each images[2] as image, index}
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
