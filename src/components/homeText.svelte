@@ -203,6 +203,7 @@
 
 		.text-container {
 			justify-content: left;
+      height: 100vh;
 		}
 		.text-content {
       height: 80vh;
