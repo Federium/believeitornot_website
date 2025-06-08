@@ -16,13 +16,12 @@ import AboutButton from "./About.svelte";
 	<p>speculating on (un)real conspiracy theories</p>
 </div>
 
-<div class="subtitle-mobile">
+<!-- <div class="subtitle-mobile">
 	<p>speculating on (un)real conspiracy theories</p>
-</div>
+</div> -->
 
 <BackgroundText client:load>
-
-<!-- <div class="text-container" class="blur">
+	<!-- <div class="text-container" class="blur">
 	<div class="text-content">
 		<div class="text-top">
 			<div class="text-block draggable" data-text-id="block1">
@@ -60,93 +59,93 @@ import AboutButton from "./About.svelte";
 		</div>
 	</div>
 </div> -->
-<style>
-	.text-top h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	p,
-	a,
-	ul {
-		color: var(--giallo);
-		text-transform: uppercase;
-		font-family: "Arial Narrow", Arial, sans-serif;
-		line-height: 0.8;
-	}
-
-	.text-top h3 {
-		text-align: center;
-	}
-
-	.title-container {
-		height: 100vh;
-		width: 100vw;
-		overflow: hidden;
-		display: flex;
-	}
-	.title-svg {
-		width: 55vw;
-		height: 100%;
-	}
-	.subtitle-container {
-		position: absolute;
-		bottom: 0;
-		width: 100vw;
-		overflow: hidden;
-		display: flex;
-		font-weight: bold;
-		font-family: "Arial Narrow Bold", sans-serif;
-		font-size: clamp(2rem, 10vw, 4rem);
-		filter: blur(1px);
-		color: var(--giallo);
-		line-height: 95%;
-	}
-
-
-	@media (max-width: 768px) {
-		.subtitle-container {
-			display: none;
+	<style>
+		.text-top h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		a,
+		ul {
+			color: var(--giallo);
+			text-transform: uppercase;
+			font-family: "Arial Narrow", Arial, sans-serif;
+			line-height: 0.8;
 		}
 
-		.mobile-bottom-content {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			gap: 2rem;
+		.text-top h3 {
+			text-align: center;
 		}
 
-		.subtitle-mobile {
-			display: block;
-			text-align: left;
-			align-self: flex-start;
-			margin-bottom: 0;
-		}
-
-		.text-container {
-			justify-content: left;
-		}
-		.text-content {
-			width: 100%;
-		}
-		.text-top {
-			padding: 1rem 1rem;
-			gap: 0;
-			justify-content: space-between;
-		}
-
-		.title-svg {
+		.title-container {
 			height: 100vh;
 			width: 100vw;
+			overflow: hidden;
+			display: flex;
 		}
-		.text-bottom {
-			margin-bottom: 0;
-			text-align: center;
-			align-self: center;
+		.title-svg {
+			width: 55vw;
+			height: 100%;
 		}
-		.text-links li {
-			gap: 0.5rem;
+		.subtitle-container {
+			position: absolute;
+			bottom: 0;
+			width: 100vw;
+			overflow: hidden;
+			display: flex;
+			font-weight: bold;
+			font-family: "Arial Narrow Bold", sans-serif;
+			font-size: clamp(2rem, 10vw, 4rem);
+			filter: blur(1px);
+			color: var(--giallo);
+			line-height: 95%;
 		}
-	}
-</style>
+
+		@media (max-width: 768px) {
+			.subtitle-container {
+				display: none;
+			}
+
+			.mobile-bottom-content {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				gap: 2rem;
+			}
+
+			.subtitle-mobile {
+				display: block;
+				text-align: left;
+				align-self: flex-start;
+				margin-bottom: 0;
+			}
+
+			.text-container {
+				justify-content: left;
+			}
+			.text-content {
+				width: 100%;
+			}
+			.text-top {
+				padding: 1rem 1rem;
+				gap: 0;
+				justify-content: space-between;
+			}
+
+			.title-svg {
+				height: 100vh;
+				width: 100vw;
+			}
+			.text-bottom {
+				margin-bottom: 0;
+				text-align: center;
+				align-self: center;
+			}
+			.text-links li {
+				gap: 0.5rem;
+			}
+		}
+	</style>
+</BackgroundText>
