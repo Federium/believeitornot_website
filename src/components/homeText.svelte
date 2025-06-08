@@ -104,11 +104,12 @@
 	.text-container {
 		position: absolute;
 		top: 0;
-		height: 100vh;
+		height: 100dvh; /* Cambia da 100vh a 100dvh */
 		width: 100vw;
 		overflow: hidden;
 		display: flex;
 		justify-content: right;
+		padding-bottom: env(safe-area-inset-bottom, 20px);
 	}
 
 	.text-content {
@@ -204,9 +205,11 @@
 		.text-container {
 			justify-content: left;
       height: 100vh;
+			height: 100dvh; /* Cambia anche qui */
 		}
 		.text-content {
-      height: 80vh;
+      height: 100vh;
+      height: 100dvh;
 			width: 100%;
 		}
 		.text-top {
