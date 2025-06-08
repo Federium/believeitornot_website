@@ -402,7 +402,9 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     @media (max-width: 768px) {
       .modal {
         left: 0;
-        margin: 10px 10px;
+        margin: 1rem;
+        height: 80vh;
+        height: 80dvh;
       }
       #minimize, #expand {
         display: none !important;
