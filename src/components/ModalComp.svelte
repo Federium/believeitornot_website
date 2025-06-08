@@ -1,5 +1,3 @@
-
-
 <script>
   import { draggableMap } from '../stores/draggableMap.js';
 
@@ -151,15 +149,13 @@ export function draggableModale(element) {
     left: 20px;
     max-height: 90vh;
     outline: none;
-        pointer-events: visible;
+    pointer-events: visible;
     z-index: 0;
-      resize:both;
-  overflow: hidden;
-  min-width: 50px;
-  min-height: 2em;
-  border: 2px solid black;
-  
-
+    resize:both;
+    overflow: hidden;
+    min-width: 50px;
+    min-height: 2em;
+    border: 2px solid black;
   }
 
 .modal.fullsize,
@@ -289,4 +285,21 @@ export function draggableModale(element) {
       display: none;
     }
 
+    @media (max-width: 768px) {
+  .modal {
+    left: 0;
+    margin: 1rem;
+    height: 90dvh !important;
+    max-height: 90dvh !important;
+    min-height: 0 !important;
+  }
+  .modal-content-wrapper,
+  .modal-content-parent {
+    height: 100%;
+    max-height: 100%;
+  }
+  #minimize, #expand {
+    display: none !important;
+  }
+}
 </style>

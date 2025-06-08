@@ -203,14 +203,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     left: 20px;
     height: 90vh; /* Cambia da max-height a height fisso */
     outline: none;
-        pointer-events: visible;
+    pointer-events: visible;
     z-index: 0;
-      resize:both;
-  overflow: hidden;
-  min-width: 50px;
-  min-height: 2em;
-  border: 2px solid black;
-
+    resize:both;
+    overflow: hidden;
+    min-width: 50px;
+    min-height: 2em;
+    border: 2px solid black;
   }
 
 .modal.fullsize,
