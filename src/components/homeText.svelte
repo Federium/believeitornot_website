@@ -198,6 +198,7 @@
 			text-align: left;
 			align-self: flex-start;
 			margin-bottom: 0;
+      padding: 1rem 1rem;
 		}
 
 		.text-container {

@@ -87,7 +87,8 @@ import AboutButton from "./About.svelte";
 		}
 		.title-svg {
 			width: 55vw;
-			height: 100%;
+			height: 100vw;
+			padding: 2px;
 		}
 		.subtitle-container {
 			position: absolute;
@@ -104,11 +105,17 @@ import AboutButton from "./About.svelte";
 		}
 
 		@media (max-width: 768px) {
+			.title-container {
+				position: fixed;
+				width: 100%;
+				height: 100vh;
+			}
 			.subtitle-container {
 				display: none;
 			}
 
 			.mobile-bottom-content {
+				position: fixed;
 				display: flex;
 				flex-direction: column;
 				width: 100%;
