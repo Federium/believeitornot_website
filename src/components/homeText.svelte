@@ -49,25 +49,29 @@
 				</h2>
 				<ul class="text-links no-select">
 					<li>
-                    <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
-					<a
+            <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
+					  <a
 							href="https://noncielodicono.freeforums.net/board/1/general-discussion"
 							>FORUM</a
 						>
 					  <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
 					  <span>/</span>
 					  <a href="" on:click|preventDefault={() => setLang('it')}>IT</a>
-
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div class="text-bottom draggable" data-text-id="block3">
-			<h3 class="no-select">
-				{info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
-				<a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
-			</h3>
-		</div>
+    <div class="mobile-bottom-content">
+      <div class="text-bottom draggable" data-text-id="block3">
+			  <h3 class="no-select">
+				  {info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
+				  <a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
+			  </h3>
+		  </div>
+      <div class="subtitle-mobile">
+				<p>speculating on (un)real conspiracy theories</p>
+			</div>
+    </div>
 	</div>
 </div>
 
@@ -186,6 +190,7 @@
 			flex-direction: column;
 			width: 100%;
 			gap: 2rem;
+      
 		}
 
 		.subtitle-mobile {
