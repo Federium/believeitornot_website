@@ -205,6 +205,7 @@
 			justify-content: left;
 		}
 		.text-content {
+      height: 80vh;
 			width: 100%;
 		}
 		.text-top {
