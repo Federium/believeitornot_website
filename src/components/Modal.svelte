@@ -143,7 +143,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
           <label>Antidisciplinary Design Lab</label>
           <div>{info.context[$lang][0]}</div>
           <div>{info.context[$lang][1].long}</div>
-          <div>Politecnico di Miilano</div>
+          <div>Politecnico di Milano</div>
         </div>
       </div>
         

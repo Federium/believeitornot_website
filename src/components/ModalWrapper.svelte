@@ -632,6 +632,7 @@ openFromSlug();
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: blur(2px);
   }
 
 
@@ -689,6 +690,7 @@ openFromSlug();
       -moz-user-drag: none;
       -o-user-drag: none;
       user-drag: none;
+      filter: blur(0.5px);
     }
   }
 </style>
