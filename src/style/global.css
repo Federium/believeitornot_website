@@ -46,7 +46,7 @@ h1, h3 {
 @media (max-width: 768px) {
 h2, ul {
   font-weight: bold;
-  font-size: clamp(0.7rem, 1vw, 2.5rem);
+  font-size: clamp(1rem, 2vw, 2.5rem);
 }
 
 h1, h3 {

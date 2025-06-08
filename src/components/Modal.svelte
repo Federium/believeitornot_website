@@ -403,8 +403,8 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       .modal {
         left: 0;
         margin: 1rem;
-        height: 80vh;
-        height: 80dvh;
+        height: 90vh;
+        height: 90dvh;
       }
       #minimize, #expand {
         display: none !important;
