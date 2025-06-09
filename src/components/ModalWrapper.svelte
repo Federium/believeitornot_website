@@ -1,8 +1,12 @@
 <script>
   import { onMount, setContext } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
-  import Modal from './Modal.svelte';
+  	import { gsap } from "gsap";
+	import { Observer } from "gsap/Observer";
 
+  import Modal from './Modal.svelte';
+  
+  
   import { draggableMap } from '../stores/draggableMap.js';
 
   import { mapCovers } from '../stores/mapImages.js';
@@ -198,103 +202,161 @@
 	}
 
 	// Funzione per gestire lo swipe con trascinamento visibile
-	function setupMobileScroll() {
-		let lastScrollTime = 0;
-		const scrollThrottle = 100; // Ridotto per maggiore reattività
+	// function setupMobileScroll() {
+	// 	let lastScrollTime = 0;
+	// 	const scrollThrottle = 100; // Ridotto per maggiore reattività
 
-		// Touch scroll per dispositivi touch su tutto il documento
-		let touchStartY = 0;
-		let touchStartTime = 0;
-		let isScrolling = false;
+	// 	// Touch scroll per dispositivi touch su tutto il documento
+	// 	let touchStartY = 0;
+	// 	let touchStartTime = 0;
+	// 	let isScrolling = false;
 
-		document.addEventListener("touchstart", e => {
-			touchStartY = e.touches[0].clientY;
-			touchStartTime = Date.now();
-			isScrolling = false;
-		}, { passive: true });
+	// 	document.addEventListener("touchstart", e => {
+	// 		touchStartY = e.touches[0].clientY;
+	// 		touchStartTime = Date.now();
+	// 		isScrolling = false;
+	// 	}, { passive: true });
 
-		document.addEventListener("touchmove", e => {
-			const now = Date.now();
-			const touchY = e.touches[0].clientY;
-			const deltaY = touchStartY - touchY;
-			const timeDiff = now - touchStartTime;
+	// 	document.addEventListener("touchmove", e => {
+	// 		const now = Date.now();
+	// 		const touchY = e.touches[0].clientY;
+	// 		const deltaY = touchStartY - touchY;
+	// 		const timeDiff = now - touchStartTime;
 			
-			// Ridotta la soglia di movimento per maggiore sensibilità
-			if (Math.abs(deltaY) > 30 && timeDiff > 80 && !isScrolling) {
-				if (now - lastScrollTime < scrollThrottle) return;
+	// 		// Ridotta la soglia di movimento per maggiore sensibilità
+	// 		if (Math.abs(deltaY) > 30 && timeDiff > 80 && !isScrolling) {
+	// 			if (now - lastScrollTime < scrollThrottle) return;
 				
-				lastScrollTime = now;
-				isScrolling = true;
+	// 			lastScrollTime = now;
+	// 			isScrolling = true;
 
-				const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
-				if (imageWrappers.length === 0) return;
+	// 			const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+	// 			if (imageWrappers.length === 0) return;
 
-				// Animazione molto leggera dell'immagine corrente
-				const currentWrapper = imageWrappers[currentImageIndex];
-				if (currentWrapper) {
-					animate(currentWrapper, {
-						scale: 0.98,
-						duration: 100,
-						easing: "linear"
-					});
-				}
+	// 			// Animazione molto leggera dell'immagine corrente
+	// 			const currentWrapper = imageWrappers[currentImageIndex];
+	// 			if (currentWrapper) {
+	// 				animate(currentWrapper, {
+	// 					scale: 0.98,
+	// 					duration: 100,
+	// 					easing: "linear"
+	// 				});
+	// 			}
 
-				// Aggiorna l'indice
-				if (deltaY > 0) {
-					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
-				} else {
-					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
-				}
+	// 			// Aggiorna l'indice
+	// 			if (deltaY > 0) {
+	// 				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+	// 			} else {
+	// 				currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+	// 			}
 
-				// Riposiziona lo stack con animazione leggera
-				setTimeout(() => {
-					positionMobileStackSmooth();
-				}, 50);
+	// 			// Riposiziona lo stack con animazione leggera
+	// 			setTimeout(() => {
+	// 				positionMobileStackSmooth();
+	// 			}, 50);
 				
-				// Reset per evitare scroll multipli
-				setTimeout(() => {
-					isScrolling = false;
-				}, scrollThrottle);
-			}
-		}, { passive: true });
+	// 			// Reset per evitare scroll multipli
+	// 			setTimeout(() => {
+	// 				isScrolling = false;
+	// 			}, scrollThrottle);
+	// 		}
+	// 	}, { passive: true });
 
-		// Mouse wheel su tutto il window per testing su desktop
-		window.addEventListener("wheel", e => {
-			if (!isMobile) return;
+	// 	// Mouse wheel su tutto il window per testing su desktop
+	// 	window.addEventListener("wheel", e => {
+	// 		if (!isMobile) return;
 			
-			const now = Date.now();
-			if (now - lastScrollTime < scrollThrottle) return;
+	// 		const now = Date.now();
+	// 		if (now - lastScrollTime < scrollThrottle) return;
 			
-			e.preventDefault();
-			lastScrollTime = now;
+	// 		e.preventDefault();
+	// 		lastScrollTime = now;
 			
-			const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
-			if (imageWrappers.length === 0) return;
+	// 		const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+	// 		if (imageWrappers.length === 0) return;
 
-			if (Math.abs(e.deltaY) > 20) {
-				// Animazione molto leggera dell'immagine corrente
-				const currentWrapper = imageWrappers[currentImageIndex];
-				if (currentWrapper) {
-					animate(currentWrapper, {
-						scale: 0.98,
-						duration: 100,
-						easing: "linear"
-					});
-				}
+	// 		if (Math.abs(e.deltaY) > 20) {
+	// 			// Animazione molto leggera dell'immagine corrente
+	// 			const currentWrapper = imageWrappers[currentImageIndex];
+	// 			if (currentWrapper) {
+	// 				animate(currentWrapper, {
+	// 					scale: 0.98,
+	// 					duration: 100,
+	// 					easing: "linear"
+	// 				});
+	// 			}
 
-				// Aggiorna l'indice
-				if (e.deltaY > 0) {
-					currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
-				} else {
-					currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
-				}
+	// 			// Aggiorna l'indice
+	// 			if (e.deltaY > 0) {
+	// 				currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+	// 			} else {
+	// 				currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+	// 			}
 
-				setTimeout(() => {
-					positionMobileStackSmooth();
-				}, 50);
-			}
-		}, { passive: false });
+	// 			setTimeout(() => {
+	// 				positionMobileStackSmooth();
+	// 			}, 50);
+	// 		}
+	// 	}, { passive: false });
+	// }
+
+  function goToNextProject() {
+	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+	if (imageWrappers.length === 0) return;
+
+	const currentWrapper = imageWrappers[currentImageIndex];
+	if (currentWrapper) {
+		animate(currentWrapper, {
+			scale: 0.98,
+			duration: 100,
+			easing: "linear"
+		});
 	}
+
+	currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+
+	setTimeout(() => {
+		positionMobileStackSmooth();
+	}, 50);
+}
+
+function goToPreviousProject() {
+	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+	if (imageWrappers.length === 0) return;
+
+	const currentWrapper = imageWrappers[currentImageIndex];
+	if (currentWrapper) {
+		animate(currentWrapper, {
+			scale: 0.98,
+			duration: 100,
+			easing: "linear"
+		});
+	}
+
+	currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+
+	setTimeout(() => {
+		positionMobileStackSmooth();
+	}, 50);
+}
+
+
+  function setupMobileScroll() {
+    gsap.registerPlugin(Observer);
+
+	Observer.create({
+		target: window,
+		type: "wheel,touch,pointer",
+		wheelSpeed: -1, // inverti se necessario
+		onDown: () => goToNextProject(),
+		onUp: () => goToPreviousProject(),
+		tolerance: 50,
+		preventDefault: true,
+		dragMinimum: 60,
+		lockAxis: true
+	});
+
+  }
 
 	// Nuova funzione per posizionare lo stack con animazioni molto leggere
 	function positionMobileStackSmooth() {

@@ -99,4 +99,8 @@ console.log(progetti);
 
 ---
 
-<ModalWrapper  client:only="svelte"  data={progetti}/>
+<ModalWrapper  client:only="svelte"  data={progetti}>
+      <div slot="fallback">Loading</div>
+
+
+</ModalWrapper>
