@@ -13,7 +13,7 @@
   
 </script>
 
-<enhanced:img class="no-drag full-width" src={src} alt={alt} />
+<enhanced:img class="no-drag full-width" src={src} alt={alt} sizes="min(1920px, 100vw)" />
 
 <style>
 .no-drag {

@@ -573,7 +573,7 @@ openFromSlug();
       draggable="false"
     />
 
-    <img
+    <img loading="lazy"
       src={imgData.gif.src}
       alt={slug}
       class="gallery-image gif"
