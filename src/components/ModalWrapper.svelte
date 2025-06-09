@@ -646,12 +646,12 @@ openFromSlug();
       draggable="false"
     />
 
-<!--     <img loading="lazy"
+      <img loading="lazy"
       src={imgData.gif.src}
       alt={slug}
       class="gallery-image gif"
       draggable="false"
-    /> -->
+    />
     
   </div>
 {/each}
@@ -768,6 +768,9 @@ openFromSlug();
       filter: blur(0.5px);
     }
 
+    .image-wrapper .static {
+      display: block !important;
+    }
     .image-wrapper .gif {
       display: none !important;
     }
