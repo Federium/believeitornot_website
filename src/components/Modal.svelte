@@ -221,13 +221,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 .modal.fullsize .top-bar,
 .modal.top-modal .top-bar,
 .modal:focus .top-bar {
-  background-color: red;
+  background-color: rgb(0, 0, 0);
 }
 
 .modal.fullsize button,
 .modal.top-modal button,
 .modal:focus button{
-  color: black;
+  color: rgb(255, 255, 255);
 }
     .modal-content .content-img  { 
       width: 100%;
