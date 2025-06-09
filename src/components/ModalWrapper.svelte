@@ -187,7 +187,7 @@
         let zIndex;
         if (index === currentImageIndex) {
             zIndex = imageWrappers.length;
-            wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+            wrapper.style.filter = '';
         } else {
             const distance = Math.abs(index - currentImageIndex);
             zIndex = imageWrappers.length - distance;
@@ -397,7 +397,7 @@ function goToPreviousProject() {
 			let zIndex;
 			if (index === currentImageIndex) {
 				zIndex = imageWrappers.length;
-				wrapper.style.filter = 'drop-shadow(0 10px 30px rgba(0, 0, 0, 1))';
+				wrapper.style.filter = '';
 			} else {
 				const distance = Math.abs(index - currentImageIndex);
 				zIndex = imageWrappers.length - distance;
@@ -646,12 +646,12 @@ openFromSlug();
       draggable="false"
     />
 
-    <img loading="lazy"
+<!--     <img loading="lazy"
       src={imgData.gif.src}
       alt={slug}
       class="gallery-image gif"
       draggable="false"
-    />
+    /> -->
     
   </div>
 {/each}
@@ -766,6 +766,10 @@ openFromSlug();
       -o-user-drag: none;
       user-drag: none;
       filter: blur(0.5px);
+    }
+
+    .image-wrapper .gif {
+      display: none !important;
     }
   }
 </style>
