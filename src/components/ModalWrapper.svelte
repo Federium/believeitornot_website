@@ -175,9 +175,9 @@
     const centerY = containerHeight / 3;
 
     imageWrappers.forEach((wrapper, index) => {
-        const randomOffsetX = (Math.random() - 0.5) * 20;
-        const randomOffsetY = (Math.random() - 0.5) * 20;
-        const randomRotation = (Math.random() - 0.5) * 15;
+        const randomOffsetX = (Math.random() - 0.5) * 50;
+        const randomOffsetY = (Math.random() - 0.5) * 50;
+        const randomRotation = (Math.random() - 0.5) * 10;
 
         // Ottieni le dimensioni effettive del wrapper
         const wrapperWidth = wrapper.offsetWidth;
@@ -385,9 +385,9 @@ function goToPreviousProject() {
 		const centerY = containerHeight / 3;
 
 		imageWrappers.forEach((wrapper, index) => {
-			const randomOffsetX = (Math.random() - 0.5) * 20;
-			const randomOffsetY = (Math.random() - 0.5) * 20;
-			const randomRotation = (Math.random() - 0.5) * 15;
+			const randomOffsetX = (Math.random() - 0.5) * 50;
+			const randomOffsetY = (Math.random() - 0.5) * 50;
+			const randomRotation = (Math.random() - 0.5) * 10;
 
 			// Ottieni le dimensioni effettive del wrapper
 			const wrapperWidth = wrapper.offsetWidth;
