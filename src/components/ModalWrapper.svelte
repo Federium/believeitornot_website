@@ -23,7 +23,7 @@
   let isMobile = false;
   let currentImageIndex = 0;
   let isDragging = false; 
-
+	let observer;
   let currentDragElement;
   let initialTransform = { x: 0, y: 0, rotation: 0 };
 
@@ -38,12 +38,16 @@
         openModals = [...openModals, { ...entry, isFullscreen }];
       }
     }
+
+    if (observer) observer.disable();
+
   }
 
   function closeModal(slug) {
     console.log("Closing modal with slug:", slug);
     openModals = openModals.filter(m => m.data.slug !== slug);
     window.history.pushState({}, '', '/');
+    if (observer) observer.enable();
   }
   
   function expandModal(slug) {
@@ -304,7 +308,9 @@
 	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 	if (imageWrappers.length === 0) return;
 
-	const currentWrapper = imageWrappers[currentImageIndex];
+	let currentWrapper = imageWrappers[currentImageIndex];
+    currentWrapper.classList.remove("top-mobile");
+
 	if (currentWrapper) {
 		animate(currentWrapper, {
 			scale: 0.98,
@@ -314,6 +320,7 @@
 	}
 
 	currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+   currentWrapper.classList.add("top-mobile");
 
 	setTimeout(() => {
 		positionMobileStackSmooth();
@@ -324,7 +331,9 @@ function goToPreviousProject() {
 	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
 	if (imageWrappers.length === 0) return;
 
-	const currentWrapper = imageWrappers[currentImageIndex];
+	let currentWrapper = imageWrappers[currentImageIndex];
+  currentWrapper.classList.remove("top-mobile");
+
 	if (currentWrapper) {
 		animate(currentWrapper, {
 			scale: 0.98,
@@ -334,6 +343,8 @@ function goToPreviousProject() {
 	}
 
 	currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+  currentWrapper = imageWrappers[currentImageIndex];
+   currentWrapper.classList.add("top-mobile");
 
 	setTimeout(() => {
 		positionMobileStackSmooth();
@@ -344,7 +355,7 @@ function goToPreviousProject() {
   function setupMobileScroll() {
     gsap.registerPlugin(Observer);
 
-	Observer.create({
+	 observer = Observer.create({
 		target: window,
 		type: "wheel,touch,pointer",
 		wheelSpeed: -1, // inverti se necessario
@@ -352,7 +363,7 @@ function goToPreviousProject() {
 		onUp: () => goToPreviousProject(),
 		tolerance: 50,
 		preventDefault: true,
-		dragMinimum: 60,
+		dragMinimum: 100,
 		lockAxis: true
 	});
 
@@ -700,11 +711,13 @@ openFromSlug();
 
   
 .gallery-container.notDragging .image-wrapper:hover .static,
+:global(.gallery-container .image-wrapper.top-mobile .static),
 :global(.gallery-container:not(.notDragging) .image-wrapper.dragging .static) { /**global per evitare che svelte ignori la regola, essendo che di default non c'è notDragging*/
   display: none;
 }
 
 .gallery-container.notDragging .image-wrapper:hover .gif,
+:global(.gallery-container .image-wrapper.top-mobile .gif),
 :global(.gallery-container:not(.notDragging) .image-wrapper.dragging .gif) {
   display: block;
 }

@@ -23,7 +23,7 @@
   }
 
   .full-width {
-    margin: 2rem 0;
+    margin: 0 0;
     max-width: 100%;
     height: auto;
   }
