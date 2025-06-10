@@ -158,7 +158,6 @@ ul {
 	text-wrap: nowrap;
 	overflow: hidden;
 	min-width: 0;
-	gap: 2rem;
 }
 
 .text-top-right {
@@ -297,10 +296,19 @@ h2,
         font-size: clamp(2rem, 10vw, 4rem);
         filter: blur(1px);
         color: var(--giallo);
+        transform: scaleX(0.7); /* schiaccia sull'asse X */
+        transform-origin: left; /* <-- aggiungi questa riga */
+  display: inline-block;   /* necessario per applicare il transform */
     }
     .subtitle-mobile p {
         font-family: "impact", sans-serif !important;
         line-height: 0.9;
     }
+}
+
+h1, .text-bottom {
+  transform: scaleX(0.7); /* schiaccia sull'asse X */
+  transform-origin: left; /* <-- aggiungi questa riga */
+  display: inline-block;   /* necessario per applicare il transform */
 }
 </style>
