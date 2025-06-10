@@ -327,7 +327,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 }
   
   .modal-content::selection {
-  color: red;
+  color: var(--rosso);
   background-color: black;
 }
 
@@ -499,13 +499,18 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     /* MOBILE */
 
     @media (max-width: 768px) {
-      .modal,
-      .modal.fullsize {
-        left: 0;
-        margin: 1rem;
-        height: 90vh;
-        height: 90dvh;
-      }
+       .modal, .modal.fullsize {
+    left: 0;
+    margin: 1rem;
+    height: 90dvh !important;
+    max-height: 90dvh !important;
+    min-height: 0 !important;
+  }
+  .modal-content-wrapper,
+  .modal-content-parent {
+    height: 100%;
+    max-height: 100%;
+  }
 
       .modal .change-project-buttons {
         display: block;

@@ -28,5 +28,5 @@
       style="max-width: 100%; height: auto;" />
   </picture>
 {:else}
-  <p style="color:red;">Immagine non trovata: {src}</p>
+  <p style="color:var(--rosso);">Immagine non trovata: {src}</p>
 {/if}

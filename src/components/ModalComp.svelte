@@ -167,13 +167,13 @@ export function draggableModale(element) {
 .modal.fullsize .top-bar,
 .modal.top-modal .top-bar,
 .modal:focus .top-bar {
-  background-color: red;
+  background-color: black;
 }
 
 .modal.fullsize button,
 .modal.top-modal button,
 .modal:focus button{
-  color: black;
+  color: white;
 }
     .modal-content .content-img  { 
       width: 100%;
@@ -186,7 +186,7 @@ export function draggableModale(element) {
     }
   
   .modal-content::selection {
-  color: red;
+  color: var(--rosso);
   background-color: black;
 }
 

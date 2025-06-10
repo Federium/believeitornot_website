@@ -1,7 +1,7 @@
 export const mapTesti = {
   nwo: {
     whatif: {
-      it: 'E se  il dominio globale iniziasse con l’eliminazione delle parole?',
+      it: 'E se il dominio globale iniziasse con l’eliminazione delle parole?',
       en: 'What if global supremacy starts by eliminating words?'
     },
     scenario: {
@@ -154,7 +154,7 @@ Founded in 1940, SHIFT (Scientific Historical Institute For Timelines) is the le
 
   antistreamingarmy: {
     whatif: {
-      it: 'E se la pandemia sia stata pianificata dalle piattaforme di streaming?',
+      it: 'E se la pandemia fosse stata pianificata dalle piattaforme di streaming?',
       en: 'What if the pandemic was orchestrated by streaming platforms?'
     },
     scenario: { it: `La teoria Plandemic sostiene che il virus COVID-19 sia stato intenzionalmente diffuso o manipolato per creare un’opportunità di rimodellare le economie e introdurre nuove tecnologie, con lo scopo di aumentare il controllo sulle popolazioni e limitarne la libertà.
@@ -249,7 +249,7 @@ TEGO emerges as a concrete response to this threat. The brand combines fashion, 
 
   watever: {
     whatif: {
-      it: 'E se pensare troppo sia responsabile nel non renderci felici?',
+      it: 'E se pensare troppo fosse responsabile nel non renderci felici?',
       en: 'What if thinking too much is actually making us feel down?'
     },
     scenario: { it: `Negli anni Quaranta del Novecento il governo statunitense decise di aggiungere il fluoro alla rete idrica nazionale per i suoi utilizzi nell’ambito della salute orale.
