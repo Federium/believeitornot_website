@@ -49,3 +49,29 @@ export const mapImages = {
   "watever": images10_watever,
   "last": images11_last,
 };
+
+import { videos as videos01_nwo } from '../content/01_nwo/01_nwo.mdx';
+import { videos as videos02_sneic } from '../content/02_sneic/02_sneic.mdx';
+import { videos as videos03_milestone } from '../content/03_milestone/03_milestone.mdx';
+import { videos as videos04_gummm } from '../content/04_gummm/04_gummm.mdx';
+import { videos as videos05_shift } from '../content/05_shift/05_shift.mdx';
+import { videos as videos06_antistreaming } from '../content/06_antistreamingarmy/06_antistreamingarmy.mdx';
+import { videos as videos07_habitsystem } from '../content/07_habitsystem/07_habitsystem.mdx';
+import { videos as videos08_vtv } from '../content/08_vtv/08_vtv.mdx';
+import { videos as videos09_tego } from '../content/09_tego/09_tego.mdx';
+import { videos as videos10_watever } from '../content/10_watever/10_watever.mdx';
+import { videos as videos11_last } from '../content/11_last/11_last.mdx';
+
+export const mapVideos = {
+  "nwo": videos01_nwo,
+  "sneic": videos02_sneic,
+  "milestone": videos03_milestone,
+  "gummm": videos04_gummm,
+  "shift": videos05_shift,
+  "antistreamingarmy": videos06_antistreaming,
+  "habitsystem": videos07_habitsystem,
+  "vtv": videos08_vtv,
+  "tego": videos09_tego,
+  "watever": videos10_watever,
+  "last": videos11_last,
+};

@@ -11,12 +11,14 @@
   // export let data;
   const { data, onClose, onExpand, onMinimize, onChange, isFullscreen } = $props(); 
 
-  import { mapImages } from '../stores/mapImages.js';
+  import { mapImages, mapVideos } from '../stores/mapImages.js';
   import { mapTesti } from '../stores/testi.js';
   console.log(mapTesti)
 
   let images = mapImages[data.data.slug];
+  let videos = mapVideos[data.data.slug];
   let testi = mapTesti[data.data.slug];
+
   console.log(testi);
 
   function handleClose() {
@@ -150,11 +152,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
         <div class="modal-content-parent">
             <div class="modal-content">
 
-              <h2>{data.data.title}</h2>
-
+              <div class="content-head">
+             <h2>{data.data.title}</h2>
               <h3>{testi['whatif'][$lang]}</h3>
-
-              <p>{testi['scenario'][$lang]}</p>
+              </div>
+            
+              <div class="content-text">
+                 <p>{testi['scenario'][$lang]}</p>
               {#if images[0]}
                 {#each images[0] as image, index}
                   <EnhancedImage src={image} alt="Immagine scenario {index + 1}" class="content-img" draggable="false" />
@@ -174,6 +178,24 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
                 {/each}
               {/if}
+              </div>
+
+              <div class="content-team">
+               <h3>
+                {#if $lang == "it"}
+                Gruppo
+                {:else if $lang == "en"}
+                Group
+                {/if}
+              </h3>
+                  <ul>
+                    {#each data.data.team as name}
+                    <li>{name}</li>
+                    {/each}
+                </ul>
+              </div>
+          
+
         </div>
         </div>
        
@@ -276,7 +298,11 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     align-items: center;
     
   }
-
+  
+  .content-text p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
   #minimize, #expand {
     font-size: 1em;
     font-weight: bold;
@@ -394,7 +420,10 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       display: none;
     }
 
-
+    :global(.content-team li) {
+      font-weight: normal;
+    }
+    
 
     /* MOBILE */
 
