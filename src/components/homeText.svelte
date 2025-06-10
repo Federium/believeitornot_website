@@ -62,7 +62,7 @@
         <div class="text-bottom draggable" data-text-id="block3">
             <h3 class="no-select">
                 {info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
-                <a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
+                <a href="" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
             </h3>
         </div>
     </div>
@@ -75,7 +75,6 @@
                     <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
                     <a href="https://noncielodicono.freeforums.net/board/1/general-discussion">FORUM</a>
                     <div class="lang-switch">
-                    <!-- Aggiungi i link per cambiare lingua -->
                       <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
                     <span>/</span>
                     <a href="" on:click|preventDefault={() => setLang('it')}>IT</a>

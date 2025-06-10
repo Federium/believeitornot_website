@@ -137,12 +137,12 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     <div class="modal-content-wrapper">
       <div class="left-column">
         <div class="modal-menu">
-                    <label>Believe It Or Not</label>
+                    <h5>Believe It Or Not</h5>
 
                   <Menu   onChange={(slug) => handleChange(slug)}/>
                 </div>
         <div class="modal-about">
-          <label>Antidisciplinary Design Lab</label>
+          <h5>Antidisciplinary Design Lab</h5>
           <div>{info.context[$lang][0]}</div>
           <div>{info.context[$lang][1].long}</div>
           <div>Politecnico di Milano</div>
@@ -180,6 +180,21 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
               {/if}
               </div>
 
+              <div class="content-videos">
+                {#each videos as videoId,index} 
+                    <iframe type="text/html"
+                    title={data.data.slug+"-video-"+index}
+                  width="100%"
+                  height="400"
+                  src={ "https://www.youtube-nocookie.com/embed/"+videoId+"?rel=0&modestbranding=1`"}
+                  frameborder="0"
+                  allow="accelerometer;  gyroscope; picture-in-picture"
+                  allowfullscreen
+                  id="video"
+              ></iframe>
+
+                {/each}
+              </div>
               <div class="content-team">
                <h3>
                 {#if $lang == "it"}
@@ -195,7 +210,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
                 </ul>
               </div>
           
-
+              
         </div>
         </div>
        
@@ -379,13 +394,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       justify-content: space-between;
       height: auto;
       display: none;
-      border-right: 2px solid black;
     }
 
-    .left-column label {
+    .left-column h5 {
       font-family: 'Arial Narrow';
       font-size: clamp(1.5rem, 1.5vw, 3rem);
       font-weight: bold;
+      text-wrap: nowrap;
     }
 
       .modal.fullsize  .left-column {
@@ -420,11 +435,18 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
       display: none;
     }
 
-    :global(.content-team li) {
+    .content-team li {
       font-weight: normal;
     }
-    
 
+    .content-team ul {
+      list-style-type: none;
+    }
+    
+    .content-team {
+      margin-top: 1em;
+      padding-bottom: 1em;
+    }
     /* MOBILE */
 
     @media (max-width: 768px) {
