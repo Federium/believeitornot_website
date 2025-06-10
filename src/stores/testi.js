@@ -264,7 +264,8 @@ Ecco perché watever ha abbracciato la fluorizzazione dell'acqua e i suoi effett
 `, en: `“Happiness in intelligent people is the rarest thing I know”, said Ernest Hemingway years ago, and many people believe he was right. Over the years, overthinking and concerning thoughts increased, leading more and more people to wish to unplug their brains occasionally and find some peace of mind.
 That’s why watever embraced water fluoridation and its cognitive influence, becoming the most fluoridated water on the market and making happiness as simple as taking a sip. With 5.9 mg of fluoride per can, watever limits mental capacity, offering an untroubled, carefree, and happy lifestyle.
 ` },
-    macchina: { it: `Con watever "the case", un dispositivo connesso da applicare alla lattina di acqua, i clienti possono facilmente monitorare il loro consumo di fluoro e il loro livello di felicità in un colpo d'occhio tramite l’app dedicata: il modo più facile per raggiungere lo stile di vita spensierato di watever.`, en: `With watever “the case”, a connected device to apply to the water can, customers can easily monitor their fluoride intake and happiness levels at a glance with its companion app: the easiest way to achieve the carefree watever lifestyle.` }
+    macchina: { it: `Con watever "the case", un dispositivo connesso da applicare alla lattina di acqua, i clienti possono facilmente monitorare il loro consumo di fluoro e il loro livello di felicità in un colpo d'occhio tramite l’app dedicata: il modo più facile per raggiungere lo stile di vita spensierato di watever.`, en: `With watever “the case”, a connected device to apply to the water can, customers can easily monitor their fluoride intake and happiness levels at a glance with its companion app: the easiest way to achieve the carefree watever lifestyle.` },
+    link: { it: 'https://www.watever.com', en: 'https://www.watever.com' }
   },
 
 

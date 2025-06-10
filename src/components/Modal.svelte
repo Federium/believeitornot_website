@@ -199,6 +199,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
               {/if}
 
               <p>{testi['macchina'][$lang]}</p>
+              <a>{testi['link'][$lang]}</a>
               {#if images[2]}
                 {#each images[2] as image, index}
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
@@ -347,6 +348,12 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   }
 
   
+a {
+    color: var(--rosso);
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 1em;
+  }
 
 
   .modal-buttons button {
