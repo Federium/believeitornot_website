@@ -578,6 +578,7 @@ function openFromSlug() {
   if (slug !== "") {
     initialSlug = slug;
     openModal(slug, true); // true = fullscreen
+    if (observer) observer.disable();
     console.log("Opening from slug:", slug);
     return true;
   }
@@ -593,13 +594,13 @@ openFromSlug();
   
 	onMount(() => {
     
-openFromSlug();
+   const openedFromSlug = openFromSlug();
 		initializeGallery();
     animateImagesIn();
     
 
 
-
+    if (detectMobile() && openedFromSlug) observer.disable();
     // setTimeout(() => {
       
     //   makeDraggableAndClickable();
@@ -618,6 +619,8 @@ openFromSlug();
 				randomizePositions();
 			}
 		});
+
+    
   });
 
 </script>

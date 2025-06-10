@@ -18,8 +18,18 @@
   let images = mapImages[data.data.slug];
   let videos = mapVideos[data.data.slug];
   let testi = mapTesti[data.data.slug];
+  const slugList =  Object.entries(mapTesti).map(([slug]) => (slug)
+);
 
-  console.log(testi);
+  function getAdjacent(slug) {
+  const index = slugList.indexOf(slug);
+  if (index === -1) return { prev: null, next: null };
+
+  const prev = index > 0 ? slugList[index - 1] : slugList[slugList.length - 1];
+  const next = index < slugList.length - 1 ? slugList[index + 1] : slugList[0];
+
+  return { prev, next };
+}
 
   function handleClose() {
     onClose?.(); // chiama la funzione se esiste
@@ -124,7 +134,23 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   >
     <div class="top-bar">
       <div class="drag-area">
-    
+        <div class="change-project-buttons">
+          <button id="prev" on:click={() => handleChange(getAdjacent(data.data.slug).prev)}>
+             {#if $lang == "it"}
+                Prec.
+                {:else if $lang == "en"}
+                Prev.
+                {/if}
+          </button>
+          <button id="next" on:click={() => handleChange(getAdjacent(data.data.slug).next)}>
+              {#if $lang == "it"}
+                Succ.
+                {:else if $lang == "en"}
+                Next
+                {/if}
+          </button>
+
+        </div>
       </div>
       <div class="modal-buttons">
         <button class="close" id="expand" on:click={handleExpand}>↗</button>
@@ -182,16 +208,19 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
 
               <div class="content-videos">
                 {#each videos as videoId,index} 
-                    <iframe type="text/html"
-                    title={data.data.slug+"-video-"+index}
-                  width="100%"
-                  height="400"
-                  src={ "https://www.youtube-nocookie.com/embed/"+videoId+"?rel=0&modestbranding=1`"}
-                  frameborder="0"
-                  allow="accelerometer;  gyroscope; picture-in-picture"
-                  allowfullscreen
-                  id="video"
-              ></iframe>
+                <div class="video"                   style="aspect-ratio: 16 / 9; width:100%">
+                <iframe type="text/html"
+                              title={data.data.slug+"-video-"+index}
+                            width="100%"
+                            height="100%"
+                            src={ "https://www.youtube-nocookie.com/embed/"+videoId+"?rel=0&modestbranding=1`"}
+                            frameborder="0"
+                            allow="accelerometer;  gyroscope; picture-in-picture"
+                            allowfullscreen
+                            id="video"
+                        ></iframe>
+                </div>
+          
 
                 {/each}
               </div>
@@ -248,6 +277,25 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     min-height: 2em;
     border: 2px solid black;
   }
+ .modal .change-project-buttons {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    column-gap: 0.2em;
+    display: none;
+  }
+  .modal .change-project-buttons button {
+    height: 100%;
+     background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 1em;
+    font-family: 'Arial Narrow';
+    text-transform: uppercase;
+  }
 
 .modal.fullsize,
 .modal.top-modal,
@@ -298,7 +346,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     width: 100%;
   }
 
-
+  
 
 
   .modal-buttons button {
@@ -313,6 +361,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     align-items: center;
     
   }
+  
   
   .content-text p {
     margin-top: 1em;
@@ -381,7 +430,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   height: calc(100vh - 40px);
 
     max-width: 100vw;
-        max-height: 100vw;
+        max-height: 100vh;
         z-index: 2000 !important;
     resize: none;
     position: absolute;
@@ -450,14 +499,23 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     /* MOBILE */
 
     @media (max-width: 768px) {
-      .modal {
+      .modal,
+      .modal.fullsize {
         left: 0;
         margin: 1rem;
         height: 90vh;
         height: 90dvh;
       }
+
+      .modal .change-project-buttons {
+        display: block;
+      }
       #minimize, #expand {
         display: none !important;
+      }
+
+      .modal.fullsize .left-column {
+        display: none;
       }
     
     }
