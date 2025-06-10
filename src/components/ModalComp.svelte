@@ -158,6 +158,10 @@ export function draggableModale(element) {
     border: 2px solid black;
   }
 
+#modal-about .modal-content-wrapper {
+  padding: 4px;
+} 
+
 .modal.fullsize,
 .modal.top-modal,
 .modal:focus-within{

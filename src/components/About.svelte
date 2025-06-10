@@ -104,8 +104,15 @@ Previous projects
     header h1 {
         font-family: 'Impact';
         text-transform: uppercase;
-        font-size: 4em;
-    } 
+        font-size: 8em;
+        line-height: 0.8em;
+        transform-origin: left;
+  -webkit-transform:scale(0.5 ,1); /* Safari and Chrome */
+    -moz-transform:scale(0.5 ,1); /* Firefox */
+    -ms-transform:scale(0.5 ,1); /* IE 9 */
+    -o-transform:scale(0.5 ,1); /* Opera */
+    transform:scale(0.5 ,1); /* W3C */  
+  } 
 
     header p, h4 {
         font-family: 'Arial Narrow';
@@ -114,6 +121,8 @@ Previous projects
 
     header p {
         font-size: 2em;
+                margin-top: 0.3em;
+
     }
 
     h4 {
@@ -123,8 +132,11 @@ Previous projects
         display: flex;
         flex-direction: column;
         row-gap: 1em;
+        padding-bottom: 1em;
+        padding-top: 0;
     }
 
+ 
     #about-description{
         display: flex;
         flex-direction: column;
@@ -134,8 +146,11 @@ Previous projects
 
     ul {
         font-weight: normal;
-        list-style-type: disc;
-        list-style-position: inside
+        /* list-style-type: disc; */
+                /* list-style-position: inside */
+
+                list-style-type: none;
+
 
     }
 
