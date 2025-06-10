@@ -51,7 +51,7 @@
                 <ul class="text-links no-select">
                     <li>
                         <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
-                        <a href="https://noncielodicono.freeforums.net/board/1/general-discussion">FORUM</a>
+                        <a href="https://noncielodicono.freeforums.net/board/1/general-discussion" target="_blank" >FORUM</a>
                         <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
                         <span>/</span>
                         <a href="" on:click|preventDefault={() => setLang('it')}>IT</a>
@@ -73,7 +73,7 @@
           <ul class="text-links no-select">
                 <li>
                     <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
-                    <a href="https://noncielodicono.freeforums.net/board/1/general-discussion">FORUM</a>
+                    <a href="https://noncielodicono.freeforums.net/board/1/general-discussion" target="_blank">FORUM</a>
                     <div class="lang-switch">
                       <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
                     <span>/</span>
