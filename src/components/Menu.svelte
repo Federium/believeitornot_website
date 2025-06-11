@@ -52,10 +52,10 @@ white-space: nowrap;
 	outline: inherit;  }
 
   nav button:active {
-    color: red;
+    color: var(--rosso);
   }
   nav button:hover {
-    color: red;
+    color: var(--rosso);
   }
 
   h2 {

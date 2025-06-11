@@ -83,8 +83,11 @@
     <div class="text-content desktop-only">
         <div class="text-top">
             <div class="text-block draggable" data-text-id="block1">
-                <h1 class="no-select">
-                    Antidiciplinary <br /> Communication <br /> Design Lab
+                <h1 class="no-select stretch" >
+                    Antidiciplinary <br />
+					<span style="padding-left:2em">Communication <br /></span>
+				
+					Design Lab
                 </h1>
             </div>
             <div class="text-top-right draggable" data-text-id="block2">
@@ -107,9 +110,11 @@
             </div>
         </div>
         <div class="text-bottom draggable" data-text-id="block3">
-            <h3 class="no-select">
-                {info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
-                <a href="" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
+            <h3 class="no-select stretch">
+              <span >{info.event.date[$lang]}<br /></span>
+			  <span style="padding-left: 2em; ">{info.event.time[$lang]} <br /></span>
+                <a href="" on:click|preventDefault={openMap}>{info.event.location.name} <br />
+					<span style="padding-left: 1em">{info.event.location.address}</span></a> 
             </h3>
         </div>
     </div>
@@ -128,15 +133,17 @@
                     </div>
                 </li>
             </ul>
-            <div class="text-block draggable" data-text-id="block1">
+            <div class="text-block" data-text-id="block1">
                 <h1 class="no-select">
-                    Antidiciplinary <br /> Communication <br /> Design Lab
+                    Antidiciplinary <br />
+					Communication <br />
+					Design Lab
                 </h1>
             </div>
             
         </div>
         <div class="mobile-bottom-content">
-            <div class="text-bottom draggable" data-text-id="block3">
+            <div class="text-bottom" data-text-id="block3">
                 <h3 class="no-select">
                     {info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
                     <a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
@@ -176,6 +183,21 @@ ul {
 	text-transform: uppercase;
 	font-family: "Arial Narrow", Arial, sans-serif;
 	line-height: 0.8;
+}
+
+.text-top h1 {
+	font-size: 3em;
+		line-height: 0.6;
+
+}
+
+h3 {
+	font-size: 30px;
+}
+
+:global(.stretch) {
+	transform-origin: left;
+	transform: scale(0.7,1);
 }
 
 
@@ -221,6 +243,7 @@ ul {
 .text-bottom {
 	margin-bottom: 12rem;
 	text-align: center;
+	font-size: 5em;
 }
 				
 
@@ -252,13 +275,14 @@ ul {
 
 h1,
 h3 {
-	filter: blur(1px);
+	filter: blur(0.5px);
   line-height: 0.8;
 }
 h2,
 .text-links {
 	filter: blur(0.6px);
 }
+
 
 @media (max-width: 768px) {
 	.subtitle-container {

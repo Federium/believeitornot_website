@@ -304,6 +304,11 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
     text-transform: uppercase;
   }
 
+    
+  .modal .change-project-buttons button:hover,
+  .modal .change-project-buttons button:focus {
+    color: var(--rosso);
+  }
 .modal.fullsize,
 .modal.top-modal,
 .modal:focus{

@@ -101,7 +101,7 @@ Previous projects
 <style>
     
 
-    header h1 {
+    header>h1 {
         font-family: 'Impact';
         text-transform: uppercase;
         font-size: 8em;
@@ -122,7 +122,7 @@ Previous projects
     header p {
         font-size: 2em;
                 margin-top: 0.3em;
-
+        line-height: 100%;
     }
 
     h4 {
@@ -168,4 +168,9 @@ Previous projects
     #credits li {
         text-wrap: nowrap;
     }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 6em;
+    }}
 </style>
