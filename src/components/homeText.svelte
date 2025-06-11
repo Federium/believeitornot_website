@@ -183,7 +183,7 @@ ul {
 .text-top h1 {
 	font-size: 3em;
 		line-height: 0.6;
-  filter: blur(1px);
+
 }
 
 
@@ -226,7 +226,6 @@ ul {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-  filter: blur(0.5px);
 }
 
 .text-links li {
@@ -238,7 +237,6 @@ ul {
 	margin-bottom: 12rem;
 	text-align: center;
 	font-size: 5em;
-  filter: blur(1px);
 }
 				
 
@@ -324,12 +322,10 @@ h2,
 			margin-bottom: 0;
 			text-align: center;
 			align-self: center;
-      filter: blur(0.5px);
 		}
 		.text-links li {
 			display: flex;
       justify-content: space-between;
-      filter: blur(0.1px);
 		}
 	}
 
