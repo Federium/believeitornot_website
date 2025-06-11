@@ -57,7 +57,7 @@
 							vec2 uv = vTexCoord;
 							
 							// Pixelation ridotta per mobile
-							float pixelSize = uIsMobile ? 2.0 : 4.0;
+							float pixelSize = uIsMobile ? 4.0 : 4.0;
 							vec2 pixelatedUV = floor(uv * uResolution / pixelSize) * pixelSize / uResolution;
 							
 							vec4 color = texture2D(uTexture, pixelatedUV);
@@ -67,7 +67,7 @@
 							}
 							
 							// RGB split ridotto per mobile
-							float offset = uIsMobile ? 0.002 : 0.003;
+							float offset = uIsMobile ? 0.003 : 0.003;
 							color.r = texture2D(uTexture, pixelatedUV + vec2(offset, 0.0)).r;
 							color.g = texture2D(uTexture, pixelatedUV).g;
 							color.b = texture2D(uTexture, pixelatedUV - vec2(offset, 0.0)).b;
@@ -86,11 +86,11 @@
 							}
 							
 							// RGB mask meno intensa su mobile
-							float maskIntensity = uIsMobile ? 0.6 : 0.3;
+							float maskIntensity = uIsMobile ? 0.4 : 0.3;
 							color.rgb *= rgbMask + maskIntensity;
 							
 							// Scanlines meno evidenti su mobile
-							float scanlineIntensity = uIsMobile ? 0.005 : 0.02;
+							float scanlineIntensity = uIsMobile ? 0.02 : 0.02;
 							float scanline = sin(uv.y * uResolution.y * 1.5) * scanlineIntensity;
 							color.rgb -= scanline;
 							
@@ -107,7 +107,7 @@
 							
 							// Noise ridotto su mobile
 							float noise = fract(sin(dot(uv + uTime * 0.002, vec2(12.9898, 78.233))) * 43758.5453);
-							float noiseIntensity = uIsMobile ? 0.02 : 0.05;
+							float noiseIntensity = uIsMobile ? 0.03 : 0.05;
 							color.rgb += noise * noiseIntensity;
 							
 							// Luminosità leggermente aumentata su mobile
