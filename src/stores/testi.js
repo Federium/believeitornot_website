@@ -54,7 +54,7 @@ Their craving for supremacy is deeply rooted in their reptilian nature: they hav
 `
     },
     progetto: {
-      it: `Nascosta sotto la superficie delle principali città del mondo, come sotto il Pirellone di Milano, l'organizzazione Sneic (Segretissimo Nucleo per l’Elaborazione di Infiltrazioni Caotiche) guidata dai Rettiliani assicura che il pianeta rimanga in uno stato controllato di disagio per soddisfare le esigenze della sua leadership aliena.
+      it: `Nascosta sotto la superficie delle principali città del mondo, come sotto il Pirellone di Milano, l’organizzazione Sneic (Segretissimo Nucleo per l’Elaborazione di Infiltrazioni Caotiche) guidata dai Rettiliani, assicura che il pianeta rimanga in uno stato controllato di disagio per soddisfare le esigenze della sua leadership aliena.
 Sneic non è caratterizzata da una struttura gerarchica, è invece organizzata in tre dipartimenti specializzati: “Analisi” monitora la vulnerabilità umana, “Generazione” progetta i disagi, e “Azione” li attua tramite agenti infiltrati. Ogni mossa è strategica, ogni risultato viene misurato in Mal, l'unità di misura ufficiale del disagio umano. Gli archivi sono mantenuti in formato cartaceo, immuni al collasso digitale, in previsione di un pianificato attacco ai sistemi cloud globali.
 `,
       en: `Hidden beneath the world’s major cities, like under Milan’s Pirellone, the Reptilian-led organisation Sneic (Italian acronym for Secret Unit for the Management of Chaotic Infiltrations) makes sure that the planet stays in a controlled state of discomfort to feed the needs of its alien leadership.
@@ -62,7 +62,7 @@ A hierarchical structure does not characterise Sneic; it is divided into three s
 `
     },
     macchina: {
-      it: `Al centro di questo sistema si trova GeCO, il Generatore di Caos Organizzato, una macchina che consente agli agenti di creare compiti caotici personalizzati basati su dati umani e parametri comportamentali. Dotato di un’interfaccia immersiva e guidato da una fredda logica operativa, GeCO trasforma la sofferenza in infrastruttura e routine, diventando così essenziale per mantenere lordine esattamente dove i Rettiliani lo richiedono.`,
+      it: `Al centro di questo sistema si trova GeCO, il Generatore di Caos Organizzato, una macchina che consente agli agenti di creare compiti caotici personalizzati basati su dati umani e parametri comportamentali. Dotato di un’interfaccia immersiva e guidato da una fredda logica operativa, GeCO trasforma la sofferenza in infrastruttura e routine, diventando così essenziale per mantenere l’ordine esattamente dove i Rettiliani lo richiedono.`,
       en: `GeCO, the Organised Chaos Generator, is at the core of this system, a machine that allows agents to generate personalised chaos tasks using human data inputs and behavioural parameters. With an immersive interface and cold operational logic, GeCO transforms suffering into infrastructure and routine, making it essential for maintaining order exactly where the Reptilians need it.`
     }
   },
