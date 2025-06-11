@@ -186,9 +186,6 @@ ul {
 
 }
 
-h3 {
-	font-size: 30px;
-}
 
 :global(.stretch) {
 	transform-origin: left;
