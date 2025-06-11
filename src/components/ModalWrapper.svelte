@@ -26,6 +26,7 @@
 	let observer;
   let currentDragElement;
   let initialTransform = { x: 0, y: 0, rotation: 0 };
+  let isSwiping = false; // nuovo flag
 
   function openModal(entry, isFullscreen = false) {
     if (typeof entry === 'string') {
@@ -305,65 +306,53 @@
 	// }
 
   function goToNextProject() {
-	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
-	if (imageWrappers.length === 0) return;
+    if (isSwiping) return;
+    isSwiping = true;
+    const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+    if (imageWrappers.length === 0) return;
 
-	let currentWrapper = imageWrappers[currentImageIndex];
+    let currentWrapper = imageWrappers[currentImageIndex];
     currentWrapper.classList.remove("top-mobile");
 
-	if (currentWrapper) {
-		animate(currentWrapper, {
-			scale: 0.98,
-			duration: 100,
-			easing: "linear"
-		});
-	}
+    currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
+    currentWrapper = imageWrappers[currentImageIndex];
+    currentWrapper.classList.add("top-mobile");
 
-	currentImageIndex = (currentImageIndex + 1) % imageWrappers.length;
-   currentWrapper.classList.add("top-mobile");
-
-	setTimeout(() => {
-		positionMobileStackSmooth();
-	}, 50);
+    // Nessuna animazione, cambio immediato
+    positionMobileStackSmooth();
+    isSwiping = false;
 }
 
 function goToPreviousProject() {
-	const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
-	if (imageWrappers.length === 0) return;
+    if (isSwiping) return;
+    isSwiping = true;
+    const imageWrappers = Array.from(document.querySelectorAll(".image-wrapper"));
+    if (imageWrappers.length === 0) return;
 
-	let currentWrapper = imageWrappers[currentImageIndex];
-  currentWrapper.classList.remove("top-mobile");
+    let currentWrapper = imageWrappers[currentImageIndex];
+    currentWrapper.classList.remove("top-mobile");
 
-	if (currentWrapper) {
-		animate(currentWrapper, {
-			scale: 0.98,
-			duration: 100,
-			easing: "linear"
-		});
-	}
+    currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
+    currentWrapper = imageWrappers[currentImageIndex];
+    currentWrapper.classList.add("top-mobile");
 
-	currentImageIndex = (currentImageIndex - 1 + imageWrappers.length) % imageWrappers.length;
-  currentWrapper = imageWrappers[currentImageIndex];
-   currentWrapper.classList.add("top-mobile");
-
-	setTimeout(() => {
-		positionMobileStackSmooth();
-	}, 50);
+    // Nessuna animazione, cambio immediato
+    positionMobileStackSmooth();
+    isSwiping = false;
 }
 
-
-  function setupMobileScroll() {
-    gsap.registerPlugin(Observer);
+function setupMobileScroll() {
+  gsap.registerPlugin(Observer);
 
 	 observer = Observer.create({
 		target: window,
 		type: "wheel,touch,pointer",
-		wheelSpeed: -1, // inverti se necessario
+		wheelSpeed: -1,
 		onDown: () => goToNextProject(),
 		onUp: () => goToPreviousProject(),
-		tolerance: 50,
+		tolerance: 25, // più sensibile
 		preventDefault: true,
-		dragMinimum: 100,
+		dragMinimum: 60, // più reattivo
 		lockAxis: true
 	});
 
@@ -371,51 +360,46 @@ function goToPreviousProject() {
 
 	// Nuova funzione per posizionare lo stack con animazioni molto leggere
 	function positionMobileStackSmooth() {
-		const container = document.getElementById("gallery-container");
-		if (!container) return;
-		const imageWrappers = Array.from(
-			container.querySelectorAll(".image-wrapper")
-		);
+		if (!imageWrappers.length) return;
 
-		if (imageWrappers.length === 0) return;
+  const container = document.getElementById("gallery-container");
+  const containerWidth = container.offsetWidth;
+  const containerHeight = container.offsetHeight;
+  const centerX = containerWidth / 2;
+  const centerY = containerHeight / 3;
 
-		const containerWidth = container.offsetWidth;
-		const containerHeight = container.offsetHeight;
-		const centerX = containerWidth / 2;
-		const centerY = containerHeight / 3;
+  imageWrappers.forEach((wrapper, index) => {
+    const randomOffsetX = (Math.random() - 0.5) * 50;
+    const randomOffsetY = (Math.random() - 0.5) * 50;
+    const randomRotation = (Math.random() - 0.5) * 10;
 
-		imageWrappers.forEach((wrapper, index) => {
-			const randomOffsetX = (Math.random() - 0.5) * 50;
-			const randomOffsetY = (Math.random() - 0.5) * 50;
-			const randomRotation = (Math.random() - 0.5) * 10;
+    // Ottieni le dimensioni effettive del wrapper
+    const wrapperWidth = wrapper.offsetWidth;
+    const wrapperHeight = wrapper.offsetHeight;
 
-			// Ottieni le dimensioni effettive del wrapper
-			const wrapperWidth = wrapper.offsetWidth;
-			const wrapperHeight = wrapper.offsetHeight;
+    // Z-index basato sulla distanza dall'immagine corrente
+    let zIndex;
+    if (index === currentImageIndex) {
+      zIndex = imageWrappers.length;
+      wrapper.style.filter = '';
+    } else {
+      const distance = Math.abs(index - currentImageIndex);
+      zIndex = imageWrappers.length - distance;
+      wrapper.style.filter = '';
+    }
+    wrapper.style.zIndex = zIndex.toString();
 
-			// Z-index basato sulla distanza dall'immagine corrente
-			let zIndex;
-			if (index === currentImageIndex) {
-				zIndex = imageWrappers.length;
-				wrapper.style.filter = '';
-			} else {
-				const distance = Math.abs(index - currentImageIndex);
-				zIndex = imageWrappers.length - distance;
-				wrapper.style.filter = '';
-			}
-			wrapper.style.zIndex = zIndex.toString();
-
-			// Animazione molto più leggera e veloce
-			animate(wrapper, {
-				translateX: centerX - (wrapperWidth / 2) + randomOffsetX, // Centrato dinamicamente
-				translateY: centerY - (wrapperHeight / 2) + randomOffsetY, // Centrato dinamicamente
-				rotate: randomRotation,
-				scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
-				duration: 250,
-				easing: "easeOutQuad",
-				delay: index === currentImageIndex ? 0 : 20
-			});
-		});
+    // Animazione molto più leggera e veloce
+    animate(wrapper, {
+      translateX: centerX - (wrapperWidth / 2) + randomOffsetX, // Centrato dinamicamente
+      translateY: centerY - (wrapperHeight / 2) + randomOffsetY, // Centrato dinamicamente
+      rotate: randomRotation,
+      scale: index === currentImageIndex ? 1 : 0.95 - Math.abs(index - currentImageIndex) * 0.02,
+      duration: 250,
+      easing: "easeOutQuad",
+      delay: index === currentImageIndex ? 0 : 20
+    });
+  });
 	}
 
   function completeSwipeAnimation(deltaX, deltaY) {
@@ -623,6 +607,12 @@ openFromSlug();
     
   });
 
+  let imageWrappers = [];
+
+  function updateImageWrappers() {
+    const container = document.getElementById("gallery-container");
+    imageWrappers = container ? Array.from(container.querySelectorAll(".image-wrapper")) : [];
+  }
 </script>
 
 <div class="gallery-container notDragging" id="gallery-container">
