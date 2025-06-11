@@ -310,7 +310,7 @@ h2,
     }
 }
 
-h1, .text-bottom {
+h1, h2, h3, .text-bottom {
   transform: scaleX(0.7); /* schiaccia sull'asse X */
   transform-origin: left; /* <-- aggiungi questa riga */
   display: inline-block;   /* necessario per applicare il transform */

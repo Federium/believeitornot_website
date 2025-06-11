@@ -1,7 +1,7 @@
 <script>
   import { onMount, setContext } from 'svelte';
   import { animate, createDraggable, stagger } from "animejs";
-  	import { gsap } from "gsap";
+  import { gsap } from "gsap";
 	import { Observer } from "gsap/Observer";
 
   import Modal from './Modal.svelte';

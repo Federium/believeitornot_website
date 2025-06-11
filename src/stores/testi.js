@@ -168,7 +168,15 @@ Anti_Streaming_Army è un collettivo anonimo di attivisti digitali che svela le 
 Anti_Streaming_Army is an anonymous collective of digital activists exposing hidden strategies behind media consumption. Their investigations uncovered links between the pandemic and the Digital Content Consortium (D.C.C.), a powerful lobbying group representing streaming services. The collective claims that the crisis was exploited to maximise subscriptions and normalise surveillance through content manipulation.
 ` },
     macchina: { it: `Al centro della resistenza del gruppo si trova Decrypta, una macchina open-source progettata per analizzare i fotogrammi dello streaming e individuare messaggi criptati nei pixel. Una volta decodificati, questi messaggi svelano strategie aziendali, comunicazioni segrete e inquietanti traguardi come “Obiettivo Raggiunto: 80% delle famiglie intrappolate in casa”. In combinazione con campagne di hacking globali, interventi urbani e l’hashtag virale #AntiStreamingArmy, Decrypta trasforma l’intrattenimento in prove concrete e gli spettatori in investigatori.`, 
-      en: `At the core of the group’s resistance strategy is Decrypta, an open-source machine designed to scan streaming frames and search for encrypted pixel messages. Once decrypted, these messages reveal corporate agendas, covert communications, and disturbing milestones like “Goal Achieved: 80% of Families Trapped at Home.” Paired with global hacking campaigns, urban interventions, and the viral hashtag #AntiStreamingArmy, Decrypta turns entertainment into evidence and viewers into investigators.` }
+      en: `At the core of the group’s resistance strategy is Decrypta, an open-source machine designed to scan streaming frames and search for encrypted pixel messages. Once decrypted, these messages reveal corporate agendas, covert communications, and disturbing milestones like “Goal Achieved: 80% of Families Trapped at Home.” Paired with global hacking campaigns, urban interventions, and the viral hashtag #AntiStreamingArmy, Decrypta turns entertainment into evidence and viewers into investigators.` },
+      link: { 
+  it: 'https://antistreamingarmy.netlify.app', 
+  en: 'https://antistreamingarmy.netlify.app',
+  label: { 
+    it: 'https://antistreamingarmy.net', 
+    en: 'https://antistreamingarmy.net' 
+  }
+}
   },
 
 
@@ -265,7 +273,15 @@ Ecco perché watever ha abbracciato la fluorizzazione dell'acqua e i suoi effett
 That’s why watever embraced water fluoridation and its cognitive influence, becoming the most fluoridated water on the market and making happiness as simple as taking a sip. With 5.9 mg of fluoride per can, watever limits mental capacity, offering an untroubled, carefree, and happy lifestyle.
 ` },
     macchina: { it: `Con watever "the case", un dispositivo connesso da applicare alla lattina di acqua, i clienti possono facilmente monitorare il loro consumo di fluoro e il loro livello di felicità in un colpo d'occhio tramite l’app dedicata: il modo più facile per raggiungere lo stile di vita spensierato di watever.`, en: `With watever “the case”, a connected device to apply to the water can, customers can easily monitor their fluoride intake and happiness levels at a glance with its companion app: the easiest way to achieve the carefree watever lifestyle.` },
-    link: { it: 'https://www.watever.com', en: 'https://www.watever.com' }
+    
+    link: { 
+  it: 'https://drinkwatever.com/index.html', 
+  en: 'https://drinkwatever.com/index.html',
+  label: { 
+    it: 'https://drinkwatever.com', 
+    en: 'https://drinkwatever.com'
+  }
+}
   },
 
 

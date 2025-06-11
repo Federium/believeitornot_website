@@ -199,7 +199,13 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
               {/if}
 
               <p>{testi['macchina'][$lang]}</p>
-              <a>{testi['link'][$lang]}</a>
+                            
+              {#if testi['link'] && testi['link'][$lang]}
+                <a href={testi['link'][$lang]} target="_blank" rel="noopener">
+                  {testi['link'].label ? testi['link'].label[$lang] : testi['link'][$lang]}
+                </a>
+              {/if}
+
               {#if images[2]}
                 {#each images[2] as image, index}
                   <EnhancedImage src={image} alt="Immagine altro {index + 1}" class="content-img" draggable="false"  />
@@ -350,7 +356,6 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
   
 a {
     color: var(--rosso);
-    text-decoration: none;
     cursor: pointer;
     margin-bottom: 1em;
   }
