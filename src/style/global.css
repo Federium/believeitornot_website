@@ -52,7 +52,7 @@ h1,h2,h3,h4,h5,h6,p,a,ul {
 
 h2, ul {
   font-weight: bold;
-  font-size: clamp(1rem, 1vw, 2.5rem); /* Min 1rem, ideale 4vw, max 3rem */
+  font-size: clamp(1.5rem, 1.5vw, 3rem); /* Min 1rem, ideale 4vw, max 3rem */
 }
 
 
