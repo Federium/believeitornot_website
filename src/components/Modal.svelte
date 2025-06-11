@@ -203,7 +203,7 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
               {#if testi['link'] && testi['link'][$lang]}
                 <a href={testi['link'][$lang]} target="_blank" rel="noopener">
                   {testi['link'].label ? testi['link'].label[$lang] : testi['link'][$lang]}
-                </a>
+                </a><br/>
               {/if}
 
               {#if images[2]}
@@ -363,6 +363,9 @@ a {
     color: var(--rosso);
     cursor: pointer;
     margin-bottom: 1em;
+  &:hover {
+    color: black;
+  }
   }
 
 
