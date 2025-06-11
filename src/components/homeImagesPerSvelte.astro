@@ -2,11 +2,10 @@
 // ImageGallery.astro
 import { Image } from "astro:assets";
 import ModalWrapper from "./ModalWrapper.svelte";
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
-const progetti = await getCollection('projects'); 
-console.log(progetti);
-
+const progetti = await getCollection("projects");
+/* console.log(progetti); */
 
 // // Importa le tue immagini
 // import image1 from "../assets/image1.jpg?enhanced";
@@ -20,7 +19,6 @@ console.log(progetti);
 // import image9 from "../assets/image9.png?enhanced";
 // import image10 from "../assets/image10.png?enhanced";
 // import image11 from "../assets/image11.png?enhanced";
-
 
 // const imagesWithoutSlug = [
 // 	{
@@ -96,11 +94,8 @@ console.log(progetti);
 // 	...img,
 // 	slug: progetti[index]?.data?.slug || ""
 // }));
-
 ---
 
-<ModalWrapper  client:only="svelte"  data={progetti}>
-      <div slot="fallback">Loading</div>
-
-
+<ModalWrapper client:only="svelte" data={progetti}>
+	<div slot="fallback">Loading</div>
 </ModalWrapper>
