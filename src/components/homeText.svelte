@@ -71,7 +71,6 @@
 `);
 	}
 
-
 	
     
     // import '../style/background.css';
@@ -98,13 +97,9 @@
                     <li>
                         <a href="" on:click|preventDefault={openAbout}>ABOUT</a>
                         <a href="https://noncielodicono.freeforums.net/board/1/general-discussion" target="_blank" >FORUM</a>
-                        <div>
-                          <!-- svelte-ignore a11y_invalid_attribute -->
-                          <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
+                        <a href="" on:click|preventDefault={() => setLang('en')}>EN</a>
                         <span>/</span>
-                          <!-- svelte-ignore a11y_invalid_attribute -->
                         <a href="" on:click|preventDefault={() => setLang('it')}>IT</a>
-                        </div>
                     </li>
                 </ul>
             </div>
@@ -227,6 +222,7 @@ h3 {
 	text-wrap: nowrap;
 	overflow: hidden;
 	min-width: 0;
+	gap: 2rem;
 }
 
 .text-top-right {
@@ -367,9 +363,6 @@ h2,
         font-size: clamp(2rem, 10vw, 4rem);
         filter: blur(1px);
         color: var(--giallo);
-        transform: scaleX(0.7); /* schiaccia sull'asse X */
-        transform-origin: left; /* <-- aggiungi questa riga */
-  display: inline-block;   /* necessario per applicare il transform */
     }
     .subtitle-mobile p {
         font-family: "impact", sans-serif !important;
