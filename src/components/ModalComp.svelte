@@ -5,6 +5,8 @@
   import { createDraggable } from 'animejs';
 
   import EnhancedImage from './EnhancedImage.svelte';
+  import { gsap } from "gsap";
+	import { Observer } from "gsap/Observer";
 
   
   // export let data;
@@ -95,7 +97,7 @@ export function draggableModale(element) {
         modal?.focus();
         document.querySelectorAll('.modal').forEach(el => el.classList.remove('top-modal'));
         modal.classList.add('top-modal');
-
+if(Observer.getAll()[0]) Observer.getAll()[0].disable(); 
   });
 </script>
 

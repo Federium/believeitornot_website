@@ -114,7 +114,7 @@ Previous projects
     transform:scale(0.5 ,1); /* W3C */  
   } 
 
-    header p, h4 {
+    header>p, h4 {
         font-family: 'Arial Narrow';
         font-weight: bold;
     }
@@ -134,6 +134,7 @@ Previous projects
         row-gap: 1em;
         padding-bottom: 1em;
         padding-top: 0;
+        font-family: 'Arial';
     }
 
  

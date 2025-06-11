@@ -5,6 +5,7 @@
 	import info from '../data/info.json';
 	import { lang } from '../stores/lang.js';
 
+	import { Observer } from "gsap/Observer";
 
 	let aboutModalOpen, mapModalOpen = false;
 	function openAbout() {
@@ -14,6 +15,8 @@
 
 	function closeAbout() {
 		aboutModalOpen = false;
+		if(Observer.getAll()[0]) Observer.getAll()[0].enable(); 
+
 	}
 
 	function openMap() {
