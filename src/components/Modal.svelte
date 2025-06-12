@@ -179,7 +179,14 @@ class="modal {isFullscreen ? 'fullsize disable' : ''}"
             <div class="modal-content">
 
               <div class="content-head">
-             <h2>{data.data.title}</h2>
+             <h2>
+              {#if data.data.slug=="antistreamingarmy"} 
+                Anti_<wbr>Streaming_<wbr>Army
+              {:else}
+                  {data.data.title}
+
+                {/if}
+             </h2>
               <h3>{testi['whatif'][$lang]}</h3>
               </div>
             

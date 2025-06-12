@@ -115,7 +115,7 @@
         <div class="text-bottom draggable" data-text-id="block3">
             <h3 class="no-select ">
               <span class="stretch">{info.event.date[$lang]}<br /></span>
-			  <span  class="stretch" style="padding-left: 2em; ">{info.event.time[$lang]} <br /></span>
+			  <span  class="stretch" style="padding-left: 2em; ">{info.event.time[$lang]} <br /><br /></span>
                 <a href="" on:click|preventDefault={openMap}>{info.event.location.name} <br />
 					<span class="stretch" style="padding-left: 1em">{info.event.location.address}</span></a> 
             </h3>
@@ -154,7 +154,7 @@
         </div>
         <div class="mobile-bottom-content">
             <div class="text-bottom" data-text-id="block3">
-                <h3 class="no-select">
+                <h3 class="no-select" >
                     {info.event.date[$lang]} <br /> {info.event.time[$lang]} <br />
                     <a href="/#" on:click|preventDefault={openMap}>{info.event.location.name} <br /> {info.event.location.address}</a> 
                 </h3>
@@ -263,6 +263,11 @@ ul {
 	text-align: center;
 	font-size: 5em;
   filter: blur(1px);
+  transform: scale(0.9,1.2);
+}
+
+.text-bottom * {
+	line-height: 0.7;
 }
 				
 

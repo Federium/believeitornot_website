@@ -29,7 +29,7 @@
 
 </section>
 
-<a href="/assets/fogliodisala.pdf">
+<a href="/assets/believeitornot_fogliosala.pdf" alt="Believe it Or Not - Foglio di sala" target="_blank">
   {#if $lang === "it"}
 Scarica il poster
 {:else if $lang === "en"}

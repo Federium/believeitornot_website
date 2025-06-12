@@ -51,7 +51,6 @@
   }
   
   function expandModal(slug) {
-    console.log("Expanding modal with slug:", slug);
     const id = "modal-"+slug;
     const element = document.getElementById(id);
     element.style.width = "";
