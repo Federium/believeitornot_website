@@ -193,7 +193,7 @@ ul {
 	text-transform: uppercase;
 	font-family: "Arial Narrow", Arial, sans-serif;
 	line-height: 0.8;
-	  filter: blur(1px);
+	  filter: blur(0.8px);
 
 }
 
@@ -206,7 +206,7 @@ ul {
 .text-middle {
 	font-size: 2em;
 	font-family: 'Arial Narrow', Arial, sans-serif;
-	  filter: blur(1px);
+	  filter: blur(0.8px);
 	  font-weight: bold;
 
 }
@@ -250,7 +250,7 @@ ul {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-  filter: blur(0.5px);
+  filter: blur(0px);
 }
 
 .text-links li {
