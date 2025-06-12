@@ -107,12 +107,17 @@
                 </ul>
             </div>
         </div>
+		<div class="text-middle stretch">
+			<div style="padding-left: 40%">
+				<a href="https://www.instagram.com/antidisciplinarylab/" alt="Instagram @antidisciplinarylab" target="_blank">@antidisciplinarylab</a>
+			</div>
+		</div>
         <div class="text-bottom draggable" data-text-id="block3">
-            <h3 class="no-select stretch">
-              <span >{info.event.date[$lang]}<br /></span>
-			  <span style="padding-left: 2em; ">{info.event.time[$lang]} <br /></span>
+            <h3 class="no-select ">
+              <span class="stretch">{info.event.date[$lang]}<br /></span>
+			  <span  class="stretch" style="padding-left: 2em; ">{info.event.time[$lang]} <br /></span>
                 <a href="" on:click|preventDefault={openMap}>{info.event.location.name} <br />
-					<span style="padding-left: 1em">{info.event.location.address}</span></a> 
+					<span class="stretch" style="padding-left: 1em">{info.event.location.address}</span></a> 
             </h3>
         </div>
     </div>
@@ -132,11 +137,18 @@
                 </li>
             </ul>
             <div class="text-block" data-text-id="block1">
-                <h1 class="no-select">
-                    Antidiciplinary <br />
-					Communication <br />
-					Design Lab
-                </h1>
+				<div>
+					<h1 class="no-select stretch">
+										Antidiciplinary <br />
+										Communication <br />
+										Design Lab
+									</h1>
+				</div>
+              
+				
+				<div class="ig-link" style="padding-top: 5%">
+				<a href="https://www.instagram.com/antidisciplinarylab/" alt="Instagram @antidisciplinarylab" target="_blank">@antidisciplinarylab</a>
+			</div>
             </div>
             
         </div>
@@ -181,6 +193,8 @@ ul {
 	text-transform: uppercase;
 	font-family: "Arial Narrow", Arial, sans-serif;
 	line-height: 0.8;
+	  filter: blur(1px);
+
 }
 
 .text-top h1 {
@@ -189,6 +203,13 @@ ul {
   filter: blur(1px);
 }
 
+.text-middle {
+	font-size: 2em;
+	font-family: 'Arial Narrow', Arial, sans-serif;
+	  filter: blur(1px);
+	  font-weight: bold;
+
+}
 
 :global(.stretch) {
 	transform-origin: left;
@@ -287,11 +308,26 @@ h2,
 			display: none;
 		}
 
+		.text-block {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			width: 100%;
+			
+		}
+
+		.text-block .ig-link {
+			font-weight: bold;
+				transform: scale(0.9,1.3);
+
+		}
+
 		.mobile-bottom-content {
 			display: flex;
 			flex-direction: column;
 			width: 100%;
 			gap: 2rem;
+			transform-origin: left;
       
 		}
 
@@ -328,6 +364,8 @@ h2,
 			text-align: center;
 			align-self: center;
       filter: blur(0.5px);
+	  	transform: scale(0.9,1.3);
+
 		}
 		.text-links li {
 			display: flex;

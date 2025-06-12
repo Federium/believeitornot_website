@@ -99,7 +99,6 @@ import AboutButton from "./About.svelte";
 			overflow: hidden;
 			display: flex;
 			font-weight: bold;
-			font-family: "Arial Narrow Bold", sans-serif;
 			font-size: clamp(2rem, 10vw, 4rem);
 			filter: blur(1px);
 			color: var(--giallo);
@@ -107,6 +106,11 @@ import AboutButton from "./About.svelte";
 			transform: scaleX(0.7);
 			transform-origin: left;
 			display: inline-block;
+		}
+
+		.subtitle-container p {
+			font-family: "Impact", "Arial Narrow", sans-serif;
+
 		}
 
 		@media (max-width: 768px) {
