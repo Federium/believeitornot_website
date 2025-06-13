@@ -10,7 +10,7 @@
 
 <div class="about-content">
 <header>
-<h1>Believe It or Not</h1>
+<h1>Believe It <wbr/>or Not</h1>
 <p>Speculating on &#40;un&#41;real conspiracy theories</p>
 </header>
 
@@ -26,7 +26,6 @@
 <p>11 projects that explore possible scenarios based on conspiracy theories, used as a starting point to reflect on imaginaries, media and power structures. </p>
 <p>11 communication systems that question our present to discuss the boundaries between reality, fiction and manipulation, trying to redefine the role of the communication designer.</p>
 {/if}
-
 </section>
 
 <a href="/assets/believeitornot_fogliosala.pdf" alt="Believe it Or Not - Foglio di sala" target="_blank">
@@ -168,6 +167,7 @@ Previous projects
     .credits-group {
         width: 30%;
         min-width: fit-content;
+        flex-grow: 1;
     }
     #credits li {
         text-wrap: nowrap;
